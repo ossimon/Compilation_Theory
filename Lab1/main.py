@@ -14,7 +14,8 @@ if __name__ == '__main__':
 
     text = file.read()
     lexer = scanner.Lexer()
-    lexer.input(text) # Give the lexer some input
+    # Give the lexer some input
+    lexer.input(text)
 
     # Tokenize
     while True:
