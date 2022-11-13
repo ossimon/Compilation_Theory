@@ -66,12 +66,6 @@ reserved = {
 }
 
 
-def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'ID')
-    return t
-
-
 def t_error(t):
     print(str(t.lexer.lineno) + ": Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
@@ -82,21 +76,27 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 
-def t_INT(t):
-    r'\d+'
-    t.value = int(t.value)
+def t_FLOAT(t):
+    r'(\d+\.\d*(E\d+)?)|(\d*\.\d+(E\d+)?)'
+    t.value = str(t.value)
     return t
 
 
-def t_FLOAT(t):
-    r'\d+\.\d*|\d*\.\d+'
-    t.value = str(t.value)
+def t_INT(t):
+    r'\d+(E\d+)?'
+    t.value = int(t.value)
     return t
 
 
 def t_STRING(t):
     r'".*"'
     t.value = str(t.value)
+    return t
+
+
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*'
+    t.type = reserved.get(t.value, 'ID')
     return t
 
 
