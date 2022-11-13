@@ -10,10 +10,10 @@ class Lexer:
             'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ',
             'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN',
             'ADD', 'SUB', 'MUL', 'DIV',
-            '(', ')', '[', ']', '{', '}',
-            ':',
+            'LPARENT', 'RPARENT', 'LSQBRACK', 'RSQBRACK', 'LCURLBRACK', 'RCURLBRACK',
+            'COLON',
             'TRANSPOSE',
-            ';', ',',
+            'SEMICOLON', 'COMMA',
             'IF', 'ELSE', 'FOR', 'WHILE',
             'BREAK', 'CONTINUE', 'RETURN',
             'EYE', 'ZEROS', 'ONCE',
@@ -42,10 +42,21 @@ class Lexer:
         t_SUB = r'-'
         t_MUL = r'*'
         t_DIV = r'/'
-        t_( = r'('
-        )', '[', ']', '{', '}',
-        ':',
-        'TRANSPOSE',
+        t_LPARENT = r'('
+        t_RPARENT = r')'
+        t_LSQBRACK = r'['
+        t_RSQBRACK = r']'
+        t_LCURLBRACK = r'{'
+        t_RCURLBRACK = r'}'
+        t_COLON = r':'
+        t_TRANSPOSE = r"'"
+        t_SEMICOLON = r';'
+        t_COMMA = r':'
+        t_IF = r'if'
+        t_ELSE = r'else'
+        t_FOR = r'for'
+        t_WHILE = r'while'
+
 
 
 
