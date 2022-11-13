@@ -45,7 +45,7 @@ t_ignore = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print(str(t.lexer.lineno) + "Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
 

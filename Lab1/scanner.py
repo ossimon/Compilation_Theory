@@ -73,13 +73,14 @@ def t_ID(t):
 
 
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print(str(t.lexer.lineno) + ": Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
 
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
 
 def t_INT(t):
     r'\d+'
@@ -92,10 +93,12 @@ def t_FLOAT(t):
     t.value = str(t.value)
     return t
 
+
 def t_STRING(t):
     r'".*"'
     t.value = str(t.value)
     return t
+
 
 class Lexer:
     def __init__(self):
