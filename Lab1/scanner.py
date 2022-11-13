@@ -47,17 +47,9 @@ t_COLON = r':'
 t_TRANSPOSE = r"'"
 t_SEMICOLON = r';'
 t_COMMA = r','
-t_IF = r'if'
-t_ELSE = r'else'
-t_FOR = r'for'
-t_WHILE = r'while'
-t_BREAK = r'break'
-t_CONTINUE = r'continue'
-t_RETURN = r'return'
-t_EYE = r'eye'
-t_ZEROS = r'zeros'
-t_ONES = r'ones'
-t_PRINT = r'print'
+
+t_ignore  = ' \t'
+t_ignore_COMMENT = r'\#.*\n'
 
 reserved = {
     'if': 'IF',
@@ -73,6 +65,7 @@ reserved = {
     'print': 'PRINT'
 }
 
+
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value, 'ID')
@@ -87,6 +80,23 @@ def t_error(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
+
+def t_INT(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+
+
+def t_FLOAT(t):
+    r'\d*\.\d*'
+    t.value = str(t.value)
+    return t
+
+def t_STRING(t):
+    r'".*"'
+    t.value = str(t.value)
+    return t
 
 class Lexer:
     def __init__(self):
