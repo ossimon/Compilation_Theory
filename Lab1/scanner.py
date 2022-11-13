@@ -18,10 +18,10 @@ tokens = (
     'INT',
     'STRING'
 )
-t_DOTADD = r'.\+'
-t_DOTSUB = r'.-'
-t_DOTMUL = r'.\*'
-t_DOTDIV = r'./'
+t_DOTADD = r'\.\+'
+t_DOTSUB = r'\.-'
+t_DOTMUL = r'\.\*'
+t_DOTDIV = r'\./'
 t_SMALLER = r'<'
 t_LARGER = r'>'
 t_SMALLEREQ = r'<='
@@ -49,7 +49,7 @@ t_SEMICOLON = r';'
 t_COMMA = r','
 
 t_ignore  = ' \t'
-t_ignore_COMMENT = r'\#.*\n'
+t_ignore_COMMENT = r'\#.*'
 
 reserved = {
     'if': 'IF',
@@ -81,7 +81,6 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-
 def t_INT(t):
     r'\d+'
     t.value = int(t.value)
@@ -89,7 +88,7 @@ def t_INT(t):
 
 
 def t_FLOAT(t):
-    r'\d*\.\d*'
+    r'\d+\.\d*|\d*\.\d+'
     t.value = str(t.value)
     return t
 
