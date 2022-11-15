@@ -1,0 +1,14 @@
+- Skaner - tokenizuje znaki. Wygenerujemy go sobie z pomocą PLY
+Korzystamy z gramatyk regularnych (wyrażenia regularne - token który mamy zwrócić)
+Podział strumienia znaków na tokeny.
+
+- Zasada maksymalnego dopasowania.
+- wybieramy to co jest wcześniejsze na liście specyfikacji.
+
+- W slyu wymagają żeby te dłuższe wzorce były na liście specyfikacji. Bierze pierwsze co znajdzie na liście.
+==, <=, >=
+
+- Ply rozróżnia tokeny definiowane poprzez funckje i poprzez przypisanie.
+
+Tokeny definiowane poprzez funckje mają pierwszeństwo.
+- 

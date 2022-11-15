@@ -1,0 +1,26 @@
+Parser
+Chcemy sprawdzić czy podany na wejściu program jest poprawny syntaktycznie
+
+PLY - generuje parsery typu LR(1) (klasa deterministyczna)
+
+a+b*c
+
+E -> E+T | T
+T -> T*F | F
+F -> (E) | a
+gramatyka jednoznaczna
+
+E -> E+E | E*E | (E) | a
+precedance = (('+', 'left'), ('*', 'left'))
+rozwiązywanie konfliktów w gramatyce niejednoznacznej
+
+
+Nawet jak poprwanie wyspecyfikujemy to będzie jeden problem shift-radius. Ponieważ mamy konstrukcję if-else.
+struct -> if (cond) struct | if (cond) struct else struct
+
+precedence = ((IFX, 'left'), (ELSE, 'left'), ('+', 'left'), ('+', 'left'))
+
+program -> program block | block
+block -> block struct | struct
+struct - instrukcja
+Jeśli nie wyspecyfikujemy to będzie rozdział programu na instrukcje niejednoznaczne.
