@@ -7,7 +7,7 @@ tokens = scanner.tokens
 
 precedence = (
     # to fill ...
-    ("left", '+', '-'),
+    ("left", 'ADD', 'SUB'),
     # to fill ...
 )
 
