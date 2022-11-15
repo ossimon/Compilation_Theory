@@ -77,19 +77,19 @@ def t_newline(t):
 
 
 def t_FLOAT(t):
-    r'(\d+\.\d*(E\d+)?)|(\d*\.\d+(E\d+)?)'
+    r'(\d+\.\d*(E\d+)?)|(\.\d+(E\d+)?)|\d+(E\d+)?'
     t.value = str(t.value)
     return t
 
 
 def t_INT(t):
-    r'\d+(E\d+)?'
+    r'\d+'
     t.value = int(t.value)
     return t
 
 
 def t_STRING(t):
-    r'".*"'
+    r'".*?"'
     t.value = str(t.value)
     return t
 
