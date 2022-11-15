@@ -48,7 +48,7 @@ t_TRANSPOSE = r"'"
 t_SEMICOLON = r';'
 t_COMMA = r','
 
-t_ignore  = ' \t'
+t_ignore = ' \t'
 t_ignore_COMMENT = r'\#.*'
 
 reserved = {
