@@ -6,9 +6,7 @@ import ply.yacc as yacc
 tokens = scanner.tokens
 
 precedence = (
-    # to fill ...
     ("left", 'ADD', 'SUB'),
-    # to fill ...
 )
 
 
@@ -20,27 +18,27 @@ def p_error(p):
 
 
 def p_program(p):
-    """program : instructions_opt"""
+    """program : program block
+               | block"""
 
 
-def p_instructions_opt_1(p):
-    """instructions_opt : instructions """
+def p_block(p):
+    """block : LCURLBRACK block RCURLBRACK
+             | block instruction
+             | instruction
+             | empty"""
 
 
-def p_instructions_opt_2(p):
-    """instructions_opt : """
+def p_empty(p):
+    """empty :"""
+    pass
 
 
-def p_instructions_1(p):
-    """instructions : instructions instruction """
-
-
-def p_instructions_2(p):
-    """instructions : instruction """
-
-
-# to finish the grammar
-# ....
+def instruction(p):
+    """instruction : assignment
+                   | call
+                   | loop
+                   | branch"""
 
 
 parser = yacc.yacc()
