@@ -6,9 +6,14 @@ import ply.yacc as yacc
 tokens = scanner.tokens
 
 precedence = (
-    # to fill ...
-    ("left", '+', '-'),
-    # to fill ...
+    ('nonassoc', 'IF'),
+    ('nonassoc', 'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ', 'ELSE'),
+    ('nonassoc', 'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN'), # inni tego nie maja, usunac i w tescie zrobic a = b = c
+    # inicjalizacja macierzy konkretnymi wartosciami, tak jak wyzej?
+    ('left', 'ADD', 'SUB', 'DOTADD', 'DOTSUB'),
+    ('left', 'MUL', 'DIV', 'DOTMUL', 'DOTDIV'),
+    ('left', 'UMINUS'),
+    ('right', 'TRANSPOSE') # ????
 )
 
 
