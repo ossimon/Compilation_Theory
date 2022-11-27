@@ -1,10 +1,10 @@
 import ply.lex as lex
 
 tokens = (
-    'DOTADD', 'DOTSUB', 'DOTMUL', 'DOTDIV', # Operatory binarne
+    'DOTADD', 'DOTSUB', 'DOTMUL', 'DOTDIV', # Operatory binarne do macierzy
     'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ', # Wyrażenia relacyjne
     'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN', # instrukcję przypisania, w tym różne operatory przypisania
-    'ADD', 'SUB', 'MUL', 'DIV', # -M -> negacja,
+    'ADD', 'SUB', 'MUL', 'DIV', # Operatory binarne
     'LPARENT', 'RPARENT', 'LSQBRACK', 'RSQBRACK', 'LCURLBRACK', 'RCURLBRACK',
     'COLON',
     'TRANSPOSE', # transpozycję macierzy,
