@@ -90,6 +90,7 @@ def p_fun_name(p):
                 | PRINT"""
 
 
+# pętle: while and for
 def p_loop(p):
     """loop : for
             | while"""
@@ -101,6 +102,16 @@ def p_for(p):
 
 def p_for_expression(p):
     """for_expression : ID ASSIGN term COLON term"""
+
+
+def p_while(p):
+    """while : WHILE LPARENT comparison RPARENT block"""
+
+
+# instrukcję warunkową if-else
+def p_branch(p):
+    """branch : IF LPARENT comparison RPARENT block %prec IF
+              | IF LPARENT comparison RPARENT block ELSE block"""
 
 
 def p_term(p):
@@ -128,10 +139,6 @@ def p_matrix_content(p):
     """matrix_content : matrix
                       | term
                       | empty"""
-
-
-def p_branch(p):
-    """"""
 
 
 def p_expression_term(p):
@@ -185,8 +192,8 @@ def p_binary_operator(p):
 
 
 # wyrażenia relacyjne
-def p_expression_relations(p):
-    """expression : expression relation_operator expression"""
+def p_comparison(p):
+    """comparison : expression comparison_operator expression"""
 
     if p[2] == '<':
         p[0] = p[1] < p[3]
@@ -202,8 +209,8 @@ def p_expression_relations(p):
         p[0] = p[1] == p[3]
 
 
-def p_relation_operator(p):
-    """relation_operator : SMALLER
+def p_comparison_operator(p):
+    """comparison_operator : SMALLER
                           | LARGER
                           | SMALLEREQ
                           | LARGEREQ
