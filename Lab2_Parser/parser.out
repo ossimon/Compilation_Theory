@@ -4,7 +4,8 @@ Unused terminals:
 
     ELSE
     IF
-    STRING
+    PRINT
+    RPARENT
     WHILE
 
 Grammar
@@ -21,122 +22,143 @@ Rule 8     instruction -> assignment SEMICOLON
 Rule 9     instruction -> call SEMICOLON
 Rule 10    instruction -> loop
 Rule 11    instruction -> branch
-Rule 12    assignment -> ID ASSIGN expression
-Rule 13    assignment -> ID ADDASSIGN expression
-Rule 14    assignment -> ID SUBASSIGN expression
-Rule 15    assignment -> ID MULASSIGN expression
-Rule 16    assignment -> ID DIVASSIGN expression
-Rule 17    call -> sys_call
-Rule 18    call -> fun_call
-Rule 19    sys_call -> BREAK
-Rule 20    sys_call -> CONTINUE
-Rule 21    sys_call -> RETURN expression
-Rule 22    fun_call -> fun_name LPARENT expression RPARENT
-Rule 23    fun_name -> EYE
-Rule 24    fun_name -> ZEROS
-Rule 25    fun_name -> ONES
-Rule 26    fun_name -> PRINT
-Rule 27    loop -> for
-Rule 28    loop -> while
-Rule 29    for -> FOR for_expression block
-Rule 30    for_expression -> ID ASSIGN term COLON term
-Rule 31    term -> ID
-Rule 32    term -> number
-Rule 33    term -> matrix
-Rule 34    number -> INT
-Rule 35    number -> FLOAT
-Rule 36    matrix -> LSQBRACK matrix_contents RSQBRACK
-Rule 37    matrix_contents -> matrix_contents COMMA matrix_content
-Rule 38    matrix_contents -> matrix_content
-Rule 39    matrix_content -> matrix
-Rule 40    matrix_content -> term
-Rule 41    matrix_content -> empty
-Rule 42    expression -> term
-Rule 43    expression -> expression ADD expression
-Rule 44    expression -> expression SUB expression
-Rule 45    expression -> expression MUL expression
-Rule 46    expression -> expression DIV expression
-Rule 47    expression -> expression DOTADD expression
-Rule 48    expression -> expression DOTSUB expression
-Rule 49    expression -> expression DOTMUL expression
-Rule 50    expression -> expression DOTDIV expression
-Rule 51    expression -> expression SMALLER expression
-Rule 52    expression -> expression LARGER expression
-Rule 53    expression -> expression SMALLEREQ expression
-Rule 54    expression -> expression LARGEREQ expression
-Rule 55    expression -> expression NOTEQ expression
-Rule 56    expression -> expression EQ expression
-Rule 57    expression -> SUB expression
-Rule 58    expression -> expression TRANSPOSE
+Rule 12    assignment -> ID assignment_type expression
+Rule 13    assignment_type -> ASSIGN
+Rule 14    assignment_type -> ADDASSIGN
+Rule 15    assignment_type -> SUBASSIGN
+Rule 16    assignment_type -> MULASSIGN
+Rule 17    assignment_type -> DIVASSIGN
+Rule 18    call -> sys_call
+Rule 19    call -> fun_call
+Rule 20    sys_call -> BREAK
+Rule 21    sys_call -> CONTINUE
+Rule 22    sys_call -> RETURN expression
+Rule 23    fun_call -> matrix_fun
+Rule 24    fun_call -> print
+Rule 25    matrix_fun -> fun_name LPARENT
+Rule 26    fun_name -> EYE
+Rule 27    fun_name -> ZEROS
+Rule 28    fun_name -> ONES
+Rule 29    loop -> for
+Rule 30    loop -> while
+Rule 31    for -> FOR for_expression block
+Rule 32    for_expression -> ID ASSIGN num_term COLON num_term
+Rule 33    term -> ID
+Rule 34    term -> number
+Rule 35    term -> matrix
+Rule 36    term -> string
+Rule 37    num_term -> ID
+Rule 38    num_term -> number
+Rule 39    matrix_term -> ID
+Rule 40    matrix_term -> matrix
+Rule 41    string_term -> ID
+Rule 42    string_term -> STRING
+Rule 43    number -> INT
+Rule 44    number -> FLOAT
+Rule 45    matrix -> LSQBRACK matrix_contents RSQBRACK
+Rule 46    matrix_contents -> matrix_contents COMMA matrix_content
+Rule 47    matrix_contents -> matrix_content
+Rule 48    matrix_content -> matrix_term
+Rule 49    matrix_content -> empty
+Rule 50    expression -> term
+Rule 51    num_expression -> num_term
+Rule 52    matrix_expression -> matrix_term
+Rule 53    string_expression -> string_term
+Rule 54    expression -> num_expression ADD num_expression
+Rule 55    expression -> num_expression SUB num_expression
+Rule 56    expression -> num_expression MUL num_expression
+Rule 57    expression -> num_expression DIV num_expression
+Rule 58    expression -> matrix_expression DOTADD matrix_expression
+Rule 59    expression -> matrix_expression DOTSUB matrix_expression
+Rule 60    expression -> matrix_expression DOTMUL matrix_expression
+Rule 61    expression -> matrix_expression DOTDIV matrix_expression
+Rule 62    expression -> expression SMALLER expression
+Rule 63    expression -> expression LARGER expression
+Rule 64    expression -> expression SMALLEREQ expression
+Rule 65    expression -> expression LARGEREQ expression
+Rule 66    expression -> expression NOTEQ expression
+Rule 67    expression -> expression EQ expression
+Rule 68    expression -> SUB expression
+Rule 69    expression -> expression TRANSPOSE
 
 Terminals, with rules where they appear
 
-ADD                  : 43
-ADDASSIGN            : 13
-ASSIGN               : 12 30
-BREAK                : 19
-COLON                : 30
-COMMA                : 37
-CONTINUE             : 20
-DIV                  : 46
-DIVASSIGN            : 16
-DOTADD               : 47
-DOTDIV               : 50
-DOTMUL               : 49
-DOTSUB               : 48
+ADD                  : 54
+ADDASSIGN            : 14
+ASSIGN               : 13 32
+BREAK                : 20
+COLON                : 32
+COMMA                : 46
+CONTINUE             : 21
+DIV                  : 57
+DIVASSIGN            : 17
+DOTADD               : 58
+DOTDIV               : 61
+DOTMUL               : 60
+DOTSUB               : 59
 ELSE                 : 
-EQ                   : 56
-EYE                  : 23
-FLOAT                : 35
-FOR                  : 29
-ID                   : 12 13 14 15 16 30 31
+EQ                   : 67
+EYE                  : 26
+FLOAT                : 44
+FOR                  : 31
+ID                   : 12 32 33 37 39 41
 IF                   : 
-INT                  : 34
-LARGER               : 52
-LARGEREQ             : 54
+INT                  : 43
+LARGER               : 63
+LARGEREQ             : 65
 LCURLBRACK           : 3 4
-LPARENT              : 22
-LSQBRACK             : 36
-MUL                  : 45
-MULASSIGN            : 15
-NOTEQ                : 55
-ONES                 : 25
-PRINT                : 26
+LPARENT              : 25
+LSQBRACK             : 45
+MUL                  : 56
+MULASSIGN            : 16
+NOTEQ                : 66
+ONES                 : 28
+PRINT                : 
 RCURLBRACK           : 3 4
-RETURN               : 21
-RPARENT              : 22
-RSQBRACK             : 36
+RETURN               : 22
+RPARENT              : 
+RSQBRACK             : 45
 SEMICOLON            : 8 9
-SMALLER              : 51
-SMALLEREQ            : 53
-STRING               : 
-SUB                  : 44 57
-SUBASSIGN            : 14
-TRANSPOSE            : 58
+SMALLER              : 62
+SMALLEREQ            : 64
+STRING               : 42
+SUB                  : 55 68
+SUBASSIGN            : 15
+TRANSPOSE            : 69
 WHILE                : 
-ZEROS                : 24
+ZEROS                : 27
 error                : 
 
 Nonterminals, with rules where they appear
 
 assignment           : 8
-block                : 1 2 3 5 29
+assignment_type      : 12
+block                : 1 2 3 5 31
 branch               : 11
 call                 : 9
-empty                : 4 41
-expression           : 12 13 14 15 16 21 22 43 43 44 44 45 45 46 46 47 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 58
-for                  : 27
-for_expression       : 29
-fun_call             : 18
-fun_name             : 22
+empty                : 4 49
+expression           : 12 22 62 62 63 63 64 64 65 65 66 66 67 67 68 69
+for                  : 29
+for_expression       : 31
+fun_call             : 19
+fun_name             : 25
 instruction          : 5 6
 loop                 : 10
-matrix               : 33 39
-matrix_content       : 37 38
-matrix_contents      : 36 37
-number               : 32
+matrix               : 35 40
+matrix_content       : 46 47
+matrix_contents      : 45 46
+matrix_expression    : 58 58 59 59 60 60 61 61
+matrix_fun           : 23
+matrix_term          : 48 52
+num_expression       : 54 54 55 55 56 56 57 57
+num_term             : 32 32 51
+number               : 34 38
+print                : 24
 program              : 1 0
-sys_call             : 17
-term                 : 30 30 40 42
-while                : 28
+string               : 36
+string_expression    : 
+string_term          : 53
+sys_call             : 18
+term                 : 50
+while                : 30
 

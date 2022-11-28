@@ -52,11 +52,15 @@ def p_instruction(p):
 
 
 def p_assignment(p):
-    """assignment : ID ASSIGN expression
-                  | ID ADDASSIGN expression
-                  | ID SUBASSIGN expression
-                  | ID MULASSIGN expression
-                  | ID DIVASSIGN expression"""
+    """assignment : ID assignment_type expression"""
+
+
+def p_assignment_type(p):
+    """assignment_type : ASSIGN
+                       | ADDASSIGN
+                       | SUBASSIGN
+                       | MULASSIGN
+                       | DIVASSIGN"""
 
 
 def p_call(p):
@@ -71,14 +75,18 @@ def p_sys_call(p):
 
 
 def p_fun_call(p):
-    """fun_call : fun_name LPARENT expression RPARENT"""
+    """fun_call : matrix_fun
+                | print"""
 
 
-def p_fun_name(p):
+def p_matrix_fun(p):
+    """matrix_fun : fun_name LPARENT """
+
+
+def p_func_name(p):
     """fun_name : EYE
                 | ZEROS
-                | ONES
-                | PRINT"""
+                | ONES"""
 
 
 def p_loop(p):
@@ -91,13 +99,29 @@ def p_for(p):
 
 
 def p_for_expression(p):
-    """for_expression : ID ASSIGN term COLON term"""
+    """for_expression : ID ASSIGN num_term COLON num_term"""
 
 
 def p_term(p):
     """term : ID
-            | number
-            | matrix"""
+                | number
+                | matrix
+                | string"""
+
+
+def p_num_term(p):
+    """num_term : ID
+                | number"""
+
+
+def p_matrix_term(p):
+    """matrix_term : ID
+                | matrix"""
+
+
+def p_string_term(p):
+    """string_term : ID
+                | STRING"""
 
 
 def p_number(p):
@@ -115,8 +139,7 @@ def p_matrix_contents(p):
 
 
 def p_matrix_content(p):
-    """matrix_content : matrix
-                      | term
+    """matrix_content : matrix_term
                       | empty"""
 
 
@@ -128,15 +151,27 @@ def p_expression_term(p):
     """expression : term"""
 
 
+def p_expression_num_term(p):
+    """num_expression : num_term"""
+
+
+def p_expression_matrix_term(p):
+    """matrix_expression : matrix_term"""
+
+
+def p_expression_string_term(p):
+    """string_expression : string_term"""
+
+
 def p_expression_binary(p):
-    """expression : expression ADD expression
-                  | expression SUB expression
-                  | expression MUL expression
-                  | expression DIV expression
-                  | expression DOTADD expression
-                  | expression DOTSUB expression
-                  | expression DOTMUL expression
-                  | expression DOTDIV expression"""
+    """expression : num_expression ADD num_expression
+                  | num_expression SUB num_expression
+                  | num_expression MUL num_expression
+                  | num_expression DIV num_expression
+                  | matrix_expression DOTADD matrix_expression
+                  | matrix_expression DOTSUB matrix_expression
+                  | matrix_expression DOTMUL matrix_expression
+                  | matrix_expression DOTDIV matrix_expression"""
 
     if p[2] == '+':
         p[0] = p[1] + p[3]
