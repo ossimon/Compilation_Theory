@@ -58,7 +58,7 @@ def p_assignment(p):
 
 def p_assignment_operator(p):
     """assignment_operator : ASSIGN
-                           | ADDASIGN
+                           | ADDASSIGN
                            | SUBASSIGN
                            | MULASSIGN
                            | DIVASSIGN"""
@@ -84,13 +84,17 @@ def p_fun_call(p):
 
 
 def p_matrix_fun(p):
-    """matrix_fun : fun_name LPARENT """
+    """matrix_fun : fun_name LPARENT number_expression RPARENT"""
 
 
 def p_fun_name(p):
     """fun_name : EYE
                 | ZEROS
                 | ONES"""
+
+
+def p_print(p):
+    """print : PRINT LPARENT string_expression RPARENT"""
 
 
 # pętle: while and for
@@ -142,6 +146,10 @@ def p_string_term(p):
 def p_number(p):
     """number : INT
               | FLOAT"""
+
+
+def p_string(p):
+    """string : STRING"""
 
 
 # inicjalizację macierzy konkretnymi wartościami

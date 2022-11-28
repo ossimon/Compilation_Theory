@@ -1,13 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    ELSE
-    IF
-    PRINT
-    RPARENT
-    WHILE
-
 Grammar
 
 Rule 0     S' -> program
@@ -22,12 +14,12 @@ Rule 8     instruction -> assignment SEMICOLON
 Rule 9     instruction -> call SEMICOLON
 Rule 10    instruction -> loop
 Rule 11    instruction -> branch
-Rule 12    assignment -> ID assignment_type expression
-Rule 13    assignment_type -> ASSIGN
-Rule 14    assignment_type -> ADDASSIGN
-Rule 15    assignment_type -> SUBASSIGN
-Rule 16    assignment_type -> MULASSIGN
-Rule 17    assignment_type -> DIVASSIGN
+Rule 12    assignment -> ID assignment_operator expression
+Rule 13    assignment_operator -> ASSIGN
+Rule 14    assignment_operator -> ADDASSIGN
+Rule 15    assignment_operator -> SUBASSIGN
+Rule 16    assignment_operator -> MULASSIGN
+Rule 17    assignment_operator -> DIVASSIGN
 Rule 18    call -> sys_call
 Rule 19    call -> fun_call
 Rule 20    sys_call -> BREAK
@@ -39,126 +31,2772 @@ Rule 25    matrix_fun -> fun_name LPARENT
 Rule 26    fun_name -> EYE
 Rule 27    fun_name -> ZEROS
 Rule 28    fun_name -> ONES
-Rule 29    loop -> for
-Rule 30    loop -> while
-Rule 31    for -> FOR for_expression block
-Rule 32    for_expression -> ID ASSIGN num_term COLON num_term
-Rule 33    term -> ID
-Rule 34    term -> number
-Rule 35    term -> matrix
-Rule 36    term -> string
-Rule 37    num_term -> ID
-Rule 38    num_term -> number
-Rule 39    matrix_term -> ID
-Rule 40    matrix_term -> matrix
-Rule 41    string_term -> ID
-Rule 42    string_term -> STRING
-Rule 43    number -> INT
-Rule 44    number -> FLOAT
-Rule 45    matrix -> LSQBRACK matrix_contents RSQBRACK
-Rule 46    matrix_contents -> matrix_contents COMMA matrix_content
-Rule 47    matrix_contents -> matrix_content
-Rule 48    matrix_content -> matrix_term
-Rule 49    matrix_content -> empty
-Rule 50    expression -> term
-Rule 51    num_expression -> num_term
-Rule 52    matrix_expression -> matrix_term
-Rule 53    string_expression -> string_term
-Rule 54    expression -> num_expression ADD num_expression
-Rule 55    expression -> num_expression SUB num_expression
-Rule 56    expression -> num_expression MUL num_expression
-Rule 57    expression -> num_expression DIV num_expression
-Rule 58    expression -> matrix_expression DOTADD matrix_expression
-Rule 59    expression -> matrix_expression DOTSUB matrix_expression
-Rule 60    expression -> matrix_expression DOTMUL matrix_expression
-Rule 61    expression -> matrix_expression DOTDIV matrix_expression
-Rule 62    expression -> expression SMALLER expression
-Rule 63    expression -> expression LARGER expression
-Rule 64    expression -> expression SMALLEREQ expression
-Rule 65    expression -> expression LARGEREQ expression
-Rule 66    expression -> expression NOTEQ expression
-Rule 67    expression -> expression EQ expression
-Rule 68    expression -> SUB expression
-Rule 69    expression -> expression TRANSPOSE
+Rule 29    print -> PRINT LPARENT string_expression RPARENT
+Rule 30    loop -> for
+Rule 31    loop -> while
+Rule 32    for -> FOR for_expression block
+Rule 33    for_expression -> ID ASSIGN num_term COLON num_term
+Rule 34    while -> WHILE LPARENT comparison RPARENT block
+Rule 35    branch -> IF LPARENT comparison RPARENT block
+Rule 36    branch -> IF LPARENT comparison RPARENT block ELSE block
+Rule 37    term -> ID
+Rule 38    term -> number
+Rule 39    term -> matrix
+Rule 40    term -> string
+Rule 41    num_term -> ID
+Rule 42    num_term -> number
+Rule 43    matrix_term -> ID
+Rule 44    matrix_term -> matrix
+Rule 45    string_term -> ID
+Rule 46    string_term -> STRING
+Rule 47    number -> INT
+Rule 48    number -> FLOAT
+Rule 49    string -> STRING
+Rule 50    matrix -> LSQBRACK matrix_contents RSQBRACK
+Rule 51    matrix_contents -> matrix_contents COMMA matrix_content
+Rule 52    matrix_contents -> matrix_content
+Rule 53    matrix_content -> matrix_term
+Rule 54    matrix_content -> empty
+Rule 55    expression -> term
+Rule 56    num_expression -> num_term
+Rule 57    matrix_expression -> matrix_term
+Rule 58    string_expression -> string_term
+Rule 59    expression -> num_expression ADD num_expression
+Rule 60    expression -> num_expression SUB num_expression
+Rule 61    expression -> num_expression MUL num_expression
+Rule 62    expression -> num_expression DIV num_expression
+Rule 63    expression -> matrix_expression DOTADD matrix_expression
+Rule 64    expression -> matrix_expression DOTSUB matrix_expression
+Rule 65    expression -> matrix_expression DOTMUL matrix_expression
+Rule 66    expression -> matrix_expression DOTDIV matrix_expression
+Rule 67    binary_operator -> ADD
+Rule 68    binary_operator -> SUB
+Rule 69    binary_operator -> MUL
+Rule 70    binary_operator -> DIV
+Rule 71    binary_operator -> DOTADD
+Rule 72    binary_operator -> DOTSUB
+Rule 73    binary_operator -> DOTMUL
+Rule 74    binary_operator -> DOTDIV
+Rule 75    comparison -> expression comparison_operator expression
+Rule 76    comparison_operator -> SMALLER
+Rule 77    comparison_operator -> LARGER
+Rule 78    comparison_operator -> SMALLEREQ
+Rule 79    comparison_operator -> LARGEREQ
+Rule 80    comparison_operator -> NOTEQ
+Rule 81    comparison_operator -> EQ
+Rule 82    expression -> SUB expression
+Rule 83    expression -> expression TRANSPOSE
 
 Terminals, with rules where they appear
 
-ADD                  : 54
+ADD                  : 59 67
 ADDASSIGN            : 14
-ASSIGN               : 13 32
+ASSIGN               : 13 33
 BREAK                : 20
-COLON                : 32
-COMMA                : 46
+COLON                : 33
+COMMA                : 51
 CONTINUE             : 21
-DIV                  : 57
+DIV                  : 62 70
 DIVASSIGN            : 17
-DOTADD               : 58
-DOTDIV               : 61
-DOTMUL               : 60
-DOTSUB               : 59
-ELSE                 : 
-EQ                   : 67
+DOTADD               : 63 71
+DOTDIV               : 66 74
+DOTMUL               : 65 73
+DOTSUB               : 64 72
+ELSE                 : 36
+EQ                   : 81
 EYE                  : 26
-FLOAT                : 44
-FOR                  : 31
-ID                   : 12 32 33 37 39 41
-IF                   : 
-INT                  : 43
-LARGER               : 63
-LARGEREQ             : 65
+FLOAT                : 48
+FOR                  : 32
+ID                   : 12 33 37 41 43 45
+IF                   : 35 36
+INT                  : 47
+LARGER               : 77
+LARGEREQ             : 79
 LCURLBRACK           : 3 4
-LPARENT              : 25
-LSQBRACK             : 45
-MUL                  : 56
+LPARENT              : 25 29 34 35 36
+LSQBRACK             : 50
+MUL                  : 61 69
 MULASSIGN            : 16
-NOTEQ                : 66
+NOTEQ                : 80
 ONES                 : 28
-PRINT                : 
+PRINT                : 29
 RCURLBRACK           : 3 4
 RETURN               : 22
-RPARENT              : 
-RSQBRACK             : 45
+RPARENT              : 29 34 35 36
+RSQBRACK             : 50
 SEMICOLON            : 8 9
-SMALLER              : 62
-SMALLEREQ            : 64
-STRING               : 42
-SUB                  : 55 68
+SMALLER              : 76
+SMALLEREQ            : 78
+STRING               : 46 49
+SUB                  : 60 68 82
 SUBASSIGN            : 15
-TRANSPOSE            : 69
-WHILE                : 
+TRANSPOSE            : 83
+WHILE                : 34
 ZEROS                : 27
 error                : 
 
 Nonterminals, with rules where they appear
 
 assignment           : 8
-assignment_type      : 12
-block                : 1 2 3 5 31
+assignment_operator  : 12
+binary_operator      : 
+block                : 1 2 3 5 32 34 35 36 36
 branch               : 11
 call                 : 9
-empty                : 4 49
-expression           : 12 22 62 62 63 63 64 64 65 65 66 66 67 67 68 69
-for                  : 29
-for_expression       : 31
+comparison           : 34 35 36
+comparison_operator  : 75
+empty                : 4 54
+expression           : 12 22 75 75 82 83
+for                  : 30
+for_expression       : 32
 fun_call             : 19
 fun_name             : 25
 instruction          : 5 6
 loop                 : 10
-matrix               : 35 40
-matrix_content       : 46 47
-matrix_contents      : 45 46
-matrix_expression    : 58 58 59 59 60 60 61 61
+matrix               : 39 44
+matrix_content       : 51 52
+matrix_contents      : 50 51
+matrix_expression    : 63 63 64 64 65 65 66 66
 matrix_fun           : 23
-matrix_term          : 48 52
-num_expression       : 54 54 55 55 56 56 57 57
-num_term             : 32 32 51
-number               : 34 38
+matrix_term          : 53 57
+num_expression       : 59 59 60 60 61 61 62 62
+num_term             : 33 33 56
+number               : 38 42
 print                : 24
 program              : 1 0
-string               : 36
-string_expression    : 
-string_term          : 53
+string               : 40
+string_expression    : 29
+string_term          : 58
 sys_call             : 18
-term                 : 50
-while                : 30
+term                 : 55
+while                : 31
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . program block
+    (2) program -> . block
+    (3) block -> . LCURLBRACK block RCURLBRACK
+    (4) block -> . LCURLBRACK empty RCURLBRACK
+    (5) block -> . block instruction
+    (6) block -> . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    LCURLBRACK      shift and go to state 3
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    program                        shift and go to state 1
+    block                          shift and go to state 2
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 1
+
+    (0) S' -> program .
+    (1) program -> program . block
+    (3) block -> . LCURLBRACK block RCURLBRACK
+    (4) block -> . LCURLBRACK empty RCURLBRACK
+    (5) block -> . block instruction
+    (6) block -> . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    LCURLBRACK      shift and go to state 3
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    block                          shift and go to state 27
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 2
+
+    (2) program -> block .
+    (5) block -> block . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for BREAK resolved as shift
+  ! shift/reduce conflict for CONTINUE resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for EYE resolved as shift
+  ! shift/reduce conflict for ZEROS resolved as shift
+  ! shift/reduce conflict for ONES resolved as shift
+    LCURLBRACK      reduce using rule 2 (program -> block .)
+    $end            reduce using rule 2 (program -> block .)
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+  ! ID              [ reduce using rule 2 (program -> block .) ]
+  ! IF              [ reduce using rule 2 (program -> block .) ]
+  ! BREAK           [ reduce using rule 2 (program -> block .) ]
+  ! CONTINUE        [ reduce using rule 2 (program -> block .) ]
+  ! RETURN          [ reduce using rule 2 (program -> block .) ]
+  ! FOR             [ reduce using rule 2 (program -> block .) ]
+  ! WHILE           [ reduce using rule 2 (program -> block .) ]
+  ! PRINT           [ reduce using rule 2 (program -> block .) ]
+  ! EYE             [ reduce using rule 2 (program -> block .) ]
+  ! ZEROS           [ reduce using rule 2 (program -> block .) ]
+  ! ONES            [ reduce using rule 2 (program -> block .) ]
+
+    instruction                    shift and go to state 28
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 3
+
+    (3) block -> LCURLBRACK . block RCURLBRACK
+    (4) block -> LCURLBRACK . empty RCURLBRACK
+    (3) block -> . LCURLBRACK block RCURLBRACK
+    (4) block -> . LCURLBRACK empty RCURLBRACK
+    (5) block -> . block instruction
+    (6) block -> . instruction
+    (7) empty -> .
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    LCURLBRACK      shift and go to state 3
+    RCURLBRACK      reduce using rule 7 (empty -> .)
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    block                          shift and go to state 29
+    empty                          shift and go to state 30
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 4
+
+    (6) block -> instruction .
+
+    ID              reduce using rule 6 (block -> instruction .)
+    IF              reduce using rule 6 (block -> instruction .)
+    BREAK           reduce using rule 6 (block -> instruction .)
+    CONTINUE        reduce using rule 6 (block -> instruction .)
+    RETURN          reduce using rule 6 (block -> instruction .)
+    FOR             reduce using rule 6 (block -> instruction .)
+    WHILE           reduce using rule 6 (block -> instruction .)
+    PRINT           reduce using rule 6 (block -> instruction .)
+    EYE             reduce using rule 6 (block -> instruction .)
+    ZEROS           reduce using rule 6 (block -> instruction .)
+    ONES            reduce using rule 6 (block -> instruction .)
+    LCURLBRACK      reduce using rule 6 (block -> instruction .)
+    $end            reduce using rule 6 (block -> instruction .)
+    RCURLBRACK      reduce using rule 6 (block -> instruction .)
+    ELSE            reduce using rule 6 (block -> instruction .)
+
+
+state 5
+
+    (8) instruction -> assignment . SEMICOLON
+
+    SEMICOLON       shift and go to state 31
+
+
+state 6
+
+    (9) instruction -> call . SEMICOLON
+
+    SEMICOLON       shift and go to state 32
+
+
+state 7
+
+    (10) instruction -> loop .
+
+    ID              reduce using rule 10 (instruction -> loop .)
+    IF              reduce using rule 10 (instruction -> loop .)
+    BREAK           reduce using rule 10 (instruction -> loop .)
+    CONTINUE        reduce using rule 10 (instruction -> loop .)
+    RETURN          reduce using rule 10 (instruction -> loop .)
+    FOR             reduce using rule 10 (instruction -> loop .)
+    WHILE           reduce using rule 10 (instruction -> loop .)
+    PRINT           reduce using rule 10 (instruction -> loop .)
+    EYE             reduce using rule 10 (instruction -> loop .)
+    ZEROS           reduce using rule 10 (instruction -> loop .)
+    ONES            reduce using rule 10 (instruction -> loop .)
+    LCURLBRACK      reduce using rule 10 (instruction -> loop .)
+    $end            reduce using rule 10 (instruction -> loop .)
+    RCURLBRACK      reduce using rule 10 (instruction -> loop .)
+    ELSE            reduce using rule 10 (instruction -> loop .)
+
+
+state 8
+
+    (11) instruction -> branch .
+
+    ID              reduce using rule 11 (instruction -> branch .)
+    IF              reduce using rule 11 (instruction -> branch .)
+    BREAK           reduce using rule 11 (instruction -> branch .)
+    CONTINUE        reduce using rule 11 (instruction -> branch .)
+    RETURN          reduce using rule 11 (instruction -> branch .)
+    FOR             reduce using rule 11 (instruction -> branch .)
+    WHILE           reduce using rule 11 (instruction -> branch .)
+    PRINT           reduce using rule 11 (instruction -> branch .)
+    EYE             reduce using rule 11 (instruction -> branch .)
+    ZEROS           reduce using rule 11 (instruction -> branch .)
+    ONES            reduce using rule 11 (instruction -> branch .)
+    LCURLBRACK      reduce using rule 11 (instruction -> branch .)
+    $end            reduce using rule 11 (instruction -> branch .)
+    RCURLBRACK      reduce using rule 11 (instruction -> branch .)
+    ELSE            reduce using rule 11 (instruction -> branch .)
+
+
+state 9
+
+    (12) assignment -> ID . assignment_operator expression
+    (13) assignment_operator -> . ASSIGN
+    (14) assignment_operator -> . ADDASSIGN
+    (15) assignment_operator -> . SUBASSIGN
+    (16) assignment_operator -> . MULASSIGN
+    (17) assignment_operator -> . DIVASSIGN
+
+    ASSIGN          shift and go to state 34
+    ADDASSIGN       shift and go to state 35
+    SUBASSIGN       shift and go to state 36
+    MULASSIGN       shift and go to state 37
+    DIVASSIGN       shift and go to state 38
+
+    assignment_operator            shift and go to state 33
+
+state 10
+
+    (18) call -> sys_call .
+
+    SEMICOLON       reduce using rule 18 (call -> sys_call .)
+
+
+state 11
+
+    (19) call -> fun_call .
+
+    SEMICOLON       reduce using rule 19 (call -> fun_call .)
+
+
+state 12
+
+    (30) loop -> for .
+
+    ID              reduce using rule 30 (loop -> for .)
+    IF              reduce using rule 30 (loop -> for .)
+    BREAK           reduce using rule 30 (loop -> for .)
+    CONTINUE        reduce using rule 30 (loop -> for .)
+    RETURN          reduce using rule 30 (loop -> for .)
+    FOR             reduce using rule 30 (loop -> for .)
+    WHILE           reduce using rule 30 (loop -> for .)
+    PRINT           reduce using rule 30 (loop -> for .)
+    EYE             reduce using rule 30 (loop -> for .)
+    ZEROS           reduce using rule 30 (loop -> for .)
+    ONES            reduce using rule 30 (loop -> for .)
+    LCURLBRACK      reduce using rule 30 (loop -> for .)
+    $end            reduce using rule 30 (loop -> for .)
+    RCURLBRACK      reduce using rule 30 (loop -> for .)
+    ELSE            reduce using rule 30 (loop -> for .)
+
+
+state 13
+
+    (31) loop -> while .
+
+    ID              reduce using rule 31 (loop -> while .)
+    IF              reduce using rule 31 (loop -> while .)
+    BREAK           reduce using rule 31 (loop -> while .)
+    CONTINUE        reduce using rule 31 (loop -> while .)
+    RETURN          reduce using rule 31 (loop -> while .)
+    FOR             reduce using rule 31 (loop -> while .)
+    WHILE           reduce using rule 31 (loop -> while .)
+    PRINT           reduce using rule 31 (loop -> while .)
+    EYE             reduce using rule 31 (loop -> while .)
+    ZEROS           reduce using rule 31 (loop -> while .)
+    ONES            reduce using rule 31 (loop -> while .)
+    LCURLBRACK      reduce using rule 31 (loop -> while .)
+    $end            reduce using rule 31 (loop -> while .)
+    RCURLBRACK      reduce using rule 31 (loop -> while .)
+    ELSE            reduce using rule 31 (loop -> while .)
+
+
+state 14
+
+    (35) branch -> IF . LPARENT comparison RPARENT block
+    (36) branch -> IF . LPARENT comparison RPARENT block ELSE block
+
+    LPARENT         shift and go to state 39
+
+
+state 15
+
+    (20) sys_call -> BREAK .
+
+    SEMICOLON       reduce using rule 20 (sys_call -> BREAK .)
+
+
+state 16
+
+    (21) sys_call -> CONTINUE .
+
+    SEMICOLON       reduce using rule 21 (sys_call -> CONTINUE .)
+
+
+state 17
+
+    (22) sys_call -> RETURN . expression
+    (55) expression -> . term
+    (59) expression -> . num_expression ADD num_expression
+    (60) expression -> . num_expression SUB num_expression
+    (61) expression -> . num_expression MUL num_expression
+    (62) expression -> . num_expression DIV num_expression
+    (63) expression -> . matrix_expression DOTADD matrix_expression
+    (64) expression -> . matrix_expression DOTSUB matrix_expression
+    (65) expression -> . matrix_expression DOTMUL matrix_expression
+    (66) expression -> . matrix_expression DOTDIV matrix_expression
+    (82) expression -> . SUB expression
+    (83) expression -> . expression TRANSPOSE
+    (37) term -> . ID
+    (38) term -> . number
+    (39) term -> . matrix
+    (40) term -> . string
+    (56) num_expression -> . num_term
+    (57) matrix_expression -> . matrix_term
+    (47) number -> . INT
+    (48) number -> . FLOAT
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+    (49) string -> . STRING
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+
+    SUB             shift and go to state 43
+    ID              shift and go to state 45
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+    LSQBRACK        shift and go to state 53
+    STRING          shift and go to state 54
+
+    expression                     shift and go to state 40
+    term                           shift and go to state 41
+    num_expression                 shift and go to state 42
+    matrix_expression              shift and go to state 44
+    number                         shift and go to state 46
+    matrix                         shift and go to state 47
+    string                         shift and go to state 48
+    num_term                       shift and go to state 49
+    matrix_term                    shift and go to state 50
+
+state 18
+
+    (23) fun_call -> matrix_fun .
+
+    SEMICOLON       reduce using rule 23 (fun_call -> matrix_fun .)
+
+
+state 19
+
+    (24) fun_call -> print .
+
+    SEMICOLON       reduce using rule 24 (fun_call -> print .)
+
+
+state 20
+
+    (32) for -> FOR . for_expression block
+    (33) for_expression -> . ID ASSIGN num_term COLON num_term
+
+    ID              shift and go to state 56
+
+    for_expression                 shift and go to state 55
+
+state 21
+
+    (34) while -> WHILE . LPARENT comparison RPARENT block
+
+    LPARENT         shift and go to state 57
+
+
+state 22
+
+    (25) matrix_fun -> fun_name . LPARENT
+
+    LPARENT         shift and go to state 58
+
+
+state 23
+
+    (29) print -> PRINT . LPARENT string_expression RPARENT
+
+    LPARENT         shift and go to state 59
+
+
+state 24
+
+    (26) fun_name -> EYE .
+
+    LPARENT         reduce using rule 26 (fun_name -> EYE .)
+
+
+state 25
+
+    (27) fun_name -> ZEROS .
+
+    LPARENT         reduce using rule 27 (fun_name -> ZEROS .)
+
+
+state 26
+
+    (28) fun_name -> ONES .
+
+    LPARENT         reduce using rule 28 (fun_name -> ONES .)
+
+
+state 27
+
+    (1) program -> program block .
+    (5) block -> block . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for BREAK resolved as shift
+  ! shift/reduce conflict for CONTINUE resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for EYE resolved as shift
+  ! shift/reduce conflict for ZEROS resolved as shift
+  ! shift/reduce conflict for ONES resolved as shift
+    LCURLBRACK      reduce using rule 1 (program -> program block .)
+    $end            reduce using rule 1 (program -> program block .)
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+  ! ID              [ reduce using rule 1 (program -> program block .) ]
+  ! IF              [ reduce using rule 1 (program -> program block .) ]
+  ! BREAK           [ reduce using rule 1 (program -> program block .) ]
+  ! CONTINUE        [ reduce using rule 1 (program -> program block .) ]
+  ! RETURN          [ reduce using rule 1 (program -> program block .) ]
+  ! FOR             [ reduce using rule 1 (program -> program block .) ]
+  ! WHILE           [ reduce using rule 1 (program -> program block .) ]
+  ! PRINT           [ reduce using rule 1 (program -> program block .) ]
+  ! EYE             [ reduce using rule 1 (program -> program block .) ]
+  ! ZEROS           [ reduce using rule 1 (program -> program block .) ]
+  ! ONES            [ reduce using rule 1 (program -> program block .) ]
+
+    instruction                    shift and go to state 28
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 28
+
+    (5) block -> block instruction .
+
+    ID              reduce using rule 5 (block -> block instruction .)
+    IF              reduce using rule 5 (block -> block instruction .)
+    BREAK           reduce using rule 5 (block -> block instruction .)
+    CONTINUE        reduce using rule 5 (block -> block instruction .)
+    RETURN          reduce using rule 5 (block -> block instruction .)
+    FOR             reduce using rule 5 (block -> block instruction .)
+    WHILE           reduce using rule 5 (block -> block instruction .)
+    PRINT           reduce using rule 5 (block -> block instruction .)
+    EYE             reduce using rule 5 (block -> block instruction .)
+    ZEROS           reduce using rule 5 (block -> block instruction .)
+    ONES            reduce using rule 5 (block -> block instruction .)
+    LCURLBRACK      reduce using rule 5 (block -> block instruction .)
+    $end            reduce using rule 5 (block -> block instruction .)
+    RCURLBRACK      reduce using rule 5 (block -> block instruction .)
+    ELSE            reduce using rule 5 (block -> block instruction .)
+
+
+state 29
+
+    (3) block -> LCURLBRACK block . RCURLBRACK
+    (5) block -> block . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    RCURLBRACK      shift and go to state 60
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    instruction                    shift and go to state 28
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 30
+
+    (4) block -> LCURLBRACK empty . RCURLBRACK
+
+    RCURLBRACK      shift and go to state 61
+
+
+state 31
+
+    (8) instruction -> assignment SEMICOLON .
+
+    ID              reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    IF              reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    BREAK           reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    CONTINUE        reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    RETURN          reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    FOR             reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    WHILE           reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    PRINT           reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    EYE             reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    ZEROS           reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    ONES            reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    LCURLBRACK      reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    $end            reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    RCURLBRACK      reduce using rule 8 (instruction -> assignment SEMICOLON .)
+    ELSE            reduce using rule 8 (instruction -> assignment SEMICOLON .)
+
+
+state 32
+
+    (9) instruction -> call SEMICOLON .
+
+    ID              reduce using rule 9 (instruction -> call SEMICOLON .)
+    IF              reduce using rule 9 (instruction -> call SEMICOLON .)
+    BREAK           reduce using rule 9 (instruction -> call SEMICOLON .)
+    CONTINUE        reduce using rule 9 (instruction -> call SEMICOLON .)
+    RETURN          reduce using rule 9 (instruction -> call SEMICOLON .)
+    FOR             reduce using rule 9 (instruction -> call SEMICOLON .)
+    WHILE           reduce using rule 9 (instruction -> call SEMICOLON .)
+    PRINT           reduce using rule 9 (instruction -> call SEMICOLON .)
+    EYE             reduce using rule 9 (instruction -> call SEMICOLON .)
+    ZEROS           reduce using rule 9 (instruction -> call SEMICOLON .)
+    ONES            reduce using rule 9 (instruction -> call SEMICOLON .)
+    LCURLBRACK      reduce using rule 9 (instruction -> call SEMICOLON .)
+    $end            reduce using rule 9 (instruction -> call SEMICOLON .)
+    RCURLBRACK      reduce using rule 9 (instruction -> call SEMICOLON .)
+    ELSE            reduce using rule 9 (instruction -> call SEMICOLON .)
+
+
+state 33
+
+    (12) assignment -> ID assignment_operator . expression
+    (55) expression -> . term
+    (59) expression -> . num_expression ADD num_expression
+    (60) expression -> . num_expression SUB num_expression
+    (61) expression -> . num_expression MUL num_expression
+    (62) expression -> . num_expression DIV num_expression
+    (63) expression -> . matrix_expression DOTADD matrix_expression
+    (64) expression -> . matrix_expression DOTSUB matrix_expression
+    (65) expression -> . matrix_expression DOTMUL matrix_expression
+    (66) expression -> . matrix_expression DOTDIV matrix_expression
+    (82) expression -> . SUB expression
+    (83) expression -> . expression TRANSPOSE
+    (37) term -> . ID
+    (38) term -> . number
+    (39) term -> . matrix
+    (40) term -> . string
+    (56) num_expression -> . num_term
+    (57) matrix_expression -> . matrix_term
+    (47) number -> . INT
+    (48) number -> . FLOAT
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+    (49) string -> . STRING
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+
+    SUB             shift and go to state 43
+    ID              shift and go to state 45
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+    LSQBRACK        shift and go to state 53
+    STRING          shift and go to state 54
+
+    expression                     shift and go to state 62
+    term                           shift and go to state 41
+    num_expression                 shift and go to state 42
+    matrix_expression              shift and go to state 44
+    number                         shift and go to state 46
+    matrix                         shift and go to state 47
+    string                         shift and go to state 48
+    num_term                       shift and go to state 49
+    matrix_term                    shift and go to state 50
+
+state 34
+
+    (13) assignment_operator -> ASSIGN .
+
+    SUB             reduce using rule 13 (assignment_operator -> ASSIGN .)
+    ID              reduce using rule 13 (assignment_operator -> ASSIGN .)
+    INT             reduce using rule 13 (assignment_operator -> ASSIGN .)
+    FLOAT           reduce using rule 13 (assignment_operator -> ASSIGN .)
+    LSQBRACK        reduce using rule 13 (assignment_operator -> ASSIGN .)
+    STRING          reduce using rule 13 (assignment_operator -> ASSIGN .)
+
+
+state 35
+
+    (14) assignment_operator -> ADDASSIGN .
+
+    SUB             reduce using rule 14 (assignment_operator -> ADDASSIGN .)
+    ID              reduce using rule 14 (assignment_operator -> ADDASSIGN .)
+    INT             reduce using rule 14 (assignment_operator -> ADDASSIGN .)
+    FLOAT           reduce using rule 14 (assignment_operator -> ADDASSIGN .)
+    LSQBRACK        reduce using rule 14 (assignment_operator -> ADDASSIGN .)
+    STRING          reduce using rule 14 (assignment_operator -> ADDASSIGN .)
+
+
+state 36
+
+    (15) assignment_operator -> SUBASSIGN .
+
+    SUB             reduce using rule 15 (assignment_operator -> SUBASSIGN .)
+    ID              reduce using rule 15 (assignment_operator -> SUBASSIGN .)
+    INT             reduce using rule 15 (assignment_operator -> SUBASSIGN .)
+    FLOAT           reduce using rule 15 (assignment_operator -> SUBASSIGN .)
+    LSQBRACK        reduce using rule 15 (assignment_operator -> SUBASSIGN .)
+    STRING          reduce using rule 15 (assignment_operator -> SUBASSIGN .)
+
+
+state 37
+
+    (16) assignment_operator -> MULASSIGN .
+
+    SUB             reduce using rule 16 (assignment_operator -> MULASSIGN .)
+    ID              reduce using rule 16 (assignment_operator -> MULASSIGN .)
+    INT             reduce using rule 16 (assignment_operator -> MULASSIGN .)
+    FLOAT           reduce using rule 16 (assignment_operator -> MULASSIGN .)
+    LSQBRACK        reduce using rule 16 (assignment_operator -> MULASSIGN .)
+    STRING          reduce using rule 16 (assignment_operator -> MULASSIGN .)
+
+
+state 38
+
+    (17) assignment_operator -> DIVASSIGN .
+
+    SUB             reduce using rule 17 (assignment_operator -> DIVASSIGN .)
+    ID              reduce using rule 17 (assignment_operator -> DIVASSIGN .)
+    INT             reduce using rule 17 (assignment_operator -> DIVASSIGN .)
+    FLOAT           reduce using rule 17 (assignment_operator -> DIVASSIGN .)
+    LSQBRACK        reduce using rule 17 (assignment_operator -> DIVASSIGN .)
+    STRING          reduce using rule 17 (assignment_operator -> DIVASSIGN .)
+
+
+state 39
+
+    (35) branch -> IF LPARENT . comparison RPARENT block
+    (36) branch -> IF LPARENT . comparison RPARENT block ELSE block
+    (75) comparison -> . expression comparison_operator expression
+    (55) expression -> . term
+    (59) expression -> . num_expression ADD num_expression
+    (60) expression -> . num_expression SUB num_expression
+    (61) expression -> . num_expression MUL num_expression
+    (62) expression -> . num_expression DIV num_expression
+    (63) expression -> . matrix_expression DOTADD matrix_expression
+    (64) expression -> . matrix_expression DOTSUB matrix_expression
+    (65) expression -> . matrix_expression DOTMUL matrix_expression
+    (66) expression -> . matrix_expression DOTDIV matrix_expression
+    (82) expression -> . SUB expression
+    (83) expression -> . expression TRANSPOSE
+    (37) term -> . ID
+    (38) term -> . number
+    (39) term -> . matrix
+    (40) term -> . string
+    (56) num_expression -> . num_term
+    (57) matrix_expression -> . matrix_term
+    (47) number -> . INT
+    (48) number -> . FLOAT
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+    (49) string -> . STRING
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+
+    SUB             shift and go to state 43
+    ID              shift and go to state 45
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+    LSQBRACK        shift and go to state 53
+    STRING          shift and go to state 54
+
+    comparison                     shift and go to state 63
+    expression                     shift and go to state 64
+    term                           shift and go to state 41
+    num_expression                 shift and go to state 42
+    matrix_expression              shift and go to state 44
+    number                         shift and go to state 46
+    matrix                         shift and go to state 47
+    string                         shift and go to state 48
+    num_term                       shift and go to state 49
+    matrix_term                    shift and go to state 50
+
+state 40
+
+    (22) sys_call -> RETURN expression .
+    (83) expression -> expression . TRANSPOSE
+
+    SEMICOLON       reduce using rule 22 (sys_call -> RETURN expression .)
+    TRANSPOSE       shift and go to state 65
+
+
+state 41
+
+    (55) expression -> term .
+
+    TRANSPOSE       reduce using rule 55 (expression -> term .)
+    SEMICOLON       reduce using rule 55 (expression -> term .)
+    SMALLER         reduce using rule 55 (expression -> term .)
+    LARGER          reduce using rule 55 (expression -> term .)
+    SMALLEREQ       reduce using rule 55 (expression -> term .)
+    LARGEREQ        reduce using rule 55 (expression -> term .)
+    NOTEQ           reduce using rule 55 (expression -> term .)
+    EQ              reduce using rule 55 (expression -> term .)
+    RPARENT         reduce using rule 55 (expression -> term .)
+
+
+state 42
+
+    (59) expression -> num_expression . ADD num_expression
+    (60) expression -> num_expression . SUB num_expression
+    (61) expression -> num_expression . MUL num_expression
+    (62) expression -> num_expression . DIV num_expression
+
+    ADD             shift and go to state 66
+    SUB             shift and go to state 67
+    MUL             shift and go to state 68
+    DIV             shift and go to state 69
+
+
+state 43
+
+    (82) expression -> SUB . expression
+    (55) expression -> . term
+    (59) expression -> . num_expression ADD num_expression
+    (60) expression -> . num_expression SUB num_expression
+    (61) expression -> . num_expression MUL num_expression
+    (62) expression -> . num_expression DIV num_expression
+    (63) expression -> . matrix_expression DOTADD matrix_expression
+    (64) expression -> . matrix_expression DOTSUB matrix_expression
+    (65) expression -> . matrix_expression DOTMUL matrix_expression
+    (66) expression -> . matrix_expression DOTDIV matrix_expression
+    (82) expression -> . SUB expression
+    (83) expression -> . expression TRANSPOSE
+    (37) term -> . ID
+    (38) term -> . number
+    (39) term -> . matrix
+    (40) term -> . string
+    (56) num_expression -> . num_term
+    (57) matrix_expression -> . matrix_term
+    (47) number -> . INT
+    (48) number -> . FLOAT
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+    (49) string -> . STRING
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+
+    SUB             shift and go to state 43
+    ID              shift and go to state 45
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+    LSQBRACK        shift and go to state 53
+    STRING          shift and go to state 54
+
+    expression                     shift and go to state 70
+    term                           shift and go to state 41
+    num_expression                 shift and go to state 42
+    matrix_expression              shift and go to state 44
+    number                         shift and go to state 46
+    matrix                         shift and go to state 47
+    string                         shift and go to state 48
+    num_term                       shift and go to state 49
+    matrix_term                    shift and go to state 50
+
+state 44
+
+    (63) expression -> matrix_expression . DOTADD matrix_expression
+    (64) expression -> matrix_expression . DOTSUB matrix_expression
+    (65) expression -> matrix_expression . DOTMUL matrix_expression
+    (66) expression -> matrix_expression . DOTDIV matrix_expression
+
+    DOTADD          shift and go to state 71
+    DOTSUB          shift and go to state 72
+    DOTMUL          shift and go to state 73
+    DOTDIV          shift and go to state 74
+
+
+state 45
+
+    (37) term -> ID .
+    (41) num_term -> ID .
+    (43) matrix_term -> ID .
+
+    TRANSPOSE       reduce using rule 37 (term -> ID .)
+    SEMICOLON       reduce using rule 37 (term -> ID .)
+    SMALLER         reduce using rule 37 (term -> ID .)
+    LARGER          reduce using rule 37 (term -> ID .)
+    SMALLEREQ       reduce using rule 37 (term -> ID .)
+    LARGEREQ        reduce using rule 37 (term -> ID .)
+    NOTEQ           reduce using rule 37 (term -> ID .)
+    EQ              reduce using rule 37 (term -> ID .)
+    RPARENT         reduce using rule 37 (term -> ID .)
+    ADD             reduce using rule 41 (num_term -> ID .)
+    SUB             reduce using rule 41 (num_term -> ID .)
+    MUL             reduce using rule 41 (num_term -> ID .)
+    DIV             reduce using rule 41 (num_term -> ID .)
+    DOTADD          reduce using rule 43 (matrix_term -> ID .)
+    DOTSUB          reduce using rule 43 (matrix_term -> ID .)
+    DOTMUL          reduce using rule 43 (matrix_term -> ID .)
+    DOTDIV          reduce using rule 43 (matrix_term -> ID .)
+
+
+state 46
+
+    (38) term -> number .
+    (42) num_term -> number .
+
+    TRANSPOSE       reduce using rule 38 (term -> number .)
+    SEMICOLON       reduce using rule 38 (term -> number .)
+    SMALLER         reduce using rule 38 (term -> number .)
+    LARGER          reduce using rule 38 (term -> number .)
+    SMALLEREQ       reduce using rule 38 (term -> number .)
+    LARGEREQ        reduce using rule 38 (term -> number .)
+    NOTEQ           reduce using rule 38 (term -> number .)
+    EQ              reduce using rule 38 (term -> number .)
+    RPARENT         reduce using rule 38 (term -> number .)
+    ADD             reduce using rule 42 (num_term -> number .)
+    SUB             reduce using rule 42 (num_term -> number .)
+    MUL             reduce using rule 42 (num_term -> number .)
+    DIV             reduce using rule 42 (num_term -> number .)
+
+
+state 47
+
+    (39) term -> matrix .
+    (44) matrix_term -> matrix .
+
+    TRANSPOSE       reduce using rule 39 (term -> matrix .)
+    SEMICOLON       reduce using rule 39 (term -> matrix .)
+    SMALLER         reduce using rule 39 (term -> matrix .)
+    LARGER          reduce using rule 39 (term -> matrix .)
+    SMALLEREQ       reduce using rule 39 (term -> matrix .)
+    LARGEREQ        reduce using rule 39 (term -> matrix .)
+    NOTEQ           reduce using rule 39 (term -> matrix .)
+    EQ              reduce using rule 39 (term -> matrix .)
+    RPARENT         reduce using rule 39 (term -> matrix .)
+    DOTADD          reduce using rule 44 (matrix_term -> matrix .)
+    DOTSUB          reduce using rule 44 (matrix_term -> matrix .)
+    DOTMUL          reduce using rule 44 (matrix_term -> matrix .)
+    DOTDIV          reduce using rule 44 (matrix_term -> matrix .)
+
+
+state 48
+
+    (40) term -> string .
+
+    TRANSPOSE       reduce using rule 40 (term -> string .)
+    SEMICOLON       reduce using rule 40 (term -> string .)
+    SMALLER         reduce using rule 40 (term -> string .)
+    LARGER          reduce using rule 40 (term -> string .)
+    SMALLEREQ       reduce using rule 40 (term -> string .)
+    LARGEREQ        reduce using rule 40 (term -> string .)
+    NOTEQ           reduce using rule 40 (term -> string .)
+    EQ              reduce using rule 40 (term -> string .)
+    RPARENT         reduce using rule 40 (term -> string .)
+
+
+state 49
+
+    (56) num_expression -> num_term .
+
+    ADD             reduce using rule 56 (num_expression -> num_term .)
+    SUB             reduce using rule 56 (num_expression -> num_term .)
+    MUL             reduce using rule 56 (num_expression -> num_term .)
+    DIV             reduce using rule 56 (num_expression -> num_term .)
+    TRANSPOSE       reduce using rule 56 (num_expression -> num_term .)
+    SEMICOLON       reduce using rule 56 (num_expression -> num_term .)
+    SMALLER         reduce using rule 56 (num_expression -> num_term .)
+    LARGER          reduce using rule 56 (num_expression -> num_term .)
+    SMALLEREQ       reduce using rule 56 (num_expression -> num_term .)
+    LARGEREQ        reduce using rule 56 (num_expression -> num_term .)
+    NOTEQ           reduce using rule 56 (num_expression -> num_term .)
+    EQ              reduce using rule 56 (num_expression -> num_term .)
+    RPARENT         reduce using rule 56 (num_expression -> num_term .)
+
+
+state 50
+
+    (57) matrix_expression -> matrix_term .
+
+    DOTADD          reduce using rule 57 (matrix_expression -> matrix_term .)
+    DOTSUB          reduce using rule 57 (matrix_expression -> matrix_term .)
+    DOTMUL          reduce using rule 57 (matrix_expression -> matrix_term .)
+    DOTDIV          reduce using rule 57 (matrix_expression -> matrix_term .)
+    TRANSPOSE       reduce using rule 57 (matrix_expression -> matrix_term .)
+    SEMICOLON       reduce using rule 57 (matrix_expression -> matrix_term .)
+    SMALLER         reduce using rule 57 (matrix_expression -> matrix_term .)
+    LARGER          reduce using rule 57 (matrix_expression -> matrix_term .)
+    SMALLEREQ       reduce using rule 57 (matrix_expression -> matrix_term .)
+    LARGEREQ        reduce using rule 57 (matrix_expression -> matrix_term .)
+    NOTEQ           reduce using rule 57 (matrix_expression -> matrix_term .)
+    EQ              reduce using rule 57 (matrix_expression -> matrix_term .)
+    RPARENT         reduce using rule 57 (matrix_expression -> matrix_term .)
+
+
+state 51
+
+    (47) number -> INT .
+
+    TRANSPOSE       reduce using rule 47 (number -> INT .)
+    SEMICOLON       reduce using rule 47 (number -> INT .)
+    ADD             reduce using rule 47 (number -> INT .)
+    SUB             reduce using rule 47 (number -> INT .)
+    MUL             reduce using rule 47 (number -> INT .)
+    DIV             reduce using rule 47 (number -> INT .)
+    SMALLER         reduce using rule 47 (number -> INT .)
+    LARGER          reduce using rule 47 (number -> INT .)
+    SMALLEREQ       reduce using rule 47 (number -> INT .)
+    LARGEREQ        reduce using rule 47 (number -> INT .)
+    NOTEQ           reduce using rule 47 (number -> INT .)
+    EQ              reduce using rule 47 (number -> INT .)
+    RPARENT         reduce using rule 47 (number -> INT .)
+    COLON           reduce using rule 47 (number -> INT .)
+    LCURLBRACK      reduce using rule 47 (number -> INT .)
+    ID              reduce using rule 47 (number -> INT .)
+    IF              reduce using rule 47 (number -> INT .)
+    BREAK           reduce using rule 47 (number -> INT .)
+    CONTINUE        reduce using rule 47 (number -> INT .)
+    RETURN          reduce using rule 47 (number -> INT .)
+    FOR             reduce using rule 47 (number -> INT .)
+    WHILE           reduce using rule 47 (number -> INT .)
+    PRINT           reduce using rule 47 (number -> INT .)
+    EYE             reduce using rule 47 (number -> INT .)
+    ZEROS           reduce using rule 47 (number -> INT .)
+    ONES            reduce using rule 47 (number -> INT .)
+
+
+state 52
+
+    (48) number -> FLOAT .
+
+    TRANSPOSE       reduce using rule 48 (number -> FLOAT .)
+    SEMICOLON       reduce using rule 48 (number -> FLOAT .)
+    ADD             reduce using rule 48 (number -> FLOAT .)
+    SUB             reduce using rule 48 (number -> FLOAT .)
+    MUL             reduce using rule 48 (number -> FLOAT .)
+    DIV             reduce using rule 48 (number -> FLOAT .)
+    SMALLER         reduce using rule 48 (number -> FLOAT .)
+    LARGER          reduce using rule 48 (number -> FLOAT .)
+    SMALLEREQ       reduce using rule 48 (number -> FLOAT .)
+    LARGEREQ        reduce using rule 48 (number -> FLOAT .)
+    NOTEQ           reduce using rule 48 (number -> FLOAT .)
+    EQ              reduce using rule 48 (number -> FLOAT .)
+    RPARENT         reduce using rule 48 (number -> FLOAT .)
+    COLON           reduce using rule 48 (number -> FLOAT .)
+    LCURLBRACK      reduce using rule 48 (number -> FLOAT .)
+    ID              reduce using rule 48 (number -> FLOAT .)
+    IF              reduce using rule 48 (number -> FLOAT .)
+    BREAK           reduce using rule 48 (number -> FLOAT .)
+    CONTINUE        reduce using rule 48 (number -> FLOAT .)
+    RETURN          reduce using rule 48 (number -> FLOAT .)
+    FOR             reduce using rule 48 (number -> FLOAT .)
+    WHILE           reduce using rule 48 (number -> FLOAT .)
+    PRINT           reduce using rule 48 (number -> FLOAT .)
+    EYE             reduce using rule 48 (number -> FLOAT .)
+    ZEROS           reduce using rule 48 (number -> FLOAT .)
+    ONES            reduce using rule 48 (number -> FLOAT .)
+
+
+state 53
+
+    (50) matrix -> LSQBRACK . matrix_contents RSQBRACK
+    (51) matrix_contents -> . matrix_contents COMMA matrix_content
+    (52) matrix_contents -> . matrix_content
+    (53) matrix_content -> . matrix_term
+    (54) matrix_content -> . empty
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+    (7) empty -> .
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+
+    ID              shift and go to state 79
+    RSQBRACK        reduce using rule 7 (empty -> .)
+    COMMA           reduce using rule 7 (empty -> .)
+    LSQBRACK        shift and go to state 53
+
+    matrix_contents                shift and go to state 75
+    matrix_content                 shift and go to state 76
+    matrix_term                    shift and go to state 77
+    empty                          shift and go to state 78
+    matrix                         shift and go to state 80
+
+state 54
+
+    (49) string -> STRING .
+
+    TRANSPOSE       reduce using rule 49 (string -> STRING .)
+    SEMICOLON       reduce using rule 49 (string -> STRING .)
+    SMALLER         reduce using rule 49 (string -> STRING .)
+    LARGER          reduce using rule 49 (string -> STRING .)
+    SMALLEREQ       reduce using rule 49 (string -> STRING .)
+    LARGEREQ        reduce using rule 49 (string -> STRING .)
+    NOTEQ           reduce using rule 49 (string -> STRING .)
+    EQ              reduce using rule 49 (string -> STRING .)
+    RPARENT         reduce using rule 49 (string -> STRING .)
+
+
+state 55
+
+    (32) for -> FOR for_expression . block
+    (3) block -> . LCURLBRACK block RCURLBRACK
+    (4) block -> . LCURLBRACK empty RCURLBRACK
+    (5) block -> . block instruction
+    (6) block -> . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    LCURLBRACK      shift and go to state 3
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    block                          shift and go to state 81
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 56
+
+    (33) for_expression -> ID . ASSIGN num_term COLON num_term
+
+    ASSIGN          shift and go to state 82
+
+
+state 57
+
+    (34) while -> WHILE LPARENT . comparison RPARENT block
+    (75) comparison -> . expression comparison_operator expression
+    (55) expression -> . term
+    (59) expression -> . num_expression ADD num_expression
+    (60) expression -> . num_expression SUB num_expression
+    (61) expression -> . num_expression MUL num_expression
+    (62) expression -> . num_expression DIV num_expression
+    (63) expression -> . matrix_expression DOTADD matrix_expression
+    (64) expression -> . matrix_expression DOTSUB matrix_expression
+    (65) expression -> . matrix_expression DOTMUL matrix_expression
+    (66) expression -> . matrix_expression DOTDIV matrix_expression
+    (82) expression -> . SUB expression
+    (83) expression -> . expression TRANSPOSE
+    (37) term -> . ID
+    (38) term -> . number
+    (39) term -> . matrix
+    (40) term -> . string
+    (56) num_expression -> . num_term
+    (57) matrix_expression -> . matrix_term
+    (47) number -> . INT
+    (48) number -> . FLOAT
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+    (49) string -> . STRING
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+
+    SUB             shift and go to state 43
+    ID              shift and go to state 45
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+    LSQBRACK        shift and go to state 53
+    STRING          shift and go to state 54
+
+    comparison                     shift and go to state 83
+    expression                     shift and go to state 64
+    term                           shift and go to state 41
+    num_expression                 shift and go to state 42
+    matrix_expression              shift and go to state 44
+    number                         shift and go to state 46
+    matrix                         shift and go to state 47
+    string                         shift and go to state 48
+    num_term                       shift and go to state 49
+    matrix_term                    shift and go to state 50
+
+state 58
+
+    (25) matrix_fun -> fun_name LPARENT .
+
+    SEMICOLON       reduce using rule 25 (matrix_fun -> fun_name LPARENT .)
+
+
+state 59
+
+    (29) print -> PRINT LPARENT . string_expression RPARENT
+    (58) string_expression -> . string_term
+    (45) string_term -> . ID
+    (46) string_term -> . STRING
+
+    ID              shift and go to state 86
+    STRING          shift and go to state 87
+
+    string_expression              shift and go to state 84
+    string_term                    shift and go to state 85
+
+state 60
+
+    (3) block -> LCURLBRACK block RCURLBRACK .
+
+    ID              reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    IF              reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    BREAK           reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    CONTINUE        reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    RETURN          reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    FOR             reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    WHILE           reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    PRINT           reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    EYE             reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    ZEROS           reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    ONES            reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    LCURLBRACK      reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    $end            reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    RCURLBRACK      reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+    ELSE            reduce using rule 3 (block -> LCURLBRACK block RCURLBRACK .)
+
+
+state 61
+
+    (4) block -> LCURLBRACK empty RCURLBRACK .
+
+    ID              reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    IF              reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    BREAK           reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    CONTINUE        reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    RETURN          reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    FOR             reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    WHILE           reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    PRINT           reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    EYE             reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    ZEROS           reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    ONES            reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    LCURLBRACK      reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    $end            reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    RCURLBRACK      reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+    ELSE            reduce using rule 4 (block -> LCURLBRACK empty RCURLBRACK .)
+
+
+state 62
+
+    (12) assignment -> ID assignment_operator expression .
+    (83) expression -> expression . TRANSPOSE
+
+    SEMICOLON       reduce using rule 12 (assignment -> ID assignment_operator expression .)
+    TRANSPOSE       shift and go to state 65
+
+
+state 63
+
+    (35) branch -> IF LPARENT comparison . RPARENT block
+    (36) branch -> IF LPARENT comparison . RPARENT block ELSE block
+
+    RPARENT         shift and go to state 88
+
+
+state 64
+
+    (75) comparison -> expression . comparison_operator expression
+    (83) expression -> expression . TRANSPOSE
+    (76) comparison_operator -> . SMALLER
+    (77) comparison_operator -> . LARGER
+    (78) comparison_operator -> . SMALLEREQ
+    (79) comparison_operator -> . LARGEREQ
+    (80) comparison_operator -> . NOTEQ
+    (81) comparison_operator -> . EQ
+
+    TRANSPOSE       shift and go to state 65
+    SMALLER         shift and go to state 90
+    LARGER          shift and go to state 91
+    SMALLEREQ       shift and go to state 92
+    LARGEREQ        shift and go to state 93
+    NOTEQ           shift and go to state 94
+    EQ              shift and go to state 95
+
+    comparison_operator            shift and go to state 89
+
+state 65
+
+    (83) expression -> expression TRANSPOSE .
+
+    TRANSPOSE       reduce using rule 83 (expression -> expression TRANSPOSE .)
+    SEMICOLON       reduce using rule 83 (expression -> expression TRANSPOSE .)
+    SMALLER         reduce using rule 83 (expression -> expression TRANSPOSE .)
+    LARGER          reduce using rule 83 (expression -> expression TRANSPOSE .)
+    SMALLEREQ       reduce using rule 83 (expression -> expression TRANSPOSE .)
+    LARGEREQ        reduce using rule 83 (expression -> expression TRANSPOSE .)
+    NOTEQ           reduce using rule 83 (expression -> expression TRANSPOSE .)
+    EQ              reduce using rule 83 (expression -> expression TRANSPOSE .)
+    RPARENT         reduce using rule 83 (expression -> expression TRANSPOSE .)
+
+
+state 66
+
+    (59) expression -> num_expression ADD . num_expression
+    (56) num_expression -> . num_term
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (47) number -> . INT
+    (48) number -> . FLOAT
+
+    ID              shift and go to state 97
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+
+    num_expression                 shift and go to state 96
+    num_term                       shift and go to state 49
+    number                         shift and go to state 98
+
+state 67
+
+    (60) expression -> num_expression SUB . num_expression
+    (56) num_expression -> . num_term
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (47) number -> . INT
+    (48) number -> . FLOAT
+
+    ID              shift and go to state 97
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+
+    num_expression                 shift and go to state 99
+    num_term                       shift and go to state 49
+    number                         shift and go to state 98
+
+state 68
+
+    (61) expression -> num_expression MUL . num_expression
+    (56) num_expression -> . num_term
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (47) number -> . INT
+    (48) number -> . FLOAT
+
+    ID              shift and go to state 97
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+
+    num_expression                 shift and go to state 100
+    num_term                       shift and go to state 49
+    number                         shift and go to state 98
+
+state 69
+
+    (62) expression -> num_expression DIV . num_expression
+    (56) num_expression -> . num_term
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (47) number -> . INT
+    (48) number -> . FLOAT
+
+    ID              shift and go to state 97
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+
+    num_expression                 shift and go to state 101
+    num_term                       shift and go to state 49
+    number                         shift and go to state 98
+
+state 70
+
+    (82) expression -> SUB expression .
+    (83) expression -> expression . TRANSPOSE
+
+    SEMICOLON       reduce using rule 82 (expression -> SUB expression .)
+    SMALLER         reduce using rule 82 (expression -> SUB expression .)
+    LARGER          reduce using rule 82 (expression -> SUB expression .)
+    SMALLEREQ       reduce using rule 82 (expression -> SUB expression .)
+    LARGEREQ        reduce using rule 82 (expression -> SUB expression .)
+    NOTEQ           reduce using rule 82 (expression -> SUB expression .)
+    EQ              reduce using rule 82 (expression -> SUB expression .)
+    RPARENT         reduce using rule 82 (expression -> SUB expression .)
+    TRANSPOSE       shift and go to state 65
+
+  ! TRANSPOSE       [ reduce using rule 82 (expression -> SUB expression .) ]
+
+
+state 71
+
+    (63) expression -> matrix_expression DOTADD . matrix_expression
+    (57) matrix_expression -> . matrix_term
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+
+    ID              shift and go to state 79
+    LSQBRACK        shift and go to state 53
+
+    matrix_expression              shift and go to state 102
+    matrix_term                    shift and go to state 50
+    matrix                         shift and go to state 80
+
+state 72
+
+    (64) expression -> matrix_expression DOTSUB . matrix_expression
+    (57) matrix_expression -> . matrix_term
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+
+    ID              shift and go to state 79
+    LSQBRACK        shift and go to state 53
+
+    matrix_expression              shift and go to state 103
+    matrix_term                    shift and go to state 50
+    matrix                         shift and go to state 80
+
+state 73
+
+    (65) expression -> matrix_expression DOTMUL . matrix_expression
+    (57) matrix_expression -> . matrix_term
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+
+    ID              shift and go to state 79
+    LSQBRACK        shift and go to state 53
+
+    matrix_expression              shift and go to state 104
+    matrix_term                    shift and go to state 50
+    matrix                         shift and go to state 80
+
+state 74
+
+    (66) expression -> matrix_expression DOTDIV . matrix_expression
+    (57) matrix_expression -> . matrix_term
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+
+    ID              shift and go to state 79
+    LSQBRACK        shift and go to state 53
+
+    matrix_expression              shift and go to state 105
+    matrix_term                    shift and go to state 50
+    matrix                         shift and go to state 80
+
+state 75
+
+    (50) matrix -> LSQBRACK matrix_contents . RSQBRACK
+    (51) matrix_contents -> matrix_contents . COMMA matrix_content
+
+    RSQBRACK        shift and go to state 106
+    COMMA           shift and go to state 107
+
+
+state 76
+
+    (52) matrix_contents -> matrix_content .
+
+    RSQBRACK        reduce using rule 52 (matrix_contents -> matrix_content .)
+    COMMA           reduce using rule 52 (matrix_contents -> matrix_content .)
+
+
+state 77
+
+    (53) matrix_content -> matrix_term .
+
+    RSQBRACK        reduce using rule 53 (matrix_content -> matrix_term .)
+    COMMA           reduce using rule 53 (matrix_content -> matrix_term .)
+
+
+state 78
+
+    (54) matrix_content -> empty .
+
+    RSQBRACK        reduce using rule 54 (matrix_content -> empty .)
+    COMMA           reduce using rule 54 (matrix_content -> empty .)
+
+
+state 79
+
+    (43) matrix_term -> ID .
+
+    RSQBRACK        reduce using rule 43 (matrix_term -> ID .)
+    COMMA           reduce using rule 43 (matrix_term -> ID .)
+    TRANSPOSE       reduce using rule 43 (matrix_term -> ID .)
+    SEMICOLON       reduce using rule 43 (matrix_term -> ID .)
+    SMALLER         reduce using rule 43 (matrix_term -> ID .)
+    LARGER          reduce using rule 43 (matrix_term -> ID .)
+    SMALLEREQ       reduce using rule 43 (matrix_term -> ID .)
+    LARGEREQ        reduce using rule 43 (matrix_term -> ID .)
+    NOTEQ           reduce using rule 43 (matrix_term -> ID .)
+    EQ              reduce using rule 43 (matrix_term -> ID .)
+    RPARENT         reduce using rule 43 (matrix_term -> ID .)
+
+
+state 80
+
+    (44) matrix_term -> matrix .
+
+    RSQBRACK        reduce using rule 44 (matrix_term -> matrix .)
+    COMMA           reduce using rule 44 (matrix_term -> matrix .)
+    TRANSPOSE       reduce using rule 44 (matrix_term -> matrix .)
+    SEMICOLON       reduce using rule 44 (matrix_term -> matrix .)
+    SMALLER         reduce using rule 44 (matrix_term -> matrix .)
+    LARGER          reduce using rule 44 (matrix_term -> matrix .)
+    SMALLEREQ       reduce using rule 44 (matrix_term -> matrix .)
+    LARGEREQ        reduce using rule 44 (matrix_term -> matrix .)
+    NOTEQ           reduce using rule 44 (matrix_term -> matrix .)
+    EQ              reduce using rule 44 (matrix_term -> matrix .)
+    RPARENT         reduce using rule 44 (matrix_term -> matrix .)
+
+
+state 81
+
+    (32) for -> FOR for_expression block .
+    (5) block -> block . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for BREAK resolved as shift
+  ! shift/reduce conflict for CONTINUE resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for EYE resolved as shift
+  ! shift/reduce conflict for ZEROS resolved as shift
+  ! shift/reduce conflict for ONES resolved as shift
+    LCURLBRACK      reduce using rule 32 (for -> FOR for_expression block .)
+    $end            reduce using rule 32 (for -> FOR for_expression block .)
+    RCURLBRACK      reduce using rule 32 (for -> FOR for_expression block .)
+    ELSE            reduce using rule 32 (for -> FOR for_expression block .)
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+  ! ID              [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! IF              [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! BREAK           [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! CONTINUE        [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! RETURN          [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! FOR             [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! WHILE           [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! PRINT           [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! EYE             [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! ZEROS           [ reduce using rule 32 (for -> FOR for_expression block .) ]
+  ! ONES            [ reduce using rule 32 (for -> FOR for_expression block .) ]
+
+    instruction                    shift and go to state 28
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 82
+
+    (33) for_expression -> ID ASSIGN . num_term COLON num_term
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (47) number -> . INT
+    (48) number -> . FLOAT
+
+    ID              shift and go to state 97
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+
+    num_term                       shift and go to state 108
+    number                         shift and go to state 98
+
+state 83
+
+    (34) while -> WHILE LPARENT comparison . RPARENT block
+
+    RPARENT         shift and go to state 109
+
+
+state 84
+
+    (29) print -> PRINT LPARENT string_expression . RPARENT
+
+    RPARENT         shift and go to state 110
+
+
+state 85
+
+    (58) string_expression -> string_term .
+
+    RPARENT         reduce using rule 58 (string_expression -> string_term .)
+
+
+state 86
+
+    (45) string_term -> ID .
+
+    RPARENT         reduce using rule 45 (string_term -> ID .)
+
+
+state 87
+
+    (46) string_term -> STRING .
+
+    RPARENT         reduce using rule 46 (string_term -> STRING .)
+
+
+state 88
+
+    (35) branch -> IF LPARENT comparison RPARENT . block
+    (36) branch -> IF LPARENT comparison RPARENT . block ELSE block
+    (3) block -> . LCURLBRACK block RCURLBRACK
+    (4) block -> . LCURLBRACK empty RCURLBRACK
+    (5) block -> . block instruction
+    (6) block -> . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    LCURLBRACK      shift and go to state 3
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    block                          shift and go to state 111
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 89
+
+    (75) comparison -> expression comparison_operator . expression
+    (55) expression -> . term
+    (59) expression -> . num_expression ADD num_expression
+    (60) expression -> . num_expression SUB num_expression
+    (61) expression -> . num_expression MUL num_expression
+    (62) expression -> . num_expression DIV num_expression
+    (63) expression -> . matrix_expression DOTADD matrix_expression
+    (64) expression -> . matrix_expression DOTSUB matrix_expression
+    (65) expression -> . matrix_expression DOTMUL matrix_expression
+    (66) expression -> . matrix_expression DOTDIV matrix_expression
+    (82) expression -> . SUB expression
+    (83) expression -> . expression TRANSPOSE
+    (37) term -> . ID
+    (38) term -> . number
+    (39) term -> . matrix
+    (40) term -> . string
+    (56) num_expression -> . num_term
+    (57) matrix_expression -> . matrix_term
+    (47) number -> . INT
+    (48) number -> . FLOAT
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+    (49) string -> . STRING
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+
+    SUB             shift and go to state 43
+    ID              shift and go to state 45
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+    LSQBRACK        shift and go to state 53
+    STRING          shift and go to state 54
+
+    expression                     shift and go to state 112
+    term                           shift and go to state 41
+    num_expression                 shift and go to state 42
+    matrix_expression              shift and go to state 44
+    number                         shift and go to state 46
+    matrix                         shift and go to state 47
+    string                         shift and go to state 48
+    num_term                       shift and go to state 49
+    matrix_term                    shift and go to state 50
+
+state 90
+
+    (76) comparison_operator -> SMALLER .
+
+    SUB             reduce using rule 76 (comparison_operator -> SMALLER .)
+    ID              reduce using rule 76 (comparison_operator -> SMALLER .)
+    INT             reduce using rule 76 (comparison_operator -> SMALLER .)
+    FLOAT           reduce using rule 76 (comparison_operator -> SMALLER .)
+    LSQBRACK        reduce using rule 76 (comparison_operator -> SMALLER .)
+    STRING          reduce using rule 76 (comparison_operator -> SMALLER .)
+
+
+state 91
+
+    (77) comparison_operator -> LARGER .
+
+    SUB             reduce using rule 77 (comparison_operator -> LARGER .)
+    ID              reduce using rule 77 (comparison_operator -> LARGER .)
+    INT             reduce using rule 77 (comparison_operator -> LARGER .)
+    FLOAT           reduce using rule 77 (comparison_operator -> LARGER .)
+    LSQBRACK        reduce using rule 77 (comparison_operator -> LARGER .)
+    STRING          reduce using rule 77 (comparison_operator -> LARGER .)
+
+
+state 92
+
+    (78) comparison_operator -> SMALLEREQ .
+
+    SUB             reduce using rule 78 (comparison_operator -> SMALLEREQ .)
+    ID              reduce using rule 78 (comparison_operator -> SMALLEREQ .)
+    INT             reduce using rule 78 (comparison_operator -> SMALLEREQ .)
+    FLOAT           reduce using rule 78 (comparison_operator -> SMALLEREQ .)
+    LSQBRACK        reduce using rule 78 (comparison_operator -> SMALLEREQ .)
+    STRING          reduce using rule 78 (comparison_operator -> SMALLEREQ .)
+
+
+state 93
+
+    (79) comparison_operator -> LARGEREQ .
+
+    SUB             reduce using rule 79 (comparison_operator -> LARGEREQ .)
+    ID              reduce using rule 79 (comparison_operator -> LARGEREQ .)
+    INT             reduce using rule 79 (comparison_operator -> LARGEREQ .)
+    FLOAT           reduce using rule 79 (comparison_operator -> LARGEREQ .)
+    LSQBRACK        reduce using rule 79 (comparison_operator -> LARGEREQ .)
+    STRING          reduce using rule 79 (comparison_operator -> LARGEREQ .)
+
+
+state 94
+
+    (80) comparison_operator -> NOTEQ .
+
+    SUB             reduce using rule 80 (comparison_operator -> NOTEQ .)
+    ID              reduce using rule 80 (comparison_operator -> NOTEQ .)
+    INT             reduce using rule 80 (comparison_operator -> NOTEQ .)
+    FLOAT           reduce using rule 80 (comparison_operator -> NOTEQ .)
+    LSQBRACK        reduce using rule 80 (comparison_operator -> NOTEQ .)
+    STRING          reduce using rule 80 (comparison_operator -> NOTEQ .)
+
+
+state 95
+
+    (81) comparison_operator -> EQ .
+
+    SUB             reduce using rule 81 (comparison_operator -> EQ .)
+    ID              reduce using rule 81 (comparison_operator -> EQ .)
+    INT             reduce using rule 81 (comparison_operator -> EQ .)
+    FLOAT           reduce using rule 81 (comparison_operator -> EQ .)
+    LSQBRACK        reduce using rule 81 (comparison_operator -> EQ .)
+    STRING          reduce using rule 81 (comparison_operator -> EQ .)
+
+
+state 96
+
+    (59) expression -> num_expression ADD num_expression .
+
+    TRANSPOSE       reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    SEMICOLON       reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    SMALLER         reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    LARGER          reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    SMALLEREQ       reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    LARGEREQ        reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    NOTEQ           reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    EQ              reduce using rule 59 (expression -> num_expression ADD num_expression .)
+    RPARENT         reduce using rule 59 (expression -> num_expression ADD num_expression .)
+
+
+state 97
+
+    (41) num_term -> ID .
+
+    TRANSPOSE       reduce using rule 41 (num_term -> ID .)
+    SEMICOLON       reduce using rule 41 (num_term -> ID .)
+    SMALLER         reduce using rule 41 (num_term -> ID .)
+    LARGER          reduce using rule 41 (num_term -> ID .)
+    SMALLEREQ       reduce using rule 41 (num_term -> ID .)
+    LARGEREQ        reduce using rule 41 (num_term -> ID .)
+    NOTEQ           reduce using rule 41 (num_term -> ID .)
+    EQ              reduce using rule 41 (num_term -> ID .)
+    RPARENT         reduce using rule 41 (num_term -> ID .)
+    COLON           reduce using rule 41 (num_term -> ID .)
+    LCURLBRACK      reduce using rule 41 (num_term -> ID .)
+    ID              reduce using rule 41 (num_term -> ID .)
+    IF              reduce using rule 41 (num_term -> ID .)
+    BREAK           reduce using rule 41 (num_term -> ID .)
+    CONTINUE        reduce using rule 41 (num_term -> ID .)
+    RETURN          reduce using rule 41 (num_term -> ID .)
+    FOR             reduce using rule 41 (num_term -> ID .)
+    WHILE           reduce using rule 41 (num_term -> ID .)
+    PRINT           reduce using rule 41 (num_term -> ID .)
+    EYE             reduce using rule 41 (num_term -> ID .)
+    ZEROS           reduce using rule 41 (num_term -> ID .)
+    ONES            reduce using rule 41 (num_term -> ID .)
+
+
+state 98
+
+    (42) num_term -> number .
+
+    TRANSPOSE       reduce using rule 42 (num_term -> number .)
+    SEMICOLON       reduce using rule 42 (num_term -> number .)
+    SMALLER         reduce using rule 42 (num_term -> number .)
+    LARGER          reduce using rule 42 (num_term -> number .)
+    SMALLEREQ       reduce using rule 42 (num_term -> number .)
+    LARGEREQ        reduce using rule 42 (num_term -> number .)
+    NOTEQ           reduce using rule 42 (num_term -> number .)
+    EQ              reduce using rule 42 (num_term -> number .)
+    RPARENT         reduce using rule 42 (num_term -> number .)
+    COLON           reduce using rule 42 (num_term -> number .)
+    LCURLBRACK      reduce using rule 42 (num_term -> number .)
+    ID              reduce using rule 42 (num_term -> number .)
+    IF              reduce using rule 42 (num_term -> number .)
+    BREAK           reduce using rule 42 (num_term -> number .)
+    CONTINUE        reduce using rule 42 (num_term -> number .)
+    RETURN          reduce using rule 42 (num_term -> number .)
+    FOR             reduce using rule 42 (num_term -> number .)
+    WHILE           reduce using rule 42 (num_term -> number .)
+    PRINT           reduce using rule 42 (num_term -> number .)
+    EYE             reduce using rule 42 (num_term -> number .)
+    ZEROS           reduce using rule 42 (num_term -> number .)
+    ONES            reduce using rule 42 (num_term -> number .)
+
+
+state 99
+
+    (60) expression -> num_expression SUB num_expression .
+
+    TRANSPOSE       reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    SEMICOLON       reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    SMALLER         reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    LARGER          reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    SMALLEREQ       reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    LARGEREQ        reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    NOTEQ           reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    EQ              reduce using rule 60 (expression -> num_expression SUB num_expression .)
+    RPARENT         reduce using rule 60 (expression -> num_expression SUB num_expression .)
+
+
+state 100
+
+    (61) expression -> num_expression MUL num_expression .
+
+    TRANSPOSE       reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    SEMICOLON       reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    SMALLER         reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    LARGER          reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    SMALLEREQ       reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    LARGEREQ        reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    NOTEQ           reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    EQ              reduce using rule 61 (expression -> num_expression MUL num_expression .)
+    RPARENT         reduce using rule 61 (expression -> num_expression MUL num_expression .)
+
+
+state 101
+
+    (62) expression -> num_expression DIV num_expression .
+
+    TRANSPOSE       reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    SEMICOLON       reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    SMALLER         reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    LARGER          reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    SMALLEREQ       reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    LARGEREQ        reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    NOTEQ           reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    EQ              reduce using rule 62 (expression -> num_expression DIV num_expression .)
+    RPARENT         reduce using rule 62 (expression -> num_expression DIV num_expression .)
+
+
+state 102
+
+    (63) expression -> matrix_expression DOTADD matrix_expression .
+
+    TRANSPOSE       reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    SEMICOLON       reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    SMALLER         reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    LARGER          reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    SMALLEREQ       reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    LARGEREQ        reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    NOTEQ           reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    EQ              reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+    RPARENT         reduce using rule 63 (expression -> matrix_expression DOTADD matrix_expression .)
+
+
+state 103
+
+    (64) expression -> matrix_expression DOTSUB matrix_expression .
+
+    TRANSPOSE       reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    SEMICOLON       reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    SMALLER         reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    LARGER          reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    SMALLEREQ       reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    LARGEREQ        reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    NOTEQ           reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    EQ              reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+    RPARENT         reduce using rule 64 (expression -> matrix_expression DOTSUB matrix_expression .)
+
+
+state 104
+
+    (65) expression -> matrix_expression DOTMUL matrix_expression .
+
+    TRANSPOSE       reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    SEMICOLON       reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    SMALLER         reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    LARGER          reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    SMALLEREQ       reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    LARGEREQ        reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    NOTEQ           reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    EQ              reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+    RPARENT         reduce using rule 65 (expression -> matrix_expression DOTMUL matrix_expression .)
+
+
+state 105
+
+    (66) expression -> matrix_expression DOTDIV matrix_expression .
+
+    TRANSPOSE       reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    SEMICOLON       reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    SMALLER         reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    LARGER          reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    SMALLEREQ       reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    LARGEREQ        reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    NOTEQ           reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    EQ              reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+    RPARENT         reduce using rule 66 (expression -> matrix_expression DOTDIV matrix_expression .)
+
+
+state 106
+
+    (50) matrix -> LSQBRACK matrix_contents RSQBRACK .
+
+    TRANSPOSE       reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    SEMICOLON       reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    DOTADD          reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    DOTSUB          reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    DOTMUL          reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    DOTDIV          reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    SMALLER         reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    LARGER          reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    SMALLEREQ       reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    LARGEREQ        reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    NOTEQ           reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    EQ              reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    RPARENT         reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    RSQBRACK        reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+    COMMA           reduce using rule 50 (matrix -> LSQBRACK matrix_contents RSQBRACK .)
+
+
+state 107
+
+    (51) matrix_contents -> matrix_contents COMMA . matrix_content
+    (53) matrix_content -> . matrix_term
+    (54) matrix_content -> . empty
+    (43) matrix_term -> . ID
+    (44) matrix_term -> . matrix
+    (7) empty -> .
+    (50) matrix -> . LSQBRACK matrix_contents RSQBRACK
+
+    ID              shift and go to state 79
+    RSQBRACK        reduce using rule 7 (empty -> .)
+    COMMA           reduce using rule 7 (empty -> .)
+    LSQBRACK        shift and go to state 53
+
+    matrix_content                 shift and go to state 113
+    matrix_term                    shift and go to state 77
+    empty                          shift and go to state 78
+    matrix                         shift and go to state 80
+
+state 108
+
+    (33) for_expression -> ID ASSIGN num_term . COLON num_term
+
+    COLON           shift and go to state 114
+
+
+state 109
+
+    (34) while -> WHILE LPARENT comparison RPARENT . block
+    (3) block -> . LCURLBRACK block RCURLBRACK
+    (4) block -> . LCURLBRACK empty RCURLBRACK
+    (5) block -> . block instruction
+    (6) block -> . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    LCURLBRACK      shift and go to state 3
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    block                          shift and go to state 115
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 110
+
+    (29) print -> PRINT LPARENT string_expression RPARENT .
+
+    SEMICOLON       reduce using rule 29 (print -> PRINT LPARENT string_expression RPARENT .)
+
+
+state 111
+
+    (35) branch -> IF LPARENT comparison RPARENT block .
+    (36) branch -> IF LPARENT comparison RPARENT block . ELSE block
+    (5) block -> block . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    ID              reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    BREAK           reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    CONTINUE        reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    RETURN          reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    FOR             reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    WHILE           reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    PRINT           reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    EYE             reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    ZEROS           reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    ONES            reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    LCURLBRACK      reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    $end            reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    RCURLBRACK      reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .)
+    ELSE            shift and go to state 116
+    IF              shift and go to state 14
+
+  ! IF              [ reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .) ]
+  ! ELSE            [ reduce using rule 35 (branch -> IF LPARENT comparison RPARENT block .) ]
+  ! ID              [ shift and go to state 9 ]
+  ! BREAK           [ shift and go to state 15 ]
+  ! CONTINUE        [ shift and go to state 16 ]
+  ! RETURN          [ shift and go to state 17 ]
+  ! FOR             [ shift and go to state 20 ]
+  ! WHILE           [ shift and go to state 21 ]
+  ! PRINT           [ shift and go to state 23 ]
+  ! EYE             [ shift and go to state 24 ]
+  ! ZEROS           [ shift and go to state 25 ]
+  ! ONES            [ shift and go to state 26 ]
+
+    instruction                    shift and go to state 28
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 112
+
+    (75) comparison -> expression comparison_operator expression .
+    (83) expression -> expression . TRANSPOSE
+
+    RPARENT         reduce using rule 75 (comparison -> expression comparison_operator expression .)
+    TRANSPOSE       shift and go to state 65
+
+
+state 113
+
+    (51) matrix_contents -> matrix_contents COMMA matrix_content .
+
+    RSQBRACK        reduce using rule 51 (matrix_contents -> matrix_contents COMMA matrix_content .)
+    COMMA           reduce using rule 51 (matrix_contents -> matrix_contents COMMA matrix_content .)
+
+
+state 114
+
+    (33) for_expression -> ID ASSIGN num_term COLON . num_term
+    (41) num_term -> . ID
+    (42) num_term -> . number
+    (47) number -> . INT
+    (48) number -> . FLOAT
+
+    ID              shift and go to state 97
+    INT             shift and go to state 51
+    FLOAT           shift and go to state 52
+
+    num_term                       shift and go to state 117
+    number                         shift and go to state 98
+
+state 115
+
+    (34) while -> WHILE LPARENT comparison RPARENT block .
+    (5) block -> block . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for IF resolved as shift
+  ! shift/reduce conflict for BREAK resolved as shift
+  ! shift/reduce conflict for CONTINUE resolved as shift
+  ! shift/reduce conflict for RETURN resolved as shift
+  ! shift/reduce conflict for FOR resolved as shift
+  ! shift/reduce conflict for WHILE resolved as shift
+  ! shift/reduce conflict for PRINT resolved as shift
+  ! shift/reduce conflict for EYE resolved as shift
+  ! shift/reduce conflict for ZEROS resolved as shift
+  ! shift/reduce conflict for ONES resolved as shift
+    LCURLBRACK      reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .)
+    $end            reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .)
+    RCURLBRACK      reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .)
+    ELSE            reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .)
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+  ! ID              [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! IF              [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! BREAK           [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! CONTINUE        [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! RETURN          [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! FOR             [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! WHILE           [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! PRINT           [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! EYE             [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! ZEROS           [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+  ! ONES            [ reduce using rule 34 (while -> WHILE LPARENT comparison RPARENT block .) ]
+
+    instruction                    shift and go to state 28
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 116
+
+    (36) branch -> IF LPARENT comparison RPARENT block ELSE . block
+    (3) block -> . LCURLBRACK block RCURLBRACK
+    (4) block -> . LCURLBRACK empty RCURLBRACK
+    (5) block -> . block instruction
+    (6) block -> . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    LCURLBRACK      shift and go to state 3
+    ID              shift and go to state 9
+    IF              shift and go to state 14
+    BREAK           shift and go to state 15
+    CONTINUE        shift and go to state 16
+    RETURN          shift and go to state 17
+    FOR             shift and go to state 20
+    WHILE           shift and go to state 21
+    PRINT           shift and go to state 23
+    EYE             shift and go to state 24
+    ZEROS           shift and go to state 25
+    ONES            shift and go to state 26
+
+    block                          shift and go to state 118
+    instruction                    shift and go to state 4
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+
+state 117
+
+    (33) for_expression -> ID ASSIGN num_term COLON num_term .
+
+    LCURLBRACK      reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    ID              reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    IF              reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    BREAK           reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    CONTINUE        reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    RETURN          reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    FOR             reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    WHILE           reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    PRINT           reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    EYE             reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    ZEROS           reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+    ONES            reduce using rule 33 (for_expression -> ID ASSIGN num_term COLON num_term .)
+
+
+state 118
+
+    (36) branch -> IF LPARENT comparison RPARENT block ELSE block .
+    (5) block -> block . instruction
+    (8) instruction -> . assignment SEMICOLON
+    (9) instruction -> . call SEMICOLON
+    (10) instruction -> . loop
+    (11) instruction -> . branch
+    (12) assignment -> . ID assignment_operator expression
+    (18) call -> . sys_call
+    (19) call -> . fun_call
+    (30) loop -> . for
+    (31) loop -> . while
+    (35) branch -> . IF LPARENT comparison RPARENT block
+    (36) branch -> . IF LPARENT comparison RPARENT block ELSE block
+    (20) sys_call -> . BREAK
+    (21) sys_call -> . CONTINUE
+    (22) sys_call -> . RETURN expression
+    (23) fun_call -> . matrix_fun
+    (24) fun_call -> . print
+    (32) for -> . FOR for_expression block
+    (34) while -> . WHILE LPARENT comparison RPARENT block
+    (25) matrix_fun -> . fun_name LPARENT
+    (29) print -> . PRINT LPARENT string_expression RPARENT
+    (26) fun_name -> . EYE
+    (27) fun_name -> . ZEROS
+    (28) fun_name -> . ONES
+
+    ID              reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    IF              reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    BREAK           reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    CONTINUE        reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    RETURN          reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    FOR             reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    WHILE           reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    PRINT           reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    EYE             reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    ZEROS           reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    ONES            reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    LCURLBRACK      reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    $end            reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    RCURLBRACK      reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+    ELSE            reduce using rule 36 (branch -> IF LPARENT comparison RPARENT block ELSE block .)
+
+  ! ID              [ shift and go to state 9 ]
+  ! IF              [ shift and go to state 14 ]
+  ! BREAK           [ shift and go to state 15 ]
+  ! CONTINUE        [ shift and go to state 16 ]
+  ! RETURN          [ shift and go to state 17 ]
+  ! FOR             [ shift and go to state 20 ]
+  ! WHILE           [ shift and go to state 21 ]
+  ! PRINT           [ shift and go to state 23 ]
+  ! EYE             [ shift and go to state 24 ]
+  ! ZEROS           [ shift and go to state 25 ]
+  ! ONES            [ shift and go to state 26 ]
+
+    instruction                    shift and go to state 28
+    assignment                     shift and go to state 5
+    call                           shift and go to state 6
+    loop                           shift and go to state 7
+    branch                         shift and go to state 8
+    sys_call                       shift and go to state 10
+    fun_call                       shift and go to state 11
+    for                            shift and go to state 12
+    while                          shift and go to state 13
+    matrix_fun                     shift and go to state 18
+    print                          shift and go to state 19
+    fun_name                       shift and go to state 22
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ID in state 2 resolved as shift
+WARNING: shift/reduce conflict for IF in state 2 resolved as shift
+WARNING: shift/reduce conflict for BREAK in state 2 resolved as shift
+WARNING: shift/reduce conflict for CONTINUE in state 2 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 2 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 2 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 2 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 2 resolved as shift
+WARNING: shift/reduce conflict for EYE in state 2 resolved as shift
+WARNING: shift/reduce conflict for ZEROS in state 2 resolved as shift
+WARNING: shift/reduce conflict for ONES in state 2 resolved as shift
+WARNING: shift/reduce conflict for ID in state 27 resolved as shift
+WARNING: shift/reduce conflict for IF in state 27 resolved as shift
+WARNING: shift/reduce conflict for BREAK in state 27 resolved as shift
+WARNING: shift/reduce conflict for CONTINUE in state 27 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 27 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 27 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 27 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 27 resolved as shift
+WARNING: shift/reduce conflict for EYE in state 27 resolved as shift
+WARNING: shift/reduce conflict for ZEROS in state 27 resolved as shift
+WARNING: shift/reduce conflict for ONES in state 27 resolved as shift
+WARNING: shift/reduce conflict for ID in state 81 resolved as shift
+WARNING: shift/reduce conflict for IF in state 81 resolved as shift
+WARNING: shift/reduce conflict for BREAK in state 81 resolved as shift
+WARNING: shift/reduce conflict for CONTINUE in state 81 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 81 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 81 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 81 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 81 resolved as shift
+WARNING: shift/reduce conflict for EYE in state 81 resolved as shift
+WARNING: shift/reduce conflict for ZEROS in state 81 resolved as shift
+WARNING: shift/reduce conflict for ONES in state 81 resolved as shift
+WARNING: shift/reduce conflict for ID in state 115 resolved as shift
+WARNING: shift/reduce conflict for IF in state 115 resolved as shift
+WARNING: shift/reduce conflict for BREAK in state 115 resolved as shift
+WARNING: shift/reduce conflict for CONTINUE in state 115 resolved as shift
+WARNING: shift/reduce conflict for RETURN in state 115 resolved as shift
+WARNING: shift/reduce conflict for FOR in state 115 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 115 resolved as shift
+WARNING: shift/reduce conflict for PRINT in state 115 resolved as shift
+WARNING: shift/reduce conflict for EYE in state 115 resolved as shift
+WARNING: shift/reduce conflict for ZEROS in state 115 resolved as shift
+WARNING: shift/reduce conflict for ONES in state 115 resolved as shift
