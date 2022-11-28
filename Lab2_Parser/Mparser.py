@@ -28,16 +28,12 @@ def p_error(p):
 
 
 def p_program(p):
-    """program : program block
-               | block"""
+    """program : instructions"""
 
 
-def p_block(p):
-    """block : LCURLBRACK block RCURLBRACK
-             | LCURLBRACK empty RCURLBRACK
-             | block instruction
-             | instruction"""
-
+def p_instructions(p):
+    """instructions : instructions instruction
+                    | instruction"""
 
 def p_empty(p):
     """empty :"""
@@ -48,7 +44,8 @@ def p_instruction(p):
     """instruction : assignment SEMICOLON
                    | call SEMICOLON
                    | loop
-                   | branch"""
+                   | branch
+                   | LCURLBRACK instructions RCURLBRACK"""
 
 
 # instrukcję przypisania, w tym różne operatory przypisania
@@ -91,7 +88,7 @@ def p_loop(p):
 
 
 def p_for(p):
-    """for : FOR for_expression block"""
+    """for : FOR for_expression instruction"""
 
 
 def p_for_expression(p):
@@ -99,13 +96,13 @@ def p_for_expression(p):
 
 
 def p_while(p):
-    """while : WHILE LPARENT comparison RPARENT block"""
+    """while : WHILE LPARENT comparison RPARENT instruction"""
 
 
 # instrukcję warunkową if-else
 def p_branch(p):
-    """branch : IF LPARENT comparison RPARENT block %prec IF
-              | IF LPARENT comparison RPARENT block ELSE block"""
+    """branch : IF LPARENT comparison RPARENT instruction %prec IF
+              | IF LPARENT comparison RPARENT instruction ELSE instruction"""
 
 
 def p_term(p):
