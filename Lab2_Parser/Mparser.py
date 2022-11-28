@@ -51,16 +51,19 @@ def p_instruction(p):
                    | branch"""
 
 
+# instrukcję przypisania, w tym różne operatory przypisania
 def p_assignment(p):
-    """assignment : ID assignment_type expression"""
+    """assignment : ID assignment_operator expression"""
 
 
-def p_assignment_type(p):
-    """assignment_type : ASSIGN
-                       | ADDASSIGN
-                       | SUBASSIGN
-                       | MULASSIGN
-                       | DIVASSIGN"""
+def p_assignment_operator(p):
+    """assignment_operator : ASSIGN
+                           | ADDASIGN
+                           | SUBASSIGN
+                           | MULASSIGN
+                           | DIVASSIGN"""
+
+    p[0] = p[1]
 
 
 def p_call(p):
@@ -68,6 +71,7 @@ def p_call(p):
             | fun_call"""
 
 
+# instrukcje break, continue oraz return
 def p_sys_call(p):
     """sys_call : BREAK
                 | CONTINUE
@@ -83,12 +87,13 @@ def p_matrix_fun(p):
     """matrix_fun : fun_name LPARENT """
 
 
-def p_func_name(p):
+def p_fun_name(p):
     """fun_name : EYE
                 | ZEROS
                 | ONES"""
 
 
+# pętle: while and for
 def p_loop(p):
     """loop : for
             | while"""
@@ -100,6 +105,16 @@ def p_for(p):
 
 def p_for_expression(p):
     """for_expression : ID ASSIGN num_term COLON num_term"""
+
+
+def p_while(p):
+    """while : WHILE LPARENT comparison RPARENT block"""
+
+
+# instrukcję warunkową if-else
+def p_branch(p):
+    """branch : IF LPARENT comparison RPARENT block %prec IF
+              | IF LPARENT comparison RPARENT block ELSE block"""
 
 
 def p_term(p):
@@ -129,6 +144,7 @@ def p_number(p):
               | FLOAT"""
 
 
+# inicjalizację macierzy konkretnymi wartościami
 def p_matrix(p):
     """matrix : LSQBRACK matrix_contents RSQBRACK"""
 
@@ -141,10 +157,6 @@ def p_matrix_contents(p):
 def p_matrix_content(p):
     """matrix_content : matrix_term
                       | empty"""
-
-
-def p_branch(p):
-    """"""
 
 
 def p_expression_term(p):
@@ -163,6 +175,7 @@ def p_expression_string_term(p):
     """string_expression : string_term"""
 
 
+# wyrażenia binarne, w tym operacje macierzowe 'element po elemencie'
 def p_expression_binary(p):
     """expression : num_expression ADD num_expression
                   | num_expression SUB num_expression
@@ -191,13 +204,23 @@ def p_expression_binary(p):
         p[0] = p[1] / p[3]
 
 
-def p_expression_relations(p):
-    """expression : expression SMALLER expression
-                  | expression LARGER expression
-                  | expression SMALLEREQ expression
-                  | expression LARGEREQ expression
-                  | expression NOTEQ expression
-                  | expression EQ expression"""
+def p_binary_operator(p):
+    """binary_operator : ADD
+                       | SUB
+                       | MUL
+                       | DIV
+                       | DOTADD
+                       | DOTSUB
+                       | DOTMUL
+                       | DOTDIV"""
+
+    p[0] = p[1]
+
+
+# wyrażenia relacyjne
+def p_comparison(p):
+    """comparison : expression comparison_operator expression"""
+
     if p[2] == '<':
         p[0] = p[1] < p[3]
     elif p[2] == '>':
@@ -212,11 +235,24 @@ def p_expression_relations(p):
         p[0] = p[1] == p[3]
 
 
+def p_comparison_operator(p):
+    """comparison_operator : SMALLER
+                          | LARGER
+                          | SMALLEREQ
+                          | LARGEREQ
+                          | NOTEQ
+                          | EQ"""
+
+    p[0] = p[1]
+
+
+# negację unarną
 def p_expression_negation(p):
     """expression : SUB expression %prec UMINUS"""
     p[0] = -p[2]
 
 
+# transpozycję macierzy
 def p_expression_transpose(p):
     """expression : expression TRANSPOSE"""
     p[0] = np.transpose(p[1])
