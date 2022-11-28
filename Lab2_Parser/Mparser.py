@@ -84,7 +84,7 @@ def p_fun_call(p):
 
 
 def p_matrix_fun(p):
-    """matrix_fun : fun_name LPARENT number_expression RPARENT"""
+    """matrix_fun : fun_name LPARENT num_expression RPARENT"""
 
 
 def p_fun_name(p):
@@ -212,22 +212,9 @@ def p_expression_binary(p):
         p[0] = p[1] / p[3]
 
 
-def p_binary_operator(p):
-    """binary_operator : ADD
-                       | SUB
-                       | MUL
-                       | DIV
-                       | DOTADD
-                       | DOTSUB
-                       | DOTMUL
-                       | DOTDIV"""
-
-    p[0] = p[1]
-
-
 # wyrażenia relacyjne
 def p_comparison(p):
-    """comparison : expression comparison_operator expression"""
+    """comparison : num_expression comparison_operator num_expression"""
 
     if p[2] == '<':
         p[0] = p[1] < p[3]
