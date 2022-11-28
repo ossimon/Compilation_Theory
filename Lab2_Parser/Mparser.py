@@ -44,11 +44,12 @@ def p_empty(p):
     pass
 
 
-def instruction(p):
+def p_instruction(p):
     """instruction : assignment SEMICOLON
                    | call SEMICOLON
                    | loop
                    | branch"""
+
 
 def p_assignment(p):
     """assignment : ID ASSIGN expression
@@ -105,13 +106,29 @@ def p_number(p):
 
 
 def p_matrix(p):
-    """matrix : LSQBRACK"""
+    """matrix : LSQBRACK matrix_contents RSQBRACK"""
+
+
+def p_matrix_contents(p):
+    """matrix_contents : matrix_contents COMMA matrix_content
+                       | matrix_content"""
+
+
+def p_matrix_content(p):
+    """matrix_content : matrix
+                      | term
+                      | empty"""
 
 
 def p_branch(p):
     """"""
 
-def p_expresson_binary(p):
+
+def p_expression_term(p):
+    """expression : term"""
+
+
+def p_expression_binary(p):
     """expression : expression ADD expression
                   | expression SUB expression
                   | expression MUL expression
@@ -168,5 +185,6 @@ def p_expression_negation(p):
 def p_expression_transpose(p):
     """expression : expression TRANSPOSE"""
     p[0] = np.transpose(p[1])
+
 
 parser = yacc.yacc()
