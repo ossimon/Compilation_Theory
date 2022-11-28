@@ -78,6 +78,7 @@ def p_matrix_fun(p):
     """matrix_fun : fun_name LPARENT num_expression RPARENT"""
 
 
+# macierzowe funkcje specjalne
 def p_fun_name(p):
     """fun_name : EYE
                 | ZEROS
@@ -95,7 +96,7 @@ def p_for(p):
 
 
 def p_for_expression(p):
-    """for_expression : ID ASSIGN num_term COLON num_term"""
+    """for_expression : ID ASSIGN range"""
 
 
 def p_while(p):
@@ -106,6 +107,11 @@ def p_while(p):
 def p_branch(p):
     """branch : IF LPARENT comparison RPARENT block %prec IF
               | IF LPARENT comparison RPARENT block ELSE block"""
+
+
+# zakres tablicy
+def p_range(p):
+    """range : num_term COLON num_term"""
 
 
 def p_term(p):
@@ -150,51 +156,39 @@ def p_matrix_content(p):
     """matrix_content : matrix_term"""
 
 
-def p_expression_term(p):
-    """expression : term"""
-
-
+# EXPRESSION
 def p_expression(p):
     """expression : term
-                  | LPARENT expression RPARENT
-                  | num_expression num_binary_operator num_expression
-                  | matrix_expression
-                  | string_expression"""
+                  | LPARENT expression RPARENT"""
 
 
 # wyrażenia binarne, w tym operacje macierzowe 'element po elemencie'
 def p_num_expression_binary(p):
-    """num_expression : num_expression num_binary_operator num_expression
-                      | LPARENT num_expression RPARENT
-                      |
-                      | num_expression num_binary_operator num_expression
-                      | """
+    """expression : expression ADD expression %prec ADD
+                  | expression SUB expression %prec SUB
+                  | expression MUL expression %prec MUL
+                  | expression DIV expression %prec DIV
+                  | expression DOTADD expression %prec ADD
+                  | expression DOTSUB expression %prec SUB
+                  | expression DOTMUL expression %prec MUL
+                  | expression DOTDIV expression %prec DIV"""
 
 
-def p_num_binary_operator(p):
-    """num_binary_operator : ADD
-                           | SUB
-                           | MUL
-                           | DIV"""
+# negację unarną
+def p_expression_negation(p):
+    """expression : SUB expression %prec UMINUS"""
+    p[0] = -p[2]
 
 
-def p_matrix_expression_binary(p):
-    """matrix_expression : matrix_expression DOTADD matrix_expression
-                         | matrix_expression DOTSUB matrix_expression
-                         | matrix_expression DOTMUL matrix_expression
-                         | matrix_expression DOTDIV matrix_expression"""
-
-
-def p_num_binary_operator(p):
-    """num_binary_operator : ADD
-                           | SUB
-                           | MUL
-                           | DIV"""
+# transpozycję macierzy
+def p_expression_transpose(p):
+    """expression : expression TRANSPOSE"""
+    p[0] = np.transpose(p[1])
 
 
 # wyrażenia relacyjne
 def p_comparison(p):
-    """comparison : num_expression comparison_operator num_expression"""
+    """comparison : expression comparison_operator expression"""
 
     if p[2] == '<':
         p[0] = p[1] < p[3]
@@ -219,18 +213,6 @@ def p_comparison_operator(p):
                           | EQ"""
 
     p[0] = p[1]
-
-
-# negację unarną
-def p_expression_negation(p):
-    """expression : SUB expression %prec UMINUS"""
-    p[0] = -p[2]
-
-
-# transpozycję macierzy
-def p_expression_transpose(p):
-    """expression : expression TRANSPOSE"""
-    p[0] = np.transpose(p[1])
 
 
 parser = yacc.yacc()
