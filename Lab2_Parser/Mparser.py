@@ -9,8 +9,6 @@ tokens = scanner.tokens
 precedence = (
     ('nonassoc', 'IF'),
     ('nonassoc', 'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ', 'ELSE'),
-    ('nonassoc', 'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN'), # inni tego nie maja, usunac i w tescie zrobic a = b = c
-    # inicjalizacja macierzy konkretnymi wartosciami, tak jak wyzej?
     ('left', 'ADD', 'SUB', 'DOTADD', 'DOTSUB'),
     ('left', 'MUL', 'DIV', 'DOTMUL', 'DOTDIV'),
     ('left', 'UMINUS'),
@@ -44,7 +42,6 @@ def p_instruction(p):
                    | LCURLBRACK instructions RCURLBRACK"""
 
 
-# instrukcję przypisania, w tym różne operatory przypisania
 def p_assignment(p):
     """assignment : ID assignment_operator expression
                   | ID matrix assignment_operator expression"""
@@ -58,7 +55,44 @@ def p_assignment_operator(p):
                            | DIVASSIGN"""
 
 
-# instrukcje break, continue oraz return i print
+def p_expression(p):
+    """expression : term
+                  | LPARENT expression RPARENT"""
+
+
+def p_num_expression_binary(p):
+    """expression : expression ADD expression %prec ADD
+                  | expression SUB expression %prec SUB
+                  | expression MUL expression %prec MUL
+                  | expression DIV expression %prec DIV
+                  | expression DOTADD expression %prec ADD
+                  | expression DOTSUB expression %prec SUB
+                  | expression DOTMUL expression %prec MUL
+                  | expression DOTDIV expression %prec DIV"""
+
+
+def p_expression_negation(p):
+    """expression : SUB expression %prec UMINUS"""
+
+
+def p_expression_transpose(p):
+    """expression : expression TRANSPOSE"""
+    p[0] = np.transpose(p[1])
+
+
+def p_comparison(p):
+    """comparison : expression comparison_operator expression"""
+
+
+def p_comparison_operator(p):
+    """comparison_operator : SMALLER
+                          | LARGER
+                          | SMALLEREQ
+                          | LARGEREQ
+                          | NOTEQ
+                          | EQ"""
+
+
 def p_call(p):
     """call : BREAK
             | CONTINUE
@@ -80,14 +114,12 @@ def p_matrix_fun(p):
     """matrix_fun : fun_name LPARENT expression RPARENT"""
 
 
-# macierzowe funkcje specjalne
 def p_fun_name(p):
     """fun_name : EYE
                 | ZEROS
                 | ONES"""
 
 
-# pętle: while and for
 def p_loop(p):
     """loop : for
             | while"""
@@ -105,13 +137,11 @@ def p_while(p):
     """while : WHILE LPARENT comparison RPARENT instruction"""
 
 
-# instrukcję warunkową if-else
 def p_branch(p):
     """branch : IF LPARENT comparison RPARENT instruction %prec IF
               | IF LPARENT comparison RPARENT instruction ELSE instruction"""
 
 
-# zakres tablicy
 def p_range(p):
     """range : num_term COLON num_term"""
 
@@ -143,7 +173,6 @@ def p_string(p):
     """string : STRING"""
 
 
-# inicjalizację macierzy konkretnymi wartościami
 def p_matrix(p):
     """matrix : LSQBRACK matrix_contents RSQBRACK
               | matrix_fun"""
@@ -156,49 +185,6 @@ def p_matrix_contents(p):
 
 def p_matrix_content(p):
     """matrix_content : matrix_term"""
-
-
-# EXPRESSION
-def p_expression(p):
-    """expression : term
-                  | LPARENT expression RPARENT"""
-
-
-# wyrażenia binarne, w tym operacje macierzowe 'element po elemencie'
-def p_num_expression_binary(p):
-    """expression : expression ADD expression %prec ADD
-                  | expression SUB expression %prec SUB
-                  | expression MUL expression %prec MUL
-                  | expression DIV expression %prec DIV
-                  | expression DOTADD expression %prec ADD
-                  | expression DOTSUB expression %prec SUB
-                  | expression DOTMUL expression %prec MUL
-                  | expression DOTDIV expression %prec DIV"""
-
-
-# negację unarną
-def p_expression_negation(p):
-    """expression : SUB expression %prec UMINUS"""
-
-
-# transpozycję macierzy
-def p_expression_transpose(p):
-    """expression : expression TRANSPOSE"""
-    p[0] = np.transpose(p[1])
-
-
-# wyrażenia relacyjne
-def p_comparison(p):
-    """comparison : expression comparison_operator expression"""
-
-
-def p_comparison_operator(p):
-    """comparison_operator : SMALLER
-                          | LARGER
-                          | SMALLEREQ
-                          | LARGEREQ
-                          | NOTEQ
-                          | EQ"""
 
 
 parser = yacc.yacc()
