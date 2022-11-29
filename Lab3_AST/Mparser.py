@@ -160,12 +160,6 @@ def p_num_term(p):
                 | number"""
 
 
-def p_matrix_term(p):
-    """matrix_term : ID
-                   | matrix
-                   | number"""
-
-
 def p_number(p):
     """number : INT
               | FLOAT"""
@@ -193,10 +187,6 @@ def p_vector(p):
 def p_vector_contents(p):
     """numbers : numbers COMMA number
                | num_term"""
-
-
-def p_matrix_content(p):
-    """matrix_content : matrix_term"""
 
 
 parser = yacc.yacc()
