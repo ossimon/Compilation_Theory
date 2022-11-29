@@ -35,10 +35,6 @@ def p_instructions(p):
     """instructions : instructions instruction
                     | instruction"""
 
-def p_empty(p):
-    """empty :"""
-    pass
-
 
 def p_instruction(p):
     """instruction : assignment SEMICOLON
@@ -50,7 +46,8 @@ def p_instruction(p):
 
 # instrukcję przypisania, w tym różne operatory przypisania
 def p_assignment(p):
-    """assignment : ID assignment_operator expression"""
+    """assignment : ID assignment_operator expression
+                  | ID matrix assignment_operator expression"""
 
 
 def p_assignment_operator(p):
@@ -60,19 +57,27 @@ def p_assignment_operator(p):
                            | MULASSIGN
                            | DIVASSIGN"""
 
-    p[0] = p[1]
-
 
 # instrukcje break, continue oraz return i print
 def p_call(p):
     """call : BREAK
             | CONTINUE
             | RETURN expression
-            | PRINT string"""
+            | PRINT print_inputs"""
+
+
+def p_print_inputs(p):
+    """print_inputs : print_inputs COMMA print_input
+                    | print_input"""
+
+
+def p_print_input(p):
+    """print_input : STRING
+                   | ID"""
 
 
 def p_matrix_fun(p):
-    """matrix_fun : fun_name LPARENT num_expression RPARENT"""
+    """matrix_fun : fun_name LPARENT expression RPARENT"""
 
 
 # macierzowe funkcje specjalne
@@ -174,7 +179,6 @@ def p_num_expression_binary(p):
 # negację unarną
 def p_expression_negation(p):
     """expression : SUB expression %prec UMINUS"""
-    p[0] = -p[2]
 
 
 # transpozycję macierzy
@@ -187,19 +191,6 @@ def p_expression_transpose(p):
 def p_comparison(p):
     """comparison : expression comparison_operator expression"""
 
-    if p[2] == '<':
-        p[0] = p[1] < p[3]
-    elif p[2] == '>':
-        p[0] = p[1] > p[3]
-    elif p[2] == '<=':
-        p[0] = p[1] <= p[3]
-    elif p[2] == '>=':
-        p[0] = p[1] >= p[3]
-    elif p[2] == '!=':
-        p[0] = p[1] != p[3]
-    elif p[2] == '==':
-        p[0] = p[1] == p[3]
-
 
 def p_comparison_operator(p):
     """comparison_operator : SMALLER
@@ -208,8 +199,6 @@ def p_comparison_operator(p):
                           | LARGEREQ
                           | NOTEQ
                           | EQ"""
-
-    p[0] = p[1]
 
 
 parser = yacc.yacc()
