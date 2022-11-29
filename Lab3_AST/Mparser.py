@@ -16,6 +16,7 @@ precedence = (
 )
 
 start = 'program'
+error = False
 
 
 def p_error(p):
@@ -23,6 +24,7 @@ def p_error(p):
         print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
     else:
         print("Unexpected end of input")
+    error = True
 
 
 def p_program(p):
@@ -174,13 +176,23 @@ def p_string(p):
 
 
 def p_matrix(p):
-    """matrix : LSQBRACK matrix_contents RSQBRACK
+    """matrix : LSQBRACK vectors RSQBRACK
+              | vector
               | matrix_fun"""
 
 
-def p_matrix_contents(p):
-    """matrix_contents : matrix_contents COMMA matrix_content
-                       | matrix_content"""
+def p_vectors(p):
+    """vectors : vectors COMMA vector
+               | vector"""
+
+
+def p_vector(p):
+    """vector : LSQBRACK numbers RSQBRACK"""
+
+
+def p_vector_contents(p):
+    """numbers : numbers COMMA number
+               | num_term"""
 
 
 def p_matrix_content(p):

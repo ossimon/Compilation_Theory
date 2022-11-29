@@ -1,19 +1,22 @@
 
 import sys
-import scanner
-import Mparser
+import ply.yacc as yacc
+from Mparser import *
+from scanner import *
+from TreePrinter import TreePrinter
+
 
 if __name__ == '__main__':
 
     try:
-        filename = sys.argv[1] if len(sys.argv) > 1 else "example1.m"
+        filename = sys.argv[1] if len(sys.argv) > 1 else "example.txt"
         file = open(filename, "r")
     except IOError:
         print("Cannot open {0} file".format(filename))
         sys.exit(0)
 
-    parser = Mparser.parser
     text = file.read()
-    lexer = scanner.Lexer()
+    lexer = Lexer()
     lexer.input(text)
-    parser.parse(text, lexer=lexer)
+    ast = parser.parse(text, lexer=lexer)
+    ast.printTree()
