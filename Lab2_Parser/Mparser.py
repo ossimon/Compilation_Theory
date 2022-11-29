@@ -12,7 +12,7 @@ precedence = (
     ('left', 'ADD', 'SUB', 'DOTADD', 'DOTSUB'),
     ('left', 'MUL', 'DIV', 'DOTMUL', 'DOTDIV'),
     ('left', 'UMINUS'),
-    ('right', 'TRANSPOSE') # ????
+    ('left', 'TRANSPOSE')
 )
 
 start = 'program'
