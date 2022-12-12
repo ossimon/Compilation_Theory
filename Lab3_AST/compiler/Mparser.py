@@ -263,7 +263,8 @@ def p_vector(p):
 def p_vector_contents1(p):
     """vector_contents : vector_contents COMMA vector_content"""
     p[0] = p[1]
-    p[0].values.append(p[3])
+    # p[0].values.append(p[3])
+    p[0].values += (p[3])
 
 
 def p_vector_contents2(p):
