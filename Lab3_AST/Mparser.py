@@ -46,7 +46,12 @@ def p_instruction(p):
 
 def p_assignment(p):
     """assignment : ID assignment_operator expression
-                  | ID matrix assignment_operator expression"""
+                  | ref assignment_operator expression"""
+
+
+def p_ref(p):
+    """ref : ID LSQBRACK num_term RSQBRACK
+           | ID LSQBRACK num_term COMMA num_term RSQBRACK"""
 
 
 def p_assignment_operator(p):
