@@ -88,7 +88,7 @@ def p_expression(p):
     if len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = p[1]
+        p[0] = p[2]
 
 
 def p_num_expression_binary(p):
@@ -195,6 +195,10 @@ def p_while(p):
 def p_branch(p):
     """branch : IF LPARENT comparison RPARENT instruction %prec IFX
               | IF LPARENT comparison RPARENT instruction ELSE instruction"""
+    if len(p) == 6:
+        p[0] = AST.IfElse(p[3], p[5])
+    else:
+        p[0] = AST.IfElse(p[3], p[5], p[7])
 
 
 def p_range(p):
@@ -207,40 +211,73 @@ def p_term(p):
             | number
             | matrix
             | string"""
+    p[0] = p[1]
 
 
 def p_num_term(p):
     """num_term : ID
                 | number"""
-
-
-def p_matrix_term(p):
-    """matrix_term : ID
-                   | matrix
-                   | number"""
+    p[0] = p[1]
 
 
 def p_number(p):
     """number : INT
               | FLOAT"""
+    p[0] = p[1]
 
 
 def p_string(p):
     """string : STRING"""
+    p[0] = p[1]
 
 
-def p_matrix(p):
-    """matrix : LSQBRACK matrix_contents RSQBRACK
-              | matrix_fun"""
+def p_matrix1(p):
+    """matrix : LSQBRACK vectors RSQBRACK"""
+    p[0] = p[2]
 
 
-def p_matrix_contents(p):
-    """matrix_contents : matrix_contents COMMA matrix_content
-                       | matrix_content"""
+def p_matrix2(p):
+    """matrix : matrix_fun
+              | vector"""
+    p[0] = p[1]
 
 
-def p_matrix_content(p):
-    """matrix_content : matrix_term"""
+def p_vectors1(p):
+    """vectors : vectors COMMA vector"""
+    p[0] = p[1]
+    p[0].vectors.append(p[3])
+
+
+def p_vectors2(p):
+    """vectors : vector"""
+    if isinstance(p[1], AST.Matrix):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Matrix(p[1])
+
+
+def p_vector(p):
+    """vector : LSQBRACK vector_contents RSQBRACK"""
+
+
+def p_vector_contents1(p):
+    """vector_contents : vector_contents COMMA vector_content"""
+    p[0] = p[1]
+    p[0].values.append(p[3])
+
+
+def p_vector_contents2(p):
+    """vector_contents : vector_content"""
+    if isinstance(p[1], AST.Vector):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Vector(p[1])
+
+
+def p_vector_content(p):
+    """vector_content : ID
+                      | number"""
+    p[0] = p[1]
 
 
 parser = yacc.yacc()

@@ -80,7 +80,7 @@ class Assign(Node):
 
 
 class IfElse(Node):
-    def __init__(self, condition, if_, else_):
+    def __init__(self, condition, if_, else_=None):
         self.condition = condition
         self.if_ = if_
         self.else_ = else_
@@ -131,8 +131,19 @@ class MatrixFun(Node):
 
 
 class Matrix(Node):
+    def __init__(self, vectors):
+        if hasattr(vectors, '__len__'):
+            self.inputs = vectors
+        else:
+            self.inputs = [vectors]
+
+
+class Vector(Node):
     def __init__(self, values):
-        self.values = values
+        if hasattr(values, '__len__'):
+            self.inputs = values
+        else:
+            self.inputs = [values]
 
 
 class Error(Node):
