@@ -16,4 +16,4 @@ if __name__ == '__main__':
     lexer = Lexer()
     lexer.input(text)
     ast = parser.parse(text, lexer=lexer)
-    # ast.printTree()
+    ast.printTree()
