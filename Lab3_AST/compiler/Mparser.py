@@ -3,6 +3,7 @@
 import compiler.scanner as scanner
 import ply.yacc as yacc
 import compiler.AST as AST
+from compiler.TreePrinter import *
 
 tokens = scanner.tokens
 

@@ -1,19 +1,19 @@
 
 class Node(object):
-    pass
-    # count = 0
+    # pass
+    count = 0
 
-    # def __init__(self, children=None):
-    #     # self.ID = str(Node.count)
-    #     # Node.count += 1
-    #
-    #     if children is None:
-    #         self.children = []
-    #
-    #     elif hasattr(children, '__len__ '):
-    #         self.children = children
-    #     else:
-    #         self.children = [children]
+    def __init__(self, children=None):
+        # self.ID = str(Node.count)
+        # Node.count += 1
+
+        if children is None:
+            self.children = []
+
+        elif hasattr(children, '__len__ '):
+            self.children = children
+        else:
+            self.children = [children]
 
 
 class Program(Node):
