@@ -2,11 +2,11 @@
 # binary operators
 # transposition
 
-C = -A;     # assignemnt with unary expression
+C = -A ;    # assignemnt with unary expression
 C = B' ;    # assignemnt with matrix transpose
 C = A+B ;   # assignemnt with binary addition
 C = A-B ;   # assignemnt with binary substraction
-C = A*B ;   # assignemnt with binary multiplication
+C = C + A*B + C;   # assignemnt with binary multiplication
 C = A/B ;   # assignemnt with binary division
 C = A.+B ;  # add element-wise A to B
 C = A.-B ;  # substract B from A 

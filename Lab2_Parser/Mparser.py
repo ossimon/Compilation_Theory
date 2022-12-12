@@ -7,12 +7,13 @@ import numpy as np
 tokens = scanner.tokens
 
 precedence = (
-    ('nonassoc', 'IF'),
-    ('nonassoc', 'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ', 'ELSE'),
+    ('nonassoc', 'IFX'),
+    ('nonassoc', 'ELSE'),
+    ('nonassoc', 'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ'),
     ('left', 'ADD', 'SUB', 'DOTADD', 'DOTSUB'),
     ('left', 'MUL', 'DIV', 'DOTMUL', 'DOTDIV'),
     ('left', 'UMINUS'),
-    ('right', 'TRANSPOSE') # ????
+    ('left', 'TRANSPOSE')
 )
 
 start = 'program'
@@ -61,14 +62,14 @@ def p_expression(p):
 
 
 def p_num_expression_binary(p):
-    """expression : expression ADD expression %prec ADD
-                  | expression SUB expression %prec SUB
-                  | expression MUL expression %prec MUL
-                  | expression DIV expression %prec DIV
-                  | expression DOTADD expression %prec ADD
-                  | expression DOTSUB expression %prec SUB
-                  | expression DOTMUL expression %prec MUL
-                  | expression DOTDIV expression %prec DIV"""
+    """expression : expression ADD expression
+                  | expression SUB expression
+                  | expression MUL expression
+                  | expression DIV expression
+                  | expression DOTADD expression
+                  | expression DOTSUB expression
+                  | expression DOTMUL expression
+                  | expression DOTDIV expression"""
 
 
 def p_expression_negation(p):
@@ -138,7 +139,7 @@ def p_while(p):
 
 
 def p_branch(p):
-    """branch : IF LPARENT comparison RPARENT instruction %prec IF
+    """branch : IF LPARENT comparison RPARENT instruction %prec IFX
               | IF LPARENT comparison RPARENT instruction ELSE instruction"""
 
 
