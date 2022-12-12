@@ -78,7 +78,6 @@ def p_expression_negation(p):
 
 def p_expression_transpose(p):
     """expression : expression TRANSPOSE"""
-    p[0] = np.transpose(p[1])
 
 
 def p_comparison(p):
