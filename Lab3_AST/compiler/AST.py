@@ -31,8 +31,8 @@ class Instructions(Node):
 
 
 class IntNum(Node):
-        super().__init__()
     def __init__(self, value):
+        super().__init__()
         self.value = value
 
 
