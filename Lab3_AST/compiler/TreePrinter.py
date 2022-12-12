@@ -24,20 +24,30 @@ class TreePrinter:
         for instruction in self.instructions:
             instruction.printTree(indent)
 
-    @addToClass(AST.IntNum)
-    def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.value)
-
-    @addToClass(AST.FloatNum)
-    def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.value)
+    # @addToClass(AST.IntNum)
+    # def printTree(self, indent=0):
+    #     print("|  " * indent, end="")
+    #     print(self.value)
+    #
+    # @addToClass(AST.FloatNum)
+    # def printTree(self, indent=0):
+    #     print("|  " * indent, end="")
+    #     print(self.value)
 
     @addToClass(AST.Variable)
     def printTree(self, indent=0):
         print("|  " * indent, end="")
         print(self.name)
+
+    @addToClass(AST.Value)
+    def printTree(self, indent=0):
+        print("|  " * indent, end="")
+        print(self.value)
+
+    @addToClass(AST.Operator)
+    def printTree(self, indent=0):
+        print("|  " * indent, end="")
+        print(self.op)
 
     @addToClass(AST.BinExpr)
     def printTree(self, indent=0):
