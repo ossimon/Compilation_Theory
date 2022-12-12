@@ -62,7 +62,10 @@ def p_instruction(p):
 def p_assignment(p):
     """assignment : ID assignment_operator expression
                   | ref assignment_operator expression"""
-    p[0] = AST.Assign(p[1], p[2], p[3])
+    i = p[1]
+    if isinstance(p[1], str):
+        i = AST.Variable(i)
+    p[0] = AST.Assign(i, p[2], p[3])
 
 
 def p_ref(p):
@@ -80,7 +83,7 @@ def p_assignment_operator(p):
                            | SUBASSIGN
                            | MULASSIGN
                            | DIVASSIGN"""
-    p[0] = p[1]
+    p[0] = AST.Operator(p[1])
 
 
 def p_expression(p):
@@ -101,17 +104,17 @@ def p_num_expression_binary(p):
                   | expression DOTSUB expression
                   | expression DOTMUL expression
                   | expression DOTDIV expression"""
-    p[0] = AST.BinExpr(p[1], p[2], p[3])
+    p[0] = AST.BinExpr(p[1], AST.Operator(p[2]), p[3])
 
 
 def p_expression_negation(p):
     """expression : SUB expression %prec UMINUS"""
-    p[0] = AST.UnExpr(p[2], p[1])
+    p[0] = AST.UnExpr(p[2], AST.Operator(p[1]))
 
 
 def p_expression_transpose(p):
     """expression : expression TRANSPOSE"""
-    p[0] = AST.UnExpr(p[1], p[2])
+    p[0] = AST.UnExpr(p[1], AST.Operator(p[2]))
 
 
 def p_comparison(p):
@@ -126,7 +129,7 @@ def p_comparison_operator(p):
                           | LARGEREQ
                           | NOTEQ
                           | EQ"""
-    p[0] = p[1]
+    p[0] = AST.Operator(p[1])
 
 
 def p_call(p):
@@ -157,7 +160,7 @@ def p_print_inputs2(p):
 def p_print_input(p):
     """print_input : STRING
                    | ID"""
-    p[0] = p[1]
+    p[0] = AST.Variable(p[1])
 
 
 def p_matrix_fun(p):
@@ -169,7 +172,7 @@ def p_fun_name(p):
     """fun_name : EYE
                 | ZEROS
                 | ONES"""
-    p[0] = p[1]
+    p[0] = AST.Operator(p[1])
 
 
 def p_loop(p):
@@ -185,7 +188,7 @@ def p_for(p):
 
 def p_for_expression(p):
     """for_expression : ID ASSIGN range"""
-    p[0] = AST.ForExpr(p[1], p[3])
+    p[0] = AST.ForExpr(AST.Variable(p[1]), p[3])
 
 
 def p_while(p):
@@ -207,29 +210,37 @@ def p_range(p):
     p[0] = AST.ForRange(p[1], p[3])
 
 
-def p_term(p):
-    """term : ID
-            | number
+def p_term1(p):
+    """term : ID"""
+    p[0] = AST.Variable(p[1])
+
+
+def p_term2(p):
+    """term : number
             | matrix
             | string"""
     p[0] = p[1]
 
 
-def p_num_term(p):
-    """num_term : ID
-                | number"""
+def p_num_term1(p):
+    """num_term : ID"""
+    p[0] = AST.Variable(p[1])
+
+
+def p_num_term2(p):
+    """num_term : number"""
     p[0] = p[1]
 
 
 def p_number(p):
     """number : INT
               | FLOAT"""
-    p[0] = p[1]
+    p[0] = AST.Value(p[1])
 
 
 def p_string(p):
     """string : STRING"""
-    p[0] = p[1]
+    p[0] = AST.Value(p[1])
 
 
 def p_matrix1(p):
@@ -276,9 +287,13 @@ def p_vector_contents2(p):
         p[0] = AST.Vector(p[1])
 
 
-def p_vector_content(p):
-    """vector_content : ID
-                      | number"""
+def p_vector_content1(p):
+    """vector_content : ID"""
+    p[0] = AST.Variable(p[1])
+
+
+def p_vector_content2(p):
+    """vector_content : number"""
     p[0] = p[1]
 
 
