@@ -133,17 +133,17 @@ class MatrixFun(Node):
 class Matrix(Node):
     def __init__(self, vectors):
         if hasattr(vectors, '__len__'):
-            self.inputs = vectors
+            self.vectors = vectors
         else:
-            self.inputs = [vectors]
+            self.vectors = [vectors]
 
 
 class Vector(Node):
     def __init__(self, values):
         if hasattr(values, '__len__'):
-            self.inputs = values
+            self.values = values
         else:
-            self.inputs = [values]
+            self.values = [values]
 
 
 class Error(Node):
