@@ -1,18 +1,18 @@
 import ply.lex as lex
 
 tokens = (
-    'DOTADD', 'DOTSUB', 'DOTMUL', 'DOTDIV', # Operatory binarne do macierzy
-    'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ', # Wyrażenia relacyjne
-    'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN', # instrukcję przypisania, w tym różne operatory przypisania
-    'ADD', 'SUB', 'MUL', 'DIV', # Operatory binarne
+    'DOTADD', 'DOTSUB', 'DOTMUL', 'DOTDIV',
+    'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ',
+    'ASSIGN', 'ADDASSIGN', 'SUBASSIGN', 'MULASSIGN', 'DIVASSIGN',
+    'ADD', 'SUB', 'MUL', 'DIV',
     'LPARENT', 'RPARENT', 'LSQBRACK', 'RSQBRACK', 'LCURLBRACK', 'RCURLBRACK',
     'COLON',
-    'TRANSPOSE', # transpozycję macierzy,
+    'TRANSPOSE',
     'SEMICOLON', 'COMMA',
-    'IF', 'ELSE', 'FOR', 'WHILE', # instrukcję warunkową if-else, pętle: while and for,
-    'BREAK', 'CONTINUE', 'RETURN', # instrukcje break, continue oraz return,
-    'EYE', 'ZEROS', 'ONES', # macierzowe funkcje specjalne,
-    'PRINT', # instrukcję print,
+    'IF', 'ELSE', 'FOR', 'WHILE',
+    'BREAK', 'CONTINUE', 'RETURN',
+    'EYE', 'ZEROS', 'ONES',
+    'PRINT',
     'ID',
     'FLOAT',
     'INT',
@@ -48,7 +48,7 @@ t_TRANSPOSE = r"'"
 t_SEMICOLON = r';'
 t_COMMA = r','
 
-t_ignore  = ' \t'
+t_ignore = ' \t'
 t_ignore_COMMENT = r'\#.*'
 
 reserved = {

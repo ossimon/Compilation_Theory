@@ -7,16 +7,16 @@ import numpy as np
 tokens = scanner.tokens
 
 precedence = (
-    ('nonassoc', 'IF'),
-    ('nonassoc', 'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ', 'ELSE'),
+    ('nonassoc', 'IFX'),
+    ('nonassoc', 'ELSE'),
+    ('nonassoc', 'SMALLER', 'LARGER', 'SMALLEREQ', 'LARGEREQ', 'NOTEQ', 'EQ'),
     ('left', 'ADD', 'SUB', 'DOTADD', 'DOTSUB'),
     ('left', 'MUL', 'DIV', 'DOTMUL', 'DOTDIV'),
     ('left', 'UMINUS'),
-    ('right', 'TRANSPOSE') # ????
+    ('left', 'TRANSPOSE')
 )
 
 start = 'program'
-error = False
 
 
 def p_error(p):
@@ -24,7 +24,6 @@ def p_error(p):
         print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
     else:
         print("Unexpected end of input")
-    error = True
 
 
 def p_program(p):
@@ -46,12 +45,7 @@ def p_instruction(p):
 
 def p_assignment(p):
     """assignment : ID assignment_operator expression
-                  | ref assignment_operator expression"""
-
-
-def p_ref(p):
-    """ref : ID LSQBRACK num_term RSQBRACK
-           | ID LSQBRACK num_term COMMA num_term RSQBRACK"""
+                  | ID matrix assignment_operator expression"""
 
 
 def p_assignment_operator(p):
@@ -68,14 +62,14 @@ def p_expression(p):
 
 
 def p_num_expression_binary(p):
-    """expression : expression ADD expression %prec ADD
-                  | expression SUB expression %prec SUB
-                  | expression MUL expression %prec MUL
-                  | expression DIV expression %prec DIV
-                  | expression DOTADD expression %prec ADD
-                  | expression DOTSUB expression %prec SUB
-                  | expression DOTMUL expression %prec MUL
-                  | expression DOTDIV expression %prec DIV"""
+    """expression : expression ADD expression
+                  | expression SUB expression
+                  | expression MUL expression
+                  | expression DIV expression
+                  | expression DOTADD expression
+                  | expression DOTSUB expression
+                  | expression DOTMUL expression
+                  | expression DOTDIV expression"""
 
 
 def p_expression_negation(p):
@@ -84,7 +78,6 @@ def p_expression_negation(p):
 
 def p_expression_transpose(p):
     """expression : expression TRANSPOSE"""
-    p[0] = np.transpose(p[1])
 
 
 def p_comparison(p):
@@ -145,7 +138,7 @@ def p_while(p):
 
 
 def p_branch(p):
-    """branch : IF LPARENT comparison RPARENT instruction %prec IF
+    """branch : IF LPARENT comparison RPARENT instruction %prec IFX
               | IF LPARENT comparison RPARENT instruction ELSE instruction"""
 
 
@@ -165,6 +158,12 @@ def p_num_term(p):
                 | number"""
 
 
+def p_matrix_term(p):
+    """matrix_term : ID
+                   | matrix
+                   | number"""
+
+
 def p_number(p):
     """number : INT
               | FLOAT"""
@@ -175,23 +174,17 @@ def p_string(p):
 
 
 def p_matrix(p):
-    """matrix : LSQBRACK vectors RSQBRACK
-              | vector
+    """matrix : LSQBRACK matrix_contents RSQBRACK
               | matrix_fun"""
 
 
-def p_vectors(p):
-    """vectors : vectors COMMA vector
-               | vector"""
+def p_matrix_contents(p):
+    """matrix_contents : matrix_contents COMMA matrix_content
+                       | matrix_content"""
 
 
-def p_vector(p):
-    """vector : LSQBRACK numbers RSQBRACK"""
-
-
-def p_vector_contents(p):
-    """numbers : numbers COMMA number
-               | num_term"""
+def p_matrix_content(p):
+    """matrix_content : matrix_term"""
 
 
 parser = yacc.yacc()
