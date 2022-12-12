@@ -85,6 +85,10 @@ def p_assignment_operator(p):
 def p_expression(p):
     """expression : term
                   | LPARENT expression RPARENT"""
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = p[1]
 
 
 def p_num_expression_binary(p):
@@ -96,18 +100,22 @@ def p_num_expression_binary(p):
                   | expression DOTSUB expression
                   | expression DOTMUL expression
                   | expression DOTDIV expression"""
+    p[0] = AST.BinExpr(p[1], p[2], p[3])
 
 
 def p_expression_negation(p):
     """expression : SUB expression %prec UMINUS"""
+    p[0] = AST.UnExpr(p[2], p[1])
 
 
 def p_expression_transpose(p):
     """expression : expression TRANSPOSE"""
+    p[0] = AST.UnExpr(p[1], p[2])
 
 
 def p_comparison(p):
     """comparison : expression comparison_operator expression"""
+    p[0] = AST.CompOp(p[1], p[2], p[3])
 
 
 def p_comparison_operator(p):
@@ -117,6 +125,7 @@ def p_comparison_operator(p):
                           | LARGEREQ
                           | NOTEQ
                           | EQ"""
+    p[0] = p[1]
 
 
 def p_call(p):
@@ -124,43 +133,63 @@ def p_call(p):
             | CONTINUE
             | RETURN expression
             | PRINT print_inputs"""
+    if len(p) == 2:
+        p[0] = AST.SysCall(p[1])
+    else:
+        p[0] = AST.SysCall(p[1], p[2])
 
 
-def p_print_inputs(p):
-    """print_inputs : print_inputs COMMA print_input
-                    | print_input"""
+def p_print_inputs1(p):
+    """print_inputs : print_inputs COMMA print_input"""
+    p[0] = p[1]
+    p[0].inputs.append(p[2])
+
+
+def p_print_inputs2(p):
+    """print_inputs : print_input"""
+    if isinstance(p[1], AST.PrintInputs):
+        p[0] = p[1]
+    else:
+        p[0] = AST.PrintInputs(p[1])
 
 
 def p_print_input(p):
     """print_input : STRING
                    | ID"""
+    p[0] = p[1]
 
 
 def p_matrix_fun(p):
     """matrix_fun : fun_name LPARENT expression RPARENT"""
+    p[0] = AST.MatrixFun(p[1], p[3])
 
 
 def p_fun_name(p):
     """fun_name : EYE
                 | ZEROS
                 | ONES"""
+    p[0] = p[1]
 
 
 def p_loop(p):
     """loop : for
             | while"""
+    p[0] = p[1]
 
 
 def p_for(p):
     """for : FOR for_expression instruction"""
+    p[0] = AST.For(p[2], p[3])
 
 
 def p_for_expression(p):
     """for_expression : ID ASSIGN range"""
+    p[0] = AST.ForExpr(p[1], p[3])
 
 
 def p_while(p):
     """while : WHILE LPARENT comparison RPARENT instruction"""
+    p[0] = AST.While(p[3], p[5])
 
 
 def p_branch(p):
@@ -170,6 +199,7 @@ def p_branch(p):
 
 def p_range(p):
     """range : num_term COLON num_term"""
+    p[0] = AST.ForRange(p[1], p[3])
 
 
 def p_term(p):

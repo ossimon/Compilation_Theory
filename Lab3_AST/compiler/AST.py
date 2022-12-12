@@ -53,9 +53,9 @@ class BinExpr(Node):
 
 
 class UnExpr(Node):
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
+    def __init__(self, value, expr):
+        self.value = value
+        self.expr = expr
 
 
 class CompOp(Node):
@@ -87,11 +87,21 @@ class IfElse(Node):
 
 
 class For(Node):
-    def __init__(self, variable, left_range, right_range, instructions):
+    def __init__(self, for_expr, instruction):
+        self.for_expr = for_expr
+        self.instruction = instruction
+
+
+class ForExpr(Node):
+    def __init__(self, variable, for_range):
         self.variable = variable
-        self.left_range = left_range
-        self.right_range = right_range
-        self.instructions = instructions
+        self.range = for_range
+
+
+class ForRange(Node):
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
 
 
 class While(Node):
@@ -106,8 +116,17 @@ class SysCall(Node):
         self.value = value # optional, only for 'return value;'
 
 
-class Print(Node):
-    def __init__(self, value):
+class PrintInputs(Node):
+    def __init__(self, inputs):
+        if hasattr(inputs, '__len__'):
+            self.inputs = inputs
+        else:
+            self.inputs = [inputs]
+
+
+class MatrixFun(Node):
+    def __init__(self, name, value):
+        self.name = name
         self.value = value
 
 
