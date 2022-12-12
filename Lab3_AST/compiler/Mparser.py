@@ -2,7 +2,7 @@
 
 import compiler.scanner as scanner
 import ply.yacc as yacc
-import numpy as np
+import compiler.AST as AST
 
 tokens = scanner.tokens
 
@@ -29,10 +29,21 @@ def p_error(p):
 def p_program(p):
     """program : instructions"""
 
+    p[0] = AST.Program(p[1])
 
-def p_instructions(p):
-    """instructions : instructions instruction
-                    | instruction"""
+
+def p_instructions_1(p):
+    """instructions : instructions instruction"""
+    p[0] = p[1]
+    p[0].instructions.append(p[2])
+
+
+def p_instructions_2(p):
+    """instructions : instruction"""
+    if isinstance(p[1], AST.Instructions):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Instructions(p[1])
 
 
 def p_instruction(p):
@@ -41,11 +52,25 @@ def p_instruction(p):
                    | loop
                    | branch
                    | LCURLBRACK instructions RCURLBRACK"""
+    if len(p) < 4:
+        p[0] = p[1]
+    else:
+        p[0] = p[2]
 
 
 def p_assignment(p):
     """assignment : ID assignment_operator expression
-                  | ID matrix assignment_operator expression"""
+                  | ref assignment_operator expression"""
+    p[0] = AST.Assign(p[1], p[2], p[3])
+
+
+def p_ref(p):
+    """ref : ID LSQBRACK num_term RSQBRACK
+           | ID LSQBRACK num_term COMMA num_term RSQBRACK"""
+    if len(p) == 5:
+        p[0] = AST.Ref(p[3])
+    else:
+        p[0] = AST.Ref(p[3], p[5])
 
 
 def p_assignment_operator(p):
@@ -54,6 +79,7 @@ def p_assignment_operator(p):
                            | SUBASSIGN
                            | MULASSIGN
                            | DIVASSIGN"""
+    p[0] = p[1]
 
 
 def p_expression(p):
