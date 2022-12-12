@@ -29,20 +29,30 @@ class Instructions(Node):
             self.instructions = [instructions]
 
 
-class IntNum(Node):
-    def __init__(self, value):
-        self.value = value
-
-
-class FloatNum(Node):
-
-    def __init__(self, value):
-        self.value = value
-
+# class IntNum(Node):
+#     def __init__(self, value):
+#         self.value = value
+#
+#
+# class FloatNum(Node):
+#
+#     def __init__(self, value):
+#         self.value = value
+#
 
 class Variable(Node):
     def __init__(self, name):
         self.name = name
+
+
+class Value(Node):
+    def __init__(self, value):
+        self.value = value
+
+
+class Operator(Node):
+    def __init__(self, value):
+        self.op = op
 
 
 class BinExpr(Node):
