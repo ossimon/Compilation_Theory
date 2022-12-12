@@ -1,2 +1,5 @@
 *.idea
 *__pycache__
+Notatki
+*parser.out
+*parsertab.py

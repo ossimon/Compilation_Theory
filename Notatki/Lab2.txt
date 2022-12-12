@@ -24,3 +24,6 @@ program -> program block | block
 block -> block struct | struct
 struct - instrukcja
 Jeśli nie wyspecyfikujemy to będzie rozdział programu na instrukcje niejednoznaczne.
+
+- Wyrażenia binarne:
++ 

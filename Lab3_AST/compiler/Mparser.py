@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import scanner
+import compiler.scanner as scanner
 import ply.yacc as yacc
 import numpy as np
 
