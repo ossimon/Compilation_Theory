@@ -1,19 +1,6 @@
 
 class Node(object):
-    # pass
-    count = 0
-
-    def __init__(self, children=None):
-        # self.ID = str(Node.count)
-        # Node.count += 1
-
-        if children is None:
-            self.children = []
-
-        elif hasattr(children, '__len__ '):
-            self.children = children
-        else:
-            self.children = [children]
+    pass
 
 
 class Program(Node):
@@ -28,17 +15,6 @@ class Instructions(Node):
         else:
             self.instructions = [instructions]
 
-
-# class IntNum(Node):
-#     def __init__(self, value):
-#         self.value = value
-#
-#
-# class FloatNum(Node):
-#
-#     def __init__(self, value):
-#         self.value = value
-#
 
 class Variable(Node):
     def __init__(self, name):
@@ -157,5 +133,7 @@ class Vector(Node):
 
 
 class Error(Node):
-    def __init__(self):
-        pass
+    def __init__(self, lineno, type, value):
+        self.lineno = lineno
+        self.type = type
+        self.value = value

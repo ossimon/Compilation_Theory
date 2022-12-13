@@ -11,10 +11,6 @@ def addToClass(cls):
 
 class TreePrinter:
 
-    # @addToClass(AST.Node)
-    # def printTree(self, indent=0):
-    #     raise Exception("printTree not defined in class " + self.__class__.__name__)
-
     @addToClass(AST.Program)
     def printTree(self, indent=0):
         self.instructions.printTree(indent)
@@ -23,16 +19,6 @@ class TreePrinter:
     def printTree(self, indent=0):
         for instruction in self.instructions:
             instruction.printTree(indent)
-
-    # @addToClass(AST.IntNum)
-    # def printTree(self, indent=0):
-    #     print("|  " * indent, end="")
-    #     print(self.value)
-    #
-    # @addToClass(AST.FloatNum)
-    # def printTree(self, indent=0):
-    #     print("|  " * indent, end="")
-    #     print(self.value)
 
     @addToClass(AST.Variable)
     def printTree(self, indent=0):
@@ -168,5 +154,7 @@ class TreePrinter:
 
     @addToClass(AST.Error)
     def printTree(self, indent=0):
-        # nie jestem pewna
-        exit(0)
+        print("|  " * indent, end="")
+        print("ERROR")
+        print("|  " * indent, end="")
+        print(self.lineno, self.type, self.value, sep="|  " * indent)

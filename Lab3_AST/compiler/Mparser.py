@@ -18,14 +18,13 @@ precedence = (
 )
 
 start = 'program'
-error = False
+
 
 def p_error(p):
     if p:
         print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
     else:
         print("Unexpected end of input")
-    error = True
 
 
 def p_program(p):
