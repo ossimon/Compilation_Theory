@@ -1,15 +1,23 @@
 
 class Node(object):
-    pass
+    def __init__(self, children=None):
+        if children is None:
+            self.children = []
+        elif hasattr(children, '__len__'):
+            self.children = children
+        else:
+            self.children = [children]
 
 
 class Program(Node):
     def __init__(self, instructions):
+        super().__init__()
         self.instructions = instructions
 
 
 class Instructions(Node):
     def __init__(self, instructions):
+        super().__init__()
         if hasattr(instructions, '__len__'):
             self.instructions = instructions
         else:
@@ -18,21 +26,25 @@ class Instructions(Node):
 
 class Variable(Node):
     def __init__(self, name):
+        super().__init__()
         self.name = name
 
 
 class Value(Node):
     def __init__(self, value):
+        super().__init__()
         self.value = value
 
 
 class Operator(Node):
     def __init__(self, op):
+        super().__init__()
         self.op = op
 
 
 class BinExpr(Node):
     def __init__(self, left, op, right):
+        super().__init__()
         self.op = op
         self.left = left
         self.right = right
@@ -40,12 +52,14 @@ class BinExpr(Node):
 
 class UnExpr(Node):
     def __init__(self, value, expr):
+        super().__init__()
         self.value = value
         self.expr = expr
 
 
 class CompOp(Node):
     def __init__(self, left, op, right):
+        super().__init__()
         self.left = left
         self.op = op
         self.right = right
@@ -53,6 +67,7 @@ class CompOp(Node):
 
 class Ref(Node):
     def __init__(self, name, val1, val2=None):
+        super().__init__()
         self.name = name
         self.val1 = val1
         self.val2 = val2
@@ -60,6 +75,7 @@ class Ref(Node):
 
 class Assign(Node):
     def __init__(self, left, op, right):
+        super().__init__()
         self.left = left
         self.op = op
         self.right = right
@@ -67,6 +83,7 @@ class Assign(Node):
 
 class IfElse(Node):
     def __init__(self, condition, if_, else_=None):
+        super().__init__()
         self.condition = condition
         self.if_ = if_
         self.else_ = else_
@@ -74,36 +91,42 @@ class IfElse(Node):
 
 class For(Node):
     def __init__(self, for_expr, instruction):
+        super().__init__()
         self.for_expr = for_expr
         self.instruction = instruction
 
 
 class ForExpr(Node):
     def __init__(self, variable, for_range):
+        super().__init__()
         self.variable = variable
         self.range = for_range
 
 
 class ForRange(Node):
     def __init__(self, left, right):
+        super().__init__()
         self.left = left
         self.right = right
 
 
 class While(Node):
     def __init__(self, condition, instructions):
+        super().__init__()
         self.condition = condition
         self.instructions = instructions
 
 
 class SysCall(Node):
     def __init__(self, name, value=None):
+        super().__init__()
         self.name = name
-        self.value = value # optional, only for 'return value;'
+        self.value = value
 
 
 class PrintInputs(Node):
     def __init__(self, inputs):
+        super().__init__()
         if hasattr(inputs, '__len__'):
             self.inputs = inputs
         else:
@@ -112,12 +135,14 @@ class PrintInputs(Node):
 
 class MatrixFun(Node):
     def __init__(self, name, value):
+        super().__init__()
         self.name = name
         self.value = value
 
 
 class Matrix(Node):
     def __init__(self, vectors):
+        super().__init__()
         if hasattr(vectors, '__len__'):
             self.vectors = vectors
         else:
@@ -126,6 +151,7 @@ class Matrix(Node):
 
 class Vector(Node):
     def __init__(self, values):
+        super().__init__()
         if hasattr(values, '__len__'):
             self.values = values
         else:
