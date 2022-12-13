@@ -9,6 +9,11 @@ def addToClass(cls):
     return decorator
 
 
+def printWIthIndent(value, indent):
+    print("|  " * indent, end="")
+    print(value)
+
+
 class TreePrinter:
 
     @addToClass(AST.Program)
@@ -22,44 +27,36 @@ class TreePrinter:
 
     @addToClass(AST.Variable)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.name)
+        printWIthIndent(self.name, indent)
 
     @addToClass(AST.Value)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.value)
+        printWIthIndent(self.value, indent)
 
     @addToClass(AST.Operator)
     def printTree(self, indent=0):
-
-        print("|  " * indent, end="")
-        print(self.op)
+        printWIthIndent(self.op, indent)
 
     @addToClass(AST.BinExpr)
     def printTree(self, indent=0):
         self.op.printTree(indent)
-
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
 
     @addToClass(AST.UnExpr)
     def printTree(self, indent=0):
-        # print("|  " * indent, end="")
         self.expr.printTree(indent)
         self.value.printTree(indent + 1)
 
     @addToClass(AST.CompOp)
     def printTree(self, indent=0):
         self.op.printTree(indent)
-
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
 
     @addToClass(AST.Ref)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("REF")
+        printWIthIndent("REF", indent)
 
         self.name.printTree(indent + 1)
         self.val1.printTree(indent + 1)
@@ -69,29 +66,24 @@ class TreePrinter:
     @addToClass(AST.Assign)
     def printTree(self, indent=0):
         self.op.printTree(indent)
-
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
 
     @addToClass(AST.IfElse)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("IF")
+        printWIthIndent("IF", indent)
         self.condition.printTree(indent + 1)
 
-        print("|  " * indent, end="")
-        print("THEN")
+        printWIthIndent("THEN", indent)
         self.if_.printTree(indent + 1)
 
         if self.else_ is not None:
-            print("|  " * indent, end="")
-            print("ELSE")
+            printWIthIndent("ELSE", indent)
             self.else_.printTree(indent + 1)
 
     @addToClass(AST.For)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("FOR")
+        printWIthIndent("FOR", indent)
 
         self.for_expr.printTree(indent + 1)
         self.instruction.printTree(indent + 1)
@@ -103,33 +95,28 @@ class TreePrinter:
 
     @addToClass(AST.ForRange)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("RANGE")
+        printWIthIndent("RANGE", indent)
 
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
 
     @addToClass(AST.While)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("WHILE")
+        printWIthIndent("WHILE", indent)
 
         self.condition.printTree(indent + 1)
         self.instructions.printTree(indent + 1)
 
     @addToClass(AST.SysCall)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        # self.name.printTree(indent)
-        print(self.name)
+        printWIthIndent(self.name, indent)
 
         if self.value is not None:
             self.value.printTree(indent)
 
     @addToClass(AST.PrintInputs)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("PRINT")
+        printWIthIndent("PRINT", indent)
         for input in self.inputs:
             input.printTree(indent + 1)
 
@@ -140,21 +127,12 @@ class TreePrinter:
 
     @addToClass(AST.Matrix)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("VECTOR")
+        printWIthIndent("VECTOR", indent)
         for vector in self.vectors:
             vector.printTree(indent + 1)
 
     @addToClass(AST.Vector)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("VECTOR")
+        printWIthIndent("VECTOR", indent)
         for value in self.values:
             value.printTree(indent + 1)
-
-    @addToClass(AST.Error)
-    def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print("ERROR")
-        print("|  " * indent, end="")
-        print(self.lineno, self.type, self.value, sep="|  " * indent)

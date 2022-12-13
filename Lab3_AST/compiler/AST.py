@@ -130,10 +130,3 @@ class Vector(Node):
             self.values = values
         else:
             self.values = [values]
-
-
-class Error(Node):
-    def __init__(self, lineno, type, value):
-        self.lineno = lineno
-        self.type = type
-        self.value = value
