@@ -51,8 +51,7 @@ class TreePrinter:
 
     @addToClass(AST.BinExpr)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.op)
+        self.op.printTree(indent)
 
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
@@ -66,8 +65,7 @@ class TreePrinter:
 
     @addToClass(AST.CompOp)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.op)
+        self.op.printTree(indent)
 
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
@@ -84,8 +82,7 @@ class TreePrinter:
 
     @addToClass(AST.Assign)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.op)
+        self.op.printTree(indent)
 
         self.left.printTree(indent + 1)
         self.right.printTree(indent + 1)
