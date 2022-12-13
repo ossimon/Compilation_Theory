@@ -46,6 +46,7 @@ class TreePrinter:
 
     @addToClass(AST.Operator)
     def printTree(self, indent=0):
+
         print("|  " * indent, end="")
         print(self.op)
 
@@ -58,9 +59,8 @@ class TreePrinter:
 
     @addToClass(AST.UnExpr)
     def printTree(self, indent=0):
-        print("|  " * indent, end="")
-        print(self.expr)
-
+        # print("|  " * indent, end="")
+        self.expr.printTree(indent)
         self.value.printTree(indent + 1)
 
     @addToClass(AST.CompOp)
@@ -145,13 +145,12 @@ class TreePrinter:
         print("|  " * indent, end="")
         print("PRINT")
         for input in self.inputs:
-            # input.printTree(indent + 1)
-            print(input)
+            input.printTree(indent + 1)
 
     @addToClass(AST.MatrixFun)
     def printTree(self, indent=0):
         self.name.printTree(indent)
-        self.value.printTree(indent)
+        self.value.printTree(indent + 1)
 
     @addToClass(AST.Matrix)
     def printTree(self, indent=0):

@@ -18,13 +18,14 @@ precedence = (
 )
 
 start = 'program'
-
+error = False
 
 def p_error(p):
     if p:
         print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
     else:
         print("Unexpected end of input")
+    error = True
 
 
 def p_program(p):
@@ -72,9 +73,9 @@ def p_ref(p):
     """ref : ID LSQBRACK num_term RSQBRACK
            | ID LSQBRACK num_term COMMA num_term RSQBRACK"""
     if len(p) == 5:
-        p[0] = AST.Ref(p[3])
+        p[0] = AST.Ref(AST.Variable(p[1]), p[3])
     else:
-        p[0] = AST.Ref(p[3], p[5])
+        p[0] = AST.Ref(AST.Variable(p[1]), p[3], p[5])
 
 
 def p_assignment_operator(p):
@@ -138,21 +139,28 @@ def p_comparison_operator(p):
         p[0] = AST.Operator(p[1])
 
 
-def p_call(p):
+def p_call1(p):
     """call : BREAK
             | CONTINUE
-            | RETURN expression
-            | PRINT print_inputs"""
+            | RETURN expression"""
     if len(p) == 2:
         p[0] = AST.SysCall(p[1])
     else:
         p[0] = AST.SysCall(p[1], p[2])
 
 
+def p_call2(p):
+    """call : PRINT print_inputs"""
+    p[0] = p[2]
+
+
 def p_print_inputs1(p):
     """print_inputs : print_inputs COMMA print_input"""
     p[0] = p[1]
-    p[0].inputs.append(p[2])
+    new_input = p[3]
+    if not isinstance(new_input, AST.Variable):
+        new_input = AST.Variable(new_input)
+    p[0].inputs.append(new_input)
 
 
 def p_print_inputs2(p):
@@ -294,6 +302,7 @@ def p_vectors2(p):
 
 def p_vector(p):
     """vector : LSQBRACK vector_contents RSQBRACK"""
+    p[0] = p[2]
 
 
 def p_vector_contents1(p):
