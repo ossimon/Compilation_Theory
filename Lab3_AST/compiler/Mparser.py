@@ -83,7 +83,10 @@ def p_assignment_operator(p):
                            | SUBASSIGN
                            | MULASSIGN
                            | DIVASSIGN"""
-    p[0] = AST.Operator(p[1])
+    if isinstance(p[1], AST.Operator):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Operator(p[1])
 
 
 def p_expression(p):
@@ -129,7 +132,10 @@ def p_comparison_operator(p):
                           | LARGEREQ
                           | NOTEQ
                           | EQ"""
-    p[0] = AST.Operator(p[1])
+    if isinstance(p[1], AST.Operator):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Operator(p[1])
 
 
 def p_call(p):
@@ -160,7 +166,10 @@ def p_print_inputs2(p):
 def p_print_input(p):
     """print_input : STRING
                    | ID"""
-    p[0] = AST.Variable(p[1])
+    if isinstance(p[1], AST.Variable):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Variable(p[1])
 
 
 def p_matrix_fun(p):
@@ -172,7 +181,10 @@ def p_fun_name(p):
     """fun_name : EYE
                 | ZEROS
                 | ONES"""
-    p[0] = AST.Operator(p[1])
+    if isinstance(p[1], AST.Operator):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Operator(p[1])
 
 
 def p_loop(p):
@@ -212,7 +224,10 @@ def p_range(p):
 
 def p_term1(p):
     """term : ID"""
-    p[0] = AST.Variable(p[1])
+    if isinstance(p[1], AST.Variable):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Variable(p[1])
 
 
 def p_term2(p):
@@ -224,7 +239,10 @@ def p_term2(p):
 
 def p_num_term1(p):
     """num_term : ID"""
-    p[0] = AST.Variable(p[1])
+    if isinstance(p[1], AST.Variable):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Variable(p[1])
 
 
 def p_num_term2(p):
@@ -235,12 +253,18 @@ def p_num_term2(p):
 def p_number(p):
     """number : INT
               | FLOAT"""
-    p[0] = AST.Value(p[1])
+    if isinstance(p[1], AST.Value):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Value(p[1])
 
 
 def p_string(p):
     """string : STRING"""
-    p[0] = AST.Value(p[1])
+    if isinstance(p[1], AST.Value):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Value(p[1])
 
 
 def p_matrix1(p):
@@ -289,7 +313,10 @@ def p_vector_contents2(p):
 
 def p_vector_content1(p):
     """vector_content : ID"""
-    p[0] = AST.Variable(p[1])
+    if isinstance(p[1], AST.Variable):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Variable(p[1])
 
 
 def p_vector_content2(p):

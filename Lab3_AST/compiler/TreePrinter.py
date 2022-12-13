@@ -112,7 +112,7 @@ class TreePrinter:
 
     @addToClass(AST.ForExpr)
     def printTree(self, indent=0):
-        self.varaible.printTree(indent)
+        self.variable.printTree(indent)
         self.range.printTree(indent)
 
     @addToClass(AST.ForRange)
@@ -120,21 +120,22 @@ class TreePrinter:
         print("|  " * indent, end="")
         print("RANGE")
 
-        self.condition.printTree(indent + 1)
-        self.instructions.printTree(indent + 1)
+        self.left.printTree(indent + 1)
+        self.right.printTree(indent + 1)
 
     @addToClass(AST.While)
     def printTree(self, indent=0):
         print("|  " * indent, end="")
         print("WHILE")
 
-        self.left.printTree(indent + 1)
-        self.right.printTree(indent + 1)
+        self.condition.printTree(indent + 1)
+        self.instructions.printTree(indent + 1)
 
     @addToClass(AST.SysCall)
     def printTree(self, indent=0):
         print("|  " * indent, end="")
-        self.name.printTree(indent)
+        # self.name.printTree(indent)
+        print(self.name)
 
         if self.value is not None:
             self.value.printTree(indent)
@@ -144,7 +145,8 @@ class TreePrinter:
         print("|  " * indent, end="")
         print("PRINT")
         for input in self.inputs:
-            input.printTree(indent + 1)
+            # input.printTree(indent + 1)
+            print(input)
 
     @addToClass(AST.MatrixFun)
     def printTree(self, indent=0):
