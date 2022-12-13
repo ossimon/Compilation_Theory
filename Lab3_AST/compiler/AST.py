@@ -51,7 +51,7 @@ class Value(Node):
 
 
 class Operator(Node):
-    def __init__(self, value):
+    def __init__(self, op):
         self.op = op
 
 
