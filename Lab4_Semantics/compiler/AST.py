@@ -31,8 +31,9 @@ class Variable(Node):
 
 
 class Value(Node):
-    def __init__(self, value):
+    def __init__(self, type, value):
         super().__init__()
+        self.type = type
         self.value = value
 
 

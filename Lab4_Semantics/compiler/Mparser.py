@@ -257,13 +257,20 @@ def p_num_term2(p):
     p[0] = p[1]
 
 
-def p_number(p):
-    """number : INT
-              | FLOAT"""
+def p_number1(p):
+    """number : INT"""
     if isinstance(p[1], AST.Value):
         p[0] = p[1]
     else:
-        p[0] = AST.Value(p[1])
+        p[0] = AST.Value('INT', p[1])
+
+
+def p_number2(p):
+    """number : FLOAT"""
+    if isinstance(p[1], AST.Value):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Value('FLOAT', p[1])
 
 
 def p_string(p):
@@ -271,7 +278,7 @@ def p_string(p):
     if isinstance(p[1], AST.Value):
         p[0] = p[1]
     else:
-        p[0] = AST.Value(p[1])
+        p[0] = AST.Value('STRING', p[1])
 
 
 def p_matrix1(p):

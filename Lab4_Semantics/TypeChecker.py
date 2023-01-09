@@ -44,7 +44,7 @@ class TypeChecker(NodeVisitor):
         pass
 
     def visit_Value(self, node):
-        pass
+        return node.type
 
     def visit_Operator(self, node):
         pass
