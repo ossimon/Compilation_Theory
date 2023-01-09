@@ -37,7 +37,7 @@ class TypeChecker(NodeVisitor):
     def visit_Instructions(self, node):
         pass
 
-    def visit_Varaible(self, node):
+    def visit_Variable(self, node):
         pass
 
     def visit_Value(self, node):
@@ -80,19 +80,24 @@ class TypeChecker(NodeVisitor):
         pass
 
     def visit_While(self, node):
-        pass
+        type1 = self.visit(node.condition)
+        type2 = self.visit(node.instructions)
 
     def visit_Call(self, node):
-        pass
+        value_type = self.visit(node.value)
 
     def visit_PrintInputs(self, node):
-        pass
+        for inp in node.inputs:
+            input_type = self.visit(inp)
 
     def visit_MatrixFun(self, node):
-        pass
+        fun_name = node.name
+        value_type = self.visit(node.value)
 
     def visit_Matrix(self, node):
-        pass
+        for vector in node.vectors:
+            self.visit(vector)
 
     def visit_Vector(self, node):
-        pass
+        for value in node.values:
+            self.visit(value)
