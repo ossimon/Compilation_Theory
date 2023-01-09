@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from compiler import AST
-import SymbolTable
+from SymbolTable import SymbolTable
 
 
 class NodeVisitor(object):
@@ -30,12 +30,15 @@ class NodeVisitor(object):
 
 
 class TypeChecker(NodeVisitor):
+    def __init__(self):
+        self.symbol_table = SymbolTable(name='global')
 
     def visit_Program(self, node):
-        pass
+        self.visit(node.instructions)
 
     def visit_Instructions(self, node):
-        pass
+        for instruction in node.instructions:
+            self.visit(instruction)
 
     def visit_Variable(self, node):
         pass
@@ -47,37 +50,46 @@ class TypeChecker(NodeVisitor):
         pass
 
     def visit_BinExpr(self, node):
-        # alternative usage,
-        # requires definition of accept method in class Node
-        type1 = self.visit(node.left)  # type1 = node.left.accept(self)
-        type2 = self.visit(node.right)  # type2 = node.right.accept(self)
-        op = node.op
+        type1 = self.visit(node.left)
+        type2 = self.visit(node.right)
+        op = self.visit(node.op)
         # ...
         #
 
     def visit_UnExpr(self, node):
-        pass
+        type = self.visit(node.value)
+        expr = self.visit(node.expr)
 
     def visit_CompOp(self, node):
-        pass
+        type1 = self.visit(node.left)
+        type2 = self.visit(node.right)
+        op = self.visit(node.op)
 
     def visit_Ref(self, node):
-        pass
+        name = self.visit(node.name)
+        val1 = self.visit(node.val1)
+        val2 = self.visit(node.val2)
 
     def visit_Assign(self, node):
-        pass
+        type1 = self.visit(node.left)
+        type2 = self.visit(node.right)
+        op = self.visit(node.op)
 
     def visit_IfElse(self, node):
-        pass
+        condition = self.visit(node.condition)
+
 
     def visit_For(self, node):
-        pass
+        for_expr = self.visit(node.for_expr)
+        instruction = self.visit(node.instruction)
 
     def visit_ForExpr(self, node):
-        pass
+        variable = self.visit(node.variable)
+        range = self.visit(node.range)
 
     def visit_ForRange(self, node):
-        pass
+        left = self.visit(node.left)
+        right = self.visit(node.right)
 
     def visit_While(self, node):
         type1 = self.visit(node.condition)
