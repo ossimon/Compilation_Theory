@@ -1,16 +1,16 @@
 #!/usr/bin/python
 from collections import defaultdict
 
-
-class Symbol(object):
-    pass
-
-
-class VariableSymbol(Symbol):
-
-    def __init__(self, name, type):
-        self.name = name
-        self.type = type
+#
+# class Symbol(object):
+#     pass
+#
+#
+# class VariableSymbol(Symbol):
+#
+#     def __init__(self, name, type):
+#         self.name = name
+#         self.type = type
 
 
 class SymbolTable(object):
@@ -41,4 +41,3 @@ class SymbolTable(object):
     def popScope(self):
         self.symbols = None
         return self.parent
-

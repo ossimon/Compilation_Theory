@@ -117,7 +117,7 @@ class While(Node):
         self.instructions = instructions
 
 
-class SysCall(Node):
+class Call(Node):
     def __init__(self, name, value=None):
         super().__init__()
         self.name = name

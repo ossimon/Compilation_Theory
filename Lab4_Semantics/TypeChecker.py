@@ -1,4 +1,6 @@
 #!/usr/bin/python
+from compiler import AST
+import SymbolTable
 
 
 class NodeVisitor(object):
@@ -29,6 +31,21 @@ class NodeVisitor(object):
 
 class TypeChecker(NodeVisitor):
 
+    def visit_Program(self, node):
+        pass
+
+    def visit_Instructions(self, node):
+        pass
+
+    def visit_Varaible(self, node):
+        pass
+
+    def visit_Value(self, node):
+        pass
+
+    def visit_Operator(self, node):
+        pass
+
     def visit_BinExpr(self, node):
         # alternative usage,
         # requires definition of accept method in class Node
@@ -38,7 +55,44 @@ class TypeChecker(NodeVisitor):
         # ...
         #
 
-    def visit_Variable(self, node):
+    def visit_UnExpr(self, node):
         pass
 
+    def visit_CompOp(self, node):
+        pass
 
+    def visit_Ref(self, node):
+        pass
+
+    def visit_Assign(self, node):
+        pass
+
+    def visit_IfElse(self, node):
+        pass
+
+    def visit_For(self, node):
+        pass
+
+    def visit_ForExpr(self, node):
+        pass
+
+    def visit_ForRange(self, node):
+        pass
+
+    def visit_While(self, node):
+        pass
+
+    def visit_Call(self, node):
+        pass
+
+    def visit_PrintInputs(self, node):
+        pass
+
+    def visit_MatrixFun(self, node):
+        pass
+
+    def visit_Matrix(self, node):
+        pass
+
+    def visit_Vector(self, node):
+        pass

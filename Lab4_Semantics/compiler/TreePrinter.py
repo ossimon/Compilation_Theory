@@ -107,7 +107,7 @@ class TreePrinter:
         self.condition.printTree(indent + 1)
         self.instructions.printTree(indent + 1)
 
-    @addToClass(AST.SysCall)
+    @addToClass(AST.Call)
     def printTree(self, indent=0):
         printWIthIndent(self.name, indent)
 
