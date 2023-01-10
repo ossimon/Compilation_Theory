@@ -183,8 +183,14 @@ class TypeChecker(NodeVisitor):
             input_type = self.visit(inp)
 
     def visit_MatrixFun(self, node):
-        fun_name = node.name
+        name = node.name
         value_type = self.visit(node.value)
+
+        if value_type != t_int:
+            print("Type", value_type, "cannot be an argument of function", name, 'in line', node.lineno)
+            return
+
+        return t_matrix
 
     def visit_Matrix(self, node):
         size = len(node.vectors[0].values)
