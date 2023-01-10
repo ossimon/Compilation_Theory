@@ -1,5 +1,7 @@
-
+x+=0;
 x=0;
+x/=0;
+x = "halo";
 
 while(k>0) {
     break;

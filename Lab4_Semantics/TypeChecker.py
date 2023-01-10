@@ -7,7 +7,7 @@ t_float = 'FLOAT'
 t_str = "STRING"
 t_var = t_str
 t_numerical = {t_int, t_float}
-t_binary_op_result = {t_int: {t_int: t_int, t_float: t_float}, t_float: {t_int: t_float, t_int: t_float}}
+t_binary_op_result = {t_int: {t_int: t_int, t_float: t_float}, t_float: {t_int: t_float, t_float: t_float}}
 
 t_matrix_ops = {'.+', '.-', '.*', './'}
 t_comparison_ops = {'<', '>', '<=', '>=', '==', '!='}
@@ -89,7 +89,7 @@ class TypeChecker(NodeVisitor):
             self.visit(instruction)
 
     def visit_Variable(self, node):
-        pass
+        return self.symbol_table.get(node.name)
 
     def visit_Value(self, node):
         return node.type
@@ -105,24 +105,20 @@ class TypeChecker(NodeVisitor):
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = self.visit(node.op)
-
-        if node.op in t_binary_ops:
-            if type1 not in t_numerical:
-                print(type1 + "nonnumerical value" + op)
-            if type2 not in t_numerical:
-                print(type2 + "nonnumerical value" + op)
+        # print(type1, type2, op)
+        if op in t_binary_ops:
+            if type1 not in t_numerical or type2 not in t_numerical:
+                print("Cannot use", op, 'between types', type1, 'and', type2, 'in line', node.lineno)
             elif type1 in t_numerical and type2 in t_numerical:
                 return t_binary_op_result[type1][type2]
-        elif node.op in t_matrix_ops:
-            if type1 != t_matrix:
-                print(type1 + "not a matrix" + op)
-            if type2 != t_matrix:
-                print(type2 + "not a matrix" + op)
-            elif type1 == t_matrix and type2 == t_matrix:
+        elif op in t_matrix_ops:
+            if type1 != t_matrix or type2 != t_matrix:
+                print("Cannot use", op, 'between types', type1, 'and', type2, 'in line', node.lineno)
+            else:
                 print("tu to sprawdzanie wymiarów")
                 self.__check_matrix_dims(node.left, node.right)
         else:
-            print("co to tu robi")
+            print("co to tu robi", node.lineno)
 
     def visit_UnExpr(self, node):
         type = self.visit(node.value)
@@ -142,6 +138,9 @@ class TypeChecker(NodeVisitor):
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = self.visit(node.op)
+        if type1 is None and op in t_assignment_ops and node.op.op != '=':
+            print('Can\'t use', node.op.op, 'operator on an unassigned variable in line', node.lineno)
+        self.symbol_table.put(node.left.name, type2)
 
     def visit_IfElse(self, node):
         condition = self.visit(node.condition)

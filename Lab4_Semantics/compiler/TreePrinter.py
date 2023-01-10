@@ -48,7 +48,7 @@ class TreePrinter:
         self.expr.printTree(indent)
         self.value.printTree(indent + 1)
 
-    @addToClass(AST.CompOp)
+    @addToClass(AST.Comp)
     def printTree(self, indent=0):
         self.op.printTree(indent)
         self.left.printTree(indent + 1)

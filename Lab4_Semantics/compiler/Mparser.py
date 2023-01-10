@@ -66,6 +66,7 @@ def p_assignment(p):
     if isinstance(p[1], str):
         i = AST.Variable(i)
     p[0] = AST.Assign(i, p[2], p[3])
+    p[0].lineno = p.lineno(1)
 
 
 def p_ref(p):
@@ -108,6 +109,7 @@ def p_num_expression_binary(p):
                   | expression DOTMUL expression
                   | expression DOTDIV expression"""
     p[0] = AST.BinExpr(p[1], AST.Operator(p[2]), p[3])
+    p[0].lineno = p.lineno(2)
 
 
 def p_expression_negation(p):
@@ -122,7 +124,7 @@ def p_expression_transpose(p):
 
 def p_comparison(p):
     """comparison : expression comparison_operator expression"""
-    p[0] = AST.CompOp(p[1], p[2], p[3])
+    p[0] = AST.Comp(p[1], p[2], p[3])
 
 
 def p_comparison_operator(p):

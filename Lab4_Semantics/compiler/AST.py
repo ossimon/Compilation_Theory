@@ -1,7 +1,7 @@
 
 class Node(object):
     def __init__(self, children=None):
-        self.lineno = None
+        self.lineno = -1
         if children is None:
             self.children = []
         elif hasattr(children, '__len__'):
