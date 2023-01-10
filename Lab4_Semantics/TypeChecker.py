@@ -17,6 +17,7 @@ t_unary_ops = {'-', "'"}
 t_matrix_function_names = {'zeros', 'ones', 'eye'}
 
 t_matrix = "MATRIX"
+t_vector = "VECTOR"
 # t_Row_list = t_Matrix
 # t_Vector = "Vector"
 # t_Num_list = t_Vector
@@ -99,7 +100,11 @@ class TypeChecker(NodeVisitor):
 
     def __check_matrix_dims(self, matrix1, matrix2):
         if len(matrix1) != len(matrix2):
-            pass
+            return False
+        if len(matrix1) > 0:
+            if len(matrix1[0]) != len(matrix2):
+                return False
+        return True
 
     def visit_BinExpr(self, node):
         type1 = self.visit(node.left)
@@ -115,8 +120,10 @@ class TypeChecker(NodeVisitor):
             if type1 != t_matrix or type2 != t_matrix:
                 print("Cannot use", op, 'between types', type1, 'and', type2, 'in line', node.lineno)
             else:
-                print("tu to sprawdzanie wymiarów")
-                self.__check_matrix_dims(node.left, node.right)
+                if not self.__check_matrix_dims(node.left, node.right):
+                    print("matrixes are not the same size")
+                else:
+                    return t_matrix
         else:
             print("co to tu robi", node.lineno)
 
@@ -180,10 +187,23 @@ class TypeChecker(NodeVisitor):
         value_type = self.visit(node.value)
 
     def visit_Matrix(self, node):
-        # sprawdzić czy wszystkie wektory są tych samych rozmiarów jak nie to wywalić błąd
+        size = len(node.vectors[0].values)
+        is_ok = True
         for vector in node.vectors:
-            self.visit(vector)
+            vector_type = self.visit(vector)
+            if vector_type != t_vector:
+                print(vector_type + "matrix should contain only vectors")
+                continue
+            if size != len(vector.values):
+                print("matrix contains vectors of different size")
 
     def visit_Vector(self, node):
+        numerical = True
         for value in node.values:
-            self.visit(value)
+            val_type = self.visit(value)
+            if val_type not in t_numerical:
+                print(val_type + "matrix can't contain nonnumerical values")
+                numerical = False
+
+        if numerical:
+            return t_vector
