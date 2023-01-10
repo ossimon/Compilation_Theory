@@ -59,7 +59,7 @@ class UnExpr(Node):
         self.expr = expr
 
 
-class CompOp(Node):
+class Comp(Node):
     def __init__(self, left, op, right):
         super().__init__()
         self.left = left

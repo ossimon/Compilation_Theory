@@ -2,6 +2,54 @@
 from compiler import AST
 from SymbolTable import SymbolTable
 
+t_int = 'INT'
+t_float = 'FLOAT'
+t_str = "STRING"
+t_var = t_str
+t_numerical = {t_int, t_float}
+t_binary_op_result = {t_int: {t_int: t_int, t_float: t_float}, t_float: {t_int: t_float, t_int: t_float}}
+
+t_matrix_ops = {'.+', '.-', '.*', './'}
+t_comparison_ops = {'<', '>', '<=', '>=', '==', '!='}
+t_assignment_ops = {'/=', '+=', '-=', '*=', '='}
+t_binary_ops = {'+', '-', '*', '/'}
+t_unary_ops = {'-', "'"}
+t_matrix_function_names = {'zeros', 'ones', 'eye'}
+
+t_matrix = "MATRIX"
+# t_Row_list = t_Matrix
+# t_Vector = "Vector"
+# t_Num_list = t_Vector
+# t_Bool = "Boolean"
+# t_None = "None"
+# t_Variable = Union[
+#     t_Int,
+#     t_Float,
+#     t_Str,
+#     t_Matrix,
+#     t_Vector,
+#     t_Bool
+# ]
+# t_VisitReturn = Union[
+#     t_Variable,
+#     t_var
+# ]
+
+# std_operation_type_table = {
+#     t_Int: {
+#         t_Float: t_Float,
+#         t_Int: t_Int
+#     },
+#     t_Float: {
+#         t_Float: t_Float,
+#         t_Int: t_Float
+#     }
+# }
+#
+# type_table = {
+#     op: std_operation_type_table for op in t_Binary_ops
+# }
+
 
 class NodeVisitor(object):
 
@@ -47,20 +95,40 @@ class TypeChecker(NodeVisitor):
         return node.type
 
     def visit_Operator(self, node):
-        pass
+        return node.op
+
+    def __check_matrix_dims(self, matrix1, matrix2):
+        if len(matrix1) != len(matrix2):
+            pass
 
     def visit_BinExpr(self, node):
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = self.visit(node.op)
-        # ...
-        #
+
+        if node.op in t_binary_ops:
+            if type1 not in t_numerical:
+                print(type1 + "nonnumerical value" + op)
+            if type2 not in t_numerical:
+                print(type2 + "nonnumerical value" + op)
+            elif type1 in t_numerical and type2 in t_numerical:
+                return t_binary_op_result[type1][type2]
+        elif node.op in t_matrix_ops:
+            if type1 != t_matrix:
+                print(type1 + "not a matrix" + op)
+            if type2 != t_matrix:
+                print(type2 + "not a matrix" + op)
+            elif type1 == t_matrix and type2 == t_matrix:
+                print("tu to sprawdzanie wymiarów")
+                self.__check_matrix_dims(node.left, node.right)
+        else:
+            print("co to tu robi")
 
     def visit_UnExpr(self, node):
         type = self.visit(node.value)
         expr = self.visit(node.expr)
 
-    def visit_CompOp(self, node):
+    def visit_Comp(self, node):
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = self.visit(node.op)
@@ -113,6 +181,7 @@ class TypeChecker(NodeVisitor):
         value_type = self.visit(node.value)
 
     def visit_Matrix(self, node):
+        # sprawdzić czy wszystkie wektory są tych samych rozmiarów jak nie to wywalić błąd
         for vector in node.vectors:
             self.visit(vector)
 
