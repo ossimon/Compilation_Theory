@@ -193,9 +193,14 @@ class TypeChecker(NodeVisitor):
             vector_type = self.visit(vector)
             if vector_type != t_vector:
                 print(vector_type + "matrix should contain only vectors")
+                is_ok = False
                 continue
             if size != len(vector.values):
                 print("matrix contains vectors of different size")
+                is_ok = False
+
+        if is_ok:
+            return t_matrix
 
     def visit_Vector(self, node):
         numerical = True
