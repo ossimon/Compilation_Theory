@@ -41,3 +41,12 @@ class SymbolTable(object):
     def popScope(self):
         self.symbols = None
         return self.parent
+
+    def inLoop(self):
+        if self.name in ['FOR', 'WHILE']:
+            return True
+
+        if self.parent is None:
+            return False
+
+        return self.parent.inLoop()

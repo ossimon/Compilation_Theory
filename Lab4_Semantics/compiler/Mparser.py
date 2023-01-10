@@ -143,9 +143,11 @@ def p_call1(p):
             | CONTINUE
             | RETURN expression"""
     if len(p) == 2:
-        p[0] = AST.SysCall(p[1])
+        p[0] = AST.Call(p[1].upper())
     else:
-        p[0] = AST.SysCall(p[1], p[2])
+        p[0] = AST.Call(p[1].upper(), p[2])
+
+    p[0].lineno = p.lineno(1)
 
 
 def p_call2(p):
@@ -241,6 +243,11 @@ def p_term2(p):
     """term : number
             | matrix
             | string"""
+    p[0] = p[1]
+
+
+def p_term3(p):
+    """term : ref"""
     p[0] = p[1]
 
 

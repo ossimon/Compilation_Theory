@@ -78,10 +78,11 @@ class TypeChecker(NodeVisitor):
     def visit_IfElse(self, node):
         condition = self.visit(node.condition)
 
-
     def visit_For(self, node):
         for_expr = self.visit(node.for_expr)
+        self.symbol_table = self.symbol_table.pushScope('FOR')
         instruction = self.visit(node.instruction)
+        self.symbol_table = self.symbol_table.popScope()
 
     def visit_ForExpr(self, node):
         variable = self.visit(node.variable)
@@ -93,10 +94,15 @@ class TypeChecker(NodeVisitor):
 
     def visit_While(self, node):
         type1 = self.visit(node.condition)
+        self.symbol_table = self.symbol_table.pushScope('WHILE')
         type2 = self.visit(node.instructions)
+        self.symbol_table = self.symbol_table.popScope()
 
     def visit_Call(self, node):
-        value_type = self.visit(node.value)
+        if node.name in ['BREAK', 'CONTINUE'] and not self.symbol_table.inLoop():
+            print(node.name, 'usage outside of loop in line', node.lineno)
+        if node.value is not None:
+            value_type = self.visit(node.value)
 
     def visit_PrintInputs(self, node):
         for inp in node.inputs:
