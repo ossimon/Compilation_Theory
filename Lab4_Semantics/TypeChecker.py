@@ -187,7 +187,7 @@ class TypeChecker(NodeVisitor):
         value_type = self.visit(node.value)
 
         if value_type != t_int:
-            print("Type", value_type, "cannot be an argument of function", name, 'in line', node.lineno)
+            print("Type", value_type, "cannot be an argument of function", name.op, 'in line', node.lineno)
             return
 
         return t_matrix

@@ -186,6 +186,7 @@ def p_print_input(p):
 def p_matrix_fun(p):
     """matrix_fun : fun_name LPARENT expression RPARENT"""
     p[0] = AST.MatrixFun(p[1], p[3])
+    p[0].lineno = p.lineno(2)
 
 
 def p_fun_name(p):
@@ -297,10 +298,14 @@ def p_matrix1(p):
 
 
 def p_matrix2(p):
-    """matrix : matrix_fun
-              | vector"""
+    """matrix : vector"""
     p[0] = p[1]
     p[0].lineno = p.lineno(0)
+
+
+def p_matrix3(p):
+    """matrix : matrix_fun"""
+    p[0] = p[1]
 
 
 def p_vectors1(p):
