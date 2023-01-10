@@ -299,7 +299,10 @@ def p_matrix1(p):
 
 def p_matrix2(p):
     """matrix : vector"""
-    p[0] = p[1]
+    if isinstance(p[1], AST.Matrix):
+        p[0] = p[1]
+    else:
+        p[0] = AST.Matrix(p[1])
     p[0].lineno = p.lineno(0)
 
 
@@ -325,6 +328,7 @@ def p_vectors2(p):
 def p_vector(p):
     """vector : LSQBRACK vector_contents RSQBRACK"""
     p[0] = p[2]
+    p[0].lineno = p.lineno(1)
 
 
 def p_vector_contents1(p):

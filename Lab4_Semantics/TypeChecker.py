@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from typing import Tuple
 from compiler import AST
 from SymbolTable import SymbolTable
 
@@ -18,39 +19,6 @@ t_matrix_function_names = {'zeros', 'ones', 'eye'}
 
 t_matrix = "MATRIX"
 t_vector = "VECTOR"
-# t_Row_list = t_Matrix
-# t_Vector = "Vector"
-# t_Num_list = t_Vector
-# t_Bool = "Boolean"
-# t_None = "None"
-# t_Variable = Union[
-#     t_Int,
-#     t_Float,
-#     t_Str,
-#     t_Matrix,
-#     t_Vector,
-#     t_Bool
-# ]
-# t_VisitReturn = Union[
-#     t_Variable,
-#     t_var
-# ]
-
-# std_operation_type_table = {
-#     t_Int: {
-#         t_Float: t_Float,
-#         t_Int: t_Int
-#     },
-#     t_Float: {
-#         t_Float: t_Float,
-#         t_Int: t_Float
-#     }
-# }
-#
-# type_table = {
-#     op: std_operation_type_table for op in t_Binary_ops
-# }
-
 
 class NodeVisitor(object):
 
@@ -98,19 +66,16 @@ class TypeChecker(NodeVisitor):
     def visit_Operator(self, node):
         return node.op
 
-    def __check_matrix_dims(self, matrix1, matrix2):
-        if len(matrix1) != len(matrix2):
-            return False
-        if len(matrix1) > 0:
-            if len(matrix1[0]) != len(matrix2):
-                return False
-        return True
-
     def visit_BinExpr(self, node):
         type1 = self.visit(node.left)
         type2 = self.visit(node.right)
         op = self.visit(node.op)
-        # print(type1, type2, op)
+
+        if isinstance(type1, Tuple):
+            type1, dims1 = type1
+        if isinstance(type2, Tuple):
+            type2, dims2 = type2
+
         if op in t_binary_ops:
             if type1 not in t_numerical or type2 not in t_numerical:
                 print("Cannot use", op, 'between types', type1, 'and', type2, 'in line', node.lineno)
@@ -120,12 +85,12 @@ class TypeChecker(NodeVisitor):
             if type1 != t_matrix or type2 != t_matrix:
                 print("Cannot use", op, 'between types', type1, 'and', type2, 'in line', node.lineno)
             else:
-                if not self.__check_matrix_dims(node.left, node.right):
-                    print("matrixes are not the same size")
+                if dims1 != dims2:
+                    print("Cannot use", op, 'between matrixes of size', dims1, 'and', dims2, 'in line', node.lineno)
                 else:
-                    return t_matrix
+                    return t_matrix, dims1
         else:
-            print("co to tu robi", node.lineno)
+            print("Something went wrong", node.lineno)
 
     def visit_UnExpr(self, node):
         type = self.visit(node.value)
@@ -184,37 +149,30 @@ class TypeChecker(NodeVisitor):
 
     def visit_MatrixFun(self, node):
         name = node.name
+        value = node.value.value
         value_type = self.visit(node.value)
 
         if value_type != t_int:
             print("Type", value_type, "cannot be an argument of function", name.op, 'in line', node.lineno)
             return
 
-        return t_matrix
+        return t_matrix, (value, value)
 
     def visit_Matrix(self, node):
-        size = len(node.vectors[0].values)
-        is_ok = True
+        vector_size = len(node.vectors[0].values)
         for vector in node.vectors:
             vector_type = self.visit(vector)
             if vector_type != t_vector:
-                print("Matrices should not contain", vector_type)
-                is_ok = False
-                continue
-            if size != len(vector.values):
+                return
+            if vector_size != len(vector.values):
                 print("Matrix contains vectors of different sizes in line", node.lineno)
-                is_ok = False
-
-        if is_ok:
-            return t_matrix
+                return
+        return t_matrix, (len(node.vectors), vector_size)
 
     def visit_Vector(self, node):
-        numerical = True
         for value in node.values:
             val_type = self.visit(value)
             if val_type not in t_numerical:
-                print(val_type + "matrix can't contain nonnumerical values")
-                numerical = False
-
-        if numerical:
-            return t_vector
+                print("Vector contains nonnumerical value in line", node.lineno)
+                return
+        return t_vector
