@@ -13,9 +13,10 @@ y = [ [1,2,3,4,5],
 z = x + y;
 
 x = zeros(5);
-y = zeros(5,7);
+y = zeros(5);
 z = x + y;
+z = x .+ y;
 
-x = ones(3,5);
+x = ones(35);
 z = x[7,10];
-v = x[2,3,4];
+v = x[2,3];

@@ -293,12 +293,14 @@ def p_string(p):
 def p_matrix1(p):
     """matrix : LSQBRACK vectors RSQBRACK"""
     p[0] = p[2]
+    p[0].lineno = p.lineno(1)
 
 
 def p_matrix2(p):
     """matrix : matrix_fun
               | vector"""
     p[0] = p[1]
+    p[0].lineno = p.lineno(0)
 
 
 def p_vectors1(p):

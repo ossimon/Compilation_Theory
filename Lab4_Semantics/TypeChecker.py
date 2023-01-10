@@ -192,11 +192,11 @@ class TypeChecker(NodeVisitor):
         for vector in node.vectors:
             vector_type = self.visit(vector)
             if vector_type != t_vector:
-                print(vector_type + "matrix should contain only vectors")
+                print("Matrices should not contain", vector_type)
                 is_ok = False
                 continue
             if size != len(vector.values):
-                print("matrix contains vectors of different size")
+                print("Matrix contains vectors of different sizes in line", node.lineno)
                 is_ok = False
 
         if is_ok:
