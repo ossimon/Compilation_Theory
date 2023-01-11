@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from typing import Tuple
 from compiler import AST
-from SymbolTable import SymbolTable
+from compiler.SymbolTable import SymbolTable
 
 t_int = 'INT'
 t_float = 'FLOAT'

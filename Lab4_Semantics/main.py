@@ -2,7 +2,7 @@
 import sys
 from compiler.Mparser import *
 from compiler.scanner import *
-from TypeChecker import TypeChecker
+from compiler.TypeChecker import TypeChecker
 
 if __name__ == '__main__':
 
