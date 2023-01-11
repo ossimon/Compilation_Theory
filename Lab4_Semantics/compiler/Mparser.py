@@ -76,6 +76,7 @@ def p_ref(p):
         p[0] = AST.Ref(AST.Variable(p[1]), p[3])
     else:
         p[0] = AST.Ref(AST.Variable(p[1]), p[3], p[5])
+    p[0].lineno = p.lineno(2)
 
 
 def p_assignment_operator(p):
@@ -115,11 +116,13 @@ def p_num_expression_binary(p):
 def p_expression_negation(p):
     """expression : SUB expression %prec UMINUS"""
     p[0] = AST.UnExpr(p[2], AST.Operator(p[1]))
+    p[0].lineno = p.lineno(1)
 
 
 def p_expression_transpose(p):
     """expression : expression TRANSPOSE"""
     p[0] = AST.UnExpr(p[1], AST.Operator(p[2]))
+    p[0].lineno = p.lineno(2)
 
 
 def p_comparison(p):
@@ -325,6 +328,8 @@ def p_vectors2(p):
         p[0] = AST.Matrix(p[1])
 
 
+
+
 def p_vector(p):
     """vector : LSQBRACK vector_contents RSQBRACK"""
     p[0] = p[2]
@@ -357,6 +362,7 @@ def p_vector_content1(p):
 def p_vector_content2(p):
     """vector_content : number"""
     p[0] = p[1]
+
 
 
 parser = yacc.yacc()
