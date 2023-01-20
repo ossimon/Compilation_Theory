@@ -14,8 +14,8 @@ tokens = (
     'EYE', 'ZEROS', 'ONES',
     'PRINT',
     'ID',
-    'INT',
     'FLOAT',
+    'INT',
     'STRING'
 )
 t_DOTADD = r'\.\+'
@@ -76,15 +76,15 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 
-def t_INT(t):
-    r'\d+'
-    t.value = int(t.value)
+def t_FLOAT(t):
+    r'(\d+\.\d*(E\d+)?)|(\.\d+(E\d+)?)|\d+E\d+'
+    t.value = str(t.value)
     return t
 
 
-def t_FLOAT(t):
-    r'(\d+\.\d*(E\d+)?)|(\.\d+(E\d+)?)|\d+(E\d+)?'
-    t.value = str(t.value)
+def t_INT(t):
+    r'\d+'
+    t.value = int(t.value)
     return t
 
 
