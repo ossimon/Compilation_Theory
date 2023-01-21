@@ -43,9 +43,9 @@ class Interpreter(object):
 
     @when(AST.Assign)
     def visit(self, node):
-        pass
-    #
-    #
+        if isinstance(node.left, AST.Variable):
+            name = node.left.name
+
 
     # simplistic while loop interpretation
     @when(AST.While)
