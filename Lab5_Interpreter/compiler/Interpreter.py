@@ -4,9 +4,27 @@ from compiler import SymbolTable
 from compiler.Memory import *
 from compiler.Exceptions import  *
 from compiler.visit import *
+import operator
 import sys
 
 sys.setrecursionlimit(10000)
+
+binary_operators = {
+    '+': operator.add,
+    '-': operator.sub,
+    '*': operator.mul,
+    '/': operator.truediv,
+    '.+': operator.add,
+    '.-': operator.sub,
+    '.*': operator.mul,
+    './': operator.truediv,
+    '==': operator.eq,
+    '!=': operator.ne,
+    '>': operator.gt,
+    '<': operator.lt,
+    '>=': operator.ge,
+    '<=': operator.le,
+}
 
 class Interpreter(object):
 
@@ -19,10 +37,9 @@ class Interpreter(object):
     def visit(self, node):
         r1 = node.left.accept(self)
         r2 = node.right.accept(self)
-        # try sth smarter than:
-        # if(node.op=='+') return r1+r2
-        # elsif(node.op=='-') ...
-        # but do not use python eval
+        if r2 == 0 and node.op == '/':
+            print('Division by 0 in line', node.lineno)
+        return binary_operators[node.op](r1, r2)
 
     @when(AST.Assign)
     def visit(self, node):

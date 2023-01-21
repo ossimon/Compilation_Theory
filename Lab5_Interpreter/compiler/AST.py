@@ -9,6 +9,9 @@ class Node(object):
         else:
             self.children = [children]
 
+    def accept(self, visitor):
+        return visitor.visit(self)
+
 
 class Program(Node):
     def __init__(self, instructions):
