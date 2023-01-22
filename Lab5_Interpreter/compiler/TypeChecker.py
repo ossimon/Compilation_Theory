@@ -6,6 +6,7 @@ from compiler.SymbolTable import SymbolTable
 t_int = 'INT'
 t_float = 'FLOAT'
 t_str = "STRING"
+t_bool = "BOOL"
 t_var = t_str
 t_numerical = {t_int, t_float}
 t_binary_op_result = {t_int: {t_int: t_int, t_float: t_float},
@@ -87,6 +88,9 @@ class TypeChecker(NodeVisitor):
 
         if op in t_binary_ops:
             if type1 not in t_numerical or type2 not in t_numerical:
+                if op == "*":
+                    if t_str in [type1, type2] and t_int in [type1, type2]:
+                        return t_str
                 print("Cannot use", op, 'between types', type1, 'and', type2, 'in line', node.lineno)
             else:
                 return t_binary_op_result[type1][type2]
@@ -98,6 +102,11 @@ class TypeChecker(NodeVisitor):
                     print("Cannot use", op, 'between matrixes of size', dims1, 'and', dims2, 'in line', node.lineno)
                 else:
                     return t_binary_op_matrix_result[type1][type2], dims1
+        elif op in t_comparison_ops:
+            if type1 not in t_numerical or type2 not in t_numerical:
+                print("Cannot use", op, 'between types', type1, 'and', type2, 'in line', node.lineno)
+            else:
+                return t_bool
         else:
             print("Something went wrong", node.lineno)
 
@@ -147,10 +156,11 @@ class TypeChecker(NodeVisitor):
         else:
             # macierz inicjalizowana zmiennymi
             return t_float
+        # val2 = node.val2
         if isinstance(node.val2, AST.Value):
             val2 = node.val2.value
         elif node.val2 is None:
-            pass
+            return t_float
         else:
             # macierz inicjalizowana zmiennymi
             return t_float
@@ -181,22 +191,24 @@ class TypeChecker(NodeVisitor):
     def visit_IfElse(self, node):
         self.visit(node.condition)
 
+
     def visit_For(self, node):
         self.visit(node.for_expr)
         self.symbol_table = self.symbol_table.pushScope('FOR')
+        self.visit(node.for_expr)
         self.visit(node.instruction)
         self.symbol_table = self.symbol_table.popScope()
 
     def visit_ForExpr(self, node):
         self.visit(node.variable)
         self.visit(node.range)
+        self.symbol_table.put(node.variable.name, t_int)
 
-    def visit_ForRange(self, node):
+    def visit_Range(self, node):
         self.visit(node.left)
         self.visit(node.right)
 
     def visit_While(self, node):
-        self.visit(node.condition)
         self.symbol_table = self.symbol_table.pushScope('WHILE')
         self.visit(node.instructions)
         self.symbol_table = self.symbol_table.popScope()

@@ -47,6 +47,9 @@ matrix_func = {
 
 class Interpreter(object):
 
+    def __init__(self):
+        self.memory_stack = MemoryStack()
+
     @on('node')
     def visit(self, node):
         pass
@@ -62,8 +65,10 @@ class Interpreter(object):
 
     @when(AST.Variable)
     def visit(self, node):
-        # return memory_stack.get(node.name)
-        pass
+        # print("getting", node.name, "from", self.memory_stack.memories[-1].symbols)
+        # print('got', self.memory_stack.get(node.name))
+        return self.memory_stack.get(node.name)
+        # pass
 
     @when(AST.Value)
     def visit(self, node):
@@ -77,9 +82,12 @@ class Interpreter(object):
     def visit(self, node):
         r1 = node.left.accept(self)
         r2 = node.right.accept(self)
-        if r2 == 0 and node.op == '/':
+        oper = node.op
+        while isinstance(oper, AST.Operator):
+            oper = oper.op
+        if r2 == 0 and oper == '/':
             print('Division by 0 in line', node.lineno)
-        return binary_operators[node.op](r1, r2)
+        return binary_operators[oper](r1, r2)
 
     @when(AST.UnExpr)
     def visit(self, node):
@@ -90,7 +98,10 @@ class Interpreter(object):
     def visit(self, node):
         r1 = node.left.accept(self)
         r2 = node.right.accept(self)
-        return comparison_operators[node.op](r1, r2)
+        oper = node.op
+        while isinstance(oper, AST.Operator):
+            oper = oper.op
+        return comparison_operators[oper](r1, r2)
 
     @when(AST.Ref)
     def visit(self, node):
@@ -107,33 +118,65 @@ class Interpreter(object):
 
     @when(AST.Assign)
     def visit(self, node):
+        value = node.right.accept(self)
         if isinstance(node.left, AST.Variable):
             name = node.left.name
+
+            op = node.op.op[0]
+            if op != '=':
+                old_value = self.memory_stack.get(name)
+                value = binary_operators[op](old_value, value)
+
+            self.memory_stack.set(name, value)
+        elif isinstance(node.left, AST.Ref):
+            print("Ref assignment not yet implemented")
+        else:
+            print("Other types of assignment not yet implemented")
 
     @when(AST.IfElse)
     def visit(self, node):
-        pass
+        cond = node.condition.accept(self)
+        self.memory_stack.push(Memory("If"))
+        if cond:
+            node.if_.accept(self)
+        elif node.else_ is not None:
+            node.else_.accept(self)
+        self.memory_stack.pop()
 
     @when(AST.For)
     def visit(self, node):
-        pass
+        self.memory_stack.push(Memory("For"))
+        name, left, right = node.for_expr.accept(self)
+        try:
+            for i in range(left, right):
+                self.memory_stack.insert(name, i)
+                try:
+                    node.instruction.accept(self)
+                except ContinueException:
+                    pass
+        except BreakException:
+            pass
+        finally:
+            self.memory_stack.pop()
 
     @when(AST.ForExpr)
     def visit(self, node):
-        pass
+        name = node.variable.name
+        left, right = node.range.accept(self)
+        return name, left, right
 
-    @when(AST.ForRange)
+    @when(AST.Range)
     def visit(self, node):
-        pass
-        if isinstance(node.left, AST.Variable):
-            name = node.left.name
+        left = node.left.accept(self)
+        right = node.right.accept(self)
+        return left, right
 
     @when(AST.While)
     def visit(self, node):
-        r = None
-        while node.cond.accept(self):
-            r = node.body.accept(self)
-        return r
+        self.memory_stack.push(Memory("While"))
+        while node.condition.accept(self):
+            node.instructions.accept(self)
+        self.memory_stack.pop()
 
     @when(AST.Call)
     def visit(self, node):
@@ -141,7 +184,7 @@ class Interpreter(object):
         if node.name == 'RETURN':
             # nie wiem co zrobić ze zwracaną wartościa
             # i guess kończymy program, printujemy zawarotość
-            print(node.value.accept(self))
+            # print(node.value.accept(self))
             # czy nasz return może zwracać kilka rzeczy?
             #chyba nie
             #może można zmargeować z printem xd
@@ -151,7 +194,8 @@ class Interpreter(object):
             # raise ReturnValueException(node.value.accept(self))
 
         elif node.name == 'PRINT':
-            print(*node.value.accept(self))
+            pass
+            # print(*node.value.accept(self))
         elif node.name == 'BREAK':
             raise BreakException
         elif node.name == 'CONTINUE':
@@ -159,13 +203,14 @@ class Interpreter(object):
 
     @when(AST.PrintInputs)
     def visit(self, node):
-        # nie jestem pewna, bo wywołanie printa jest chybaw callu
-        return [imput.accept(self) for imput in node.imputs]
+        for inp in node.inputs:
+            print(inp.accept(self), end=' ')
+        print()
 
     @when(AST.MatrixFun)
     def visit(self, node):
         val = node.value.accept(self)
-        return matrix_func[node.name](val)
+        return matrix_func[node.name.op](val)
 
     @when(AST.Matrix)
     def visit(self, node):

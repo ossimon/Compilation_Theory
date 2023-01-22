@@ -70,13 +70,21 @@ def p_assignment(p):
 
 
 def p_ref(p):
-    """ref : ID LSQBRACK num_term RSQBRACK
-           | ID LSQBRACK num_term COMMA num_term RSQBRACK"""
-    if len(p) == 5:
-        p[0] = AST.Ref(AST.Variable(p[1]), p[3])
-    else:
-        p[0] = AST.Ref(AST.Variable(p[1]), p[3], p[5])
+    """ref : ID LSQBRACK ref_inside RSQBRACK"""
+    p[0] = AST.Ref(AST.Variable(p[1]), p[3], p[5])
     p[0].lineno = p.lineno(2)
+
+
+def p_ref(p):
+    """ref : ID LSQBRACK ref_inside COMMA ref_inside RSQBRACK"""
+    p[0] = AST.Ref(AST.Variable(p[1]), p[3])
+    p[0].lineno = p.lineno(2)
+
+
+def p_refinsides(p):
+    """ref_inside : num_term
+                  | range"""
+    p[0] = p[1]
 
 
 def p_assignment_operator(p):
@@ -164,8 +172,8 @@ def p_print_inputs1(p):
     """print_inputs : print_inputs COMMA print_input"""
     p[0] = p[1]
     new_input = p[3]
-    if not isinstance(new_input, AST.Variable):
-        new_input = AST.Variable(new_input)
+    # if not isinstance(new_input, AST.Variable):
+    #     new_input = AST.Variable(new_input)
     p[0].inputs.append(new_input)
 
 
@@ -178,16 +186,13 @@ def p_print_inputs2(p):
 
 
 def p_print_input(p):
-    """print_input : STRING
-                   | ID"""
-    if isinstance(p[1], AST.Variable):
-        p[0] = p[1]
-    else:
-        p[0] = AST.Variable(p[1])
+    """print_input : expression"""
+    p[0] = p[1]
 
 
 def p_matrix_fun(p):
-    """matrix_fun : fun_name LPARENT expression RPARENT"""
+    """matrix_fun : fun_name LPARENT expression RPARENT
+                  | fun_name LPARENT expression COMMA expression RPARENT"""
     p[0] = AST.MatrixFun(p[1], p[3])
     p[0].lineno = p.lineno(2)
 
@@ -221,6 +226,7 @@ def p_for_expression(p):
 def p_while(p):
     """while : WHILE LPARENT comparison RPARENT instruction"""
     p[0] = AST.While(p[3], p[5])
+    p[0].lineno = p.lineno(1)
 
 
 def p_branch(p):
@@ -233,8 +239,8 @@ def p_branch(p):
 
 
 def p_range(p):
-    """range : num_term COLON num_term"""
-    p[0] = AST.ForRange(p[1], p[3])
+    """range : expression COLON expression"""
+    p[0] = AST.Range(p[1], p[3])
 
 
 def p_term1(p):
@@ -283,7 +289,7 @@ def p_number2(p):
     if isinstance(p[1], AST.Value):
         p[0] = p[1]
     else:
-        p[0] = AST.Value('FLOAT', p[1])
+        p[0] = AST.Value('FLOAT', float(p[1]))
 
 
 def p_string(p):
@@ -291,7 +297,7 @@ def p_string(p):
     if isinstance(p[1], AST.Value):
         p[0] = p[1]
     else:
-        p[0] = AST.Value('STRING', p[1])
+        p[0] = AST.Value('STRING', p[1][1:-1])
 
 
 def p_matrix1(p):

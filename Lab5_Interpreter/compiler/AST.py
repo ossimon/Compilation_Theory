@@ -108,7 +108,7 @@ class ForExpr(Node):
         self.range = for_range
 
 
-class ForRange(Node):
+class Range(Node):
     def __init__(self, left, right):
         super().__init__()
         self.left = left
