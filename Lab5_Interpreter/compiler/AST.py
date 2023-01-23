@@ -139,10 +139,11 @@ class PrintInputs(Node):
 
 
 class MatrixFun(Node):
-    def __init__(self, name, value):
+    def __init__(self, name, val1, val2):
         super().__init__()
         self.name = name
-        self.value = value
+        self.val1 = val1
+        self.val2 = val2
 
 
 class Matrix(Node):

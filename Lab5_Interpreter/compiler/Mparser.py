@@ -71,13 +71,13 @@ def p_assignment(p):
 
 def p_ref(p):
     """ref : ID LSQBRACK ref_inside RSQBRACK"""
-    p[0] = AST.Ref(AST.Variable(p[1]), p[3], p[5])
+    p[0] = AST.Ref(AST.Variable(p[1]), p[3])
     p[0].lineno = p.lineno(2)
 
 
 def p_ref(p):
     """ref : ID LSQBRACK ref_inside COMMA ref_inside RSQBRACK"""
-    p[0] = AST.Ref(AST.Variable(p[1]), p[3])
+    p[0] = AST.Ref(AST.Variable(p[1]), p[3], p[5])
     p[0].lineno = p.lineno(2)
 
 
@@ -190,10 +190,15 @@ def p_print_input(p):
     p[0] = p[1]
 
 
-def p_matrix_fun(p):
-    """matrix_fun : fun_name LPARENT expression RPARENT
-                  | fun_name LPARENT expression COMMA expression RPARENT"""
-    p[0] = AST.MatrixFun(p[1], p[3])
+def p_matrix_fun1(p):
+    """matrix_fun : fun_name LPARENT expression RPARENT"""
+    p[0] = AST.MatrixFun(p[1], p[3], None)
+    p[0].lineno = p.lineno(2)
+
+
+def p_matrix_fun2(p):
+    """matrix_fun : fun_name LPARENT expression COMMA expression RPARENT"""
+    p[0] = AST.MatrixFun(p[1], p[3], p[5])
     p[0].lineno = p.lineno(2)
 
 

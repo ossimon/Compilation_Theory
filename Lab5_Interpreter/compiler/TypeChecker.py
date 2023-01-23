@@ -5,6 +5,7 @@ from compiler.SymbolTable import SymbolTable
 
 t_int = 'INT'
 t_float = 'FLOAT'
+t_range = 'RANGE'
 t_str = "STRING"
 t_bool = "BOOL"
 t_var = t_str
@@ -144,10 +145,10 @@ class TypeChecker(NodeVisitor):
 
         matrix_type, matrix_dims = matrix_type
 
-        if index1_type != t_int:
+        if index1_type not in [t_int, t_range]:
             print((matrix_type, matrix_dims), 'indices must be integers, not ', index1_type, 'in line', node.lineno)
             return
-        if index2_type != t_int:
+        if index2_type not in [t_int, t_range]:
             print((matrix_type, matrix_dims), 'indices must be integers, not ', index2_type, 'in line', node.lineno)
             return
 
@@ -207,6 +208,7 @@ class TypeChecker(NodeVisitor):
     def visit_Range(self, node):
         self.visit(node.left)
         self.visit(node.right)
+        return t_range
 
     def visit_While(self, node):
         self.symbol_table = self.symbol_table.pushScope('WHILE')
@@ -225,14 +227,25 @@ class TypeChecker(NodeVisitor):
 
     def visit_MatrixFun(self, node):
         name = node.name
-        value = node.value.value
-        value_type = self.visit(node.value)
-
-        if value_type != t_int:
-            print("Type", value_type, "cannot be an argument of function", name.op, 'in line', node.lineno)
+        val1 = node.val1.value
+        val1_type = self.visit(node.val1)
+        if val1_type != t_int:
+            print("Type", val1_type, "cannot be an argument of function", name.op, 'in line', node.lineno)
             return
 
-        return t_int_matrix, (value, value)
+        if node.val2 is not None:
+            val2 = node.val2.value
+            val2_type = self.visit(node.val2)
+            if val2_type != t_int:
+                print("Type", val2_type, "cannot be an argument of function", name.op, 'in line', node.lineno)
+                return
+
+            return t_int_matrix, (val1, val2)
+
+        if name == 'EYE':
+            return t_int_matrix, (val1, val1)
+
+        return t_int_matrix, val1
 
     def visit_Matrix(self, node):
         float_matrix = False

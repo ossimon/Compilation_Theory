@@ -7,6 +7,7 @@ from compiler.Exceptions import  *
 from compiler.visit import *
 import operator
 import sys
+import numpy as np
 
 sys.setrecursionlimit(10000)
 
@@ -36,6 +37,10 @@ matrix_func = {
     'zeros': lambda x: np.zeros(x),
     'ones': lambda x: np.ones(x),
     'eye': lambda x: np.eye(x)
+}
+matrix_2dfunc = {
+    'zeros': lambda x, y: np.zeros((x, y)),
+    'ones': lambda x, y: np.ones((x, y))
 }
 
 # Do zrobienia:
@@ -85,7 +90,7 @@ class Interpreter(object):
         oper = node.op
         while isinstance(oper, AST.Operator):
             oper = oper.op
-        if r2 == 0 and oper == '/':
+        if r2.any() == 0 and oper == '/':
             print('Division by 0 in line', node.lineno)
         return binary_operators[oper](r1, r2)
 
@@ -107,18 +112,26 @@ class Interpreter(object):
     def visit(self, node):
         matrix_name = node.name.accept(self)
         index1 = node.val1.accept(self)
-        # nie wiem czy mogę wizytować index2 jak jest nonem
-        # można to łatwo przeprawić
-        index2 = node.val1.accept(self)
-
-        # to by było zbyt piękne gdyby to działało
-        if index2 is None:
-            return matrix_name[index1]
-        return matrix_name[index1, index2]
+        if not isinstance(index1, int):
+            ind1l = index1[0]
+            ind1r = index1[1]
+        else:
+            ind1l = index1
+            ind1r = index1 + 1
+        if node.val2 is not None:
+            index2 = node.val2.accept(self)
+            if not isinstance(index2, int):
+                ind2l = index2[0]
+                ind2r = index2[1]
+            else:
+                ind2l = index2
+                ind2r = index2 + 1
+            return matrix_name[ind1l:ind1r, ind2l:ind2r]
+        return matrix_name[ind1l:ind1r]
 
     @when(AST.Assign)
     def visit(self, node):
-        value = node.right.accept(self)
+        value = np.array(node.right.accept(self))
         if isinstance(node.left, AST.Variable):
             name = node.left.name
 
@@ -129,7 +142,31 @@ class Interpreter(object):
 
             self.memory_stack.set(name, value)
         elif isinstance(node.left, AST.Ref):
-            print("Ref assignment not yet implemented")
+            name = node.left.name.name
+            index1 = node.left.val1.accept(self)
+
+            if not isinstance(index1, int):
+                ind1l = index1[0]
+                ind1r = index1[1]
+            else:
+                ind1l = index1
+                ind1r = index1 + 1
+
+            matrix = self.memory_stack.get(name)
+
+            if node.left.val2 is not None:
+                index2 = node.left.val2.accept(self)
+                if not isinstance(index2, int):
+                    ind2l = index2[0]
+                    ind2r = index2[1]
+                else:
+                    ind2l = index2
+                    ind2r = index2 + 1
+                print(index1, index2)
+                matrix[ind1l:ind1r, ind2l:ind2r] = value
+            else:
+                matrix[ind1l:ind1r] = value
+            self.memory_stack.set(name, matrix)
         else:
             print("Other types of assignment not yet implemented")
 
@@ -146,9 +183,9 @@ class Interpreter(object):
     @when(AST.For)
     def visit(self, node):
         self.memory_stack.push(Memory("For"))
-        name, left, right = node.for_expr.accept(self)
+        name, ran = node.for_expr.accept(self)
         try:
-            for i in range(left, right):
+            for i in range(ran[0], ran[1]):
                 self.memory_stack.insert(name, i)
                 try:
                     node.instruction.accept(self)
@@ -162,14 +199,14 @@ class Interpreter(object):
     @when(AST.ForExpr)
     def visit(self, node):
         name = node.variable.name
-        left, right = node.range.accept(self)
-        return name, left, right
+        ran = node.range.accept(self)
+        return name, ran
 
     @when(AST.Range)
     def visit(self, node):
         left = node.left.accept(self)
         right = node.right.accept(self)
-        return left, right
+        return (left, right)
 
     @when(AST.While)
     def visit(self, node):
@@ -209,8 +246,12 @@ class Interpreter(object):
 
     @when(AST.MatrixFun)
     def visit(self, node):
-        val = node.value.accept(self)
-        return matrix_func[node.name.op](val)
+        val1 = node.val1.accept(self)
+        if node.val2 is not None:
+            val2 = node.val2.accept(self)
+            return matrix_2dfunc[node.name.op](val1, val2)
+
+        return matrix_func[node.name.op](val1)
 
     @when(AST.Matrix)
     def visit(self, node):
