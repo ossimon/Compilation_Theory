@@ -90,7 +90,8 @@ class Interpreter(object):
         oper = node.op
         while isinstance(oper, AST.Operator):
             oper = oper.op
-        if r2.any() == 0 and oper == '/':
+
+        if isinstance(r2, int) and r2 == 0 and oper == '/':
             print('Division by 0 in line', node.lineno)
         return binary_operators[oper](r1, r2)
 
