@@ -172,8 +172,6 @@ def p_print_inputs1(p):
     """print_inputs : print_inputs COMMA print_input"""
     p[0] = p[1]
     new_input = p[3]
-    # if not isinstance(new_input, AST.Variable):
-    #     new_input = AST.Variable(new_input)
     p[0].inputs.append(new_input)
 
 
@@ -339,8 +337,6 @@ def p_vectors2(p):
         p[0] = AST.Matrix(p[1])
 
 
-
-
 def p_vector(p):
     """vector : LSQBRACK vector_contents RSQBRACK"""
     p[0] = p[2]
@@ -350,7 +346,6 @@ def p_vector(p):
 def p_vector_contents1(p):
     """vector_contents : vector_contents COMMA vector_content"""
     p[0] = p[1]
-    # p[0].values.append(p[3])
     p[0].values.append(p[3])
 
 
@@ -373,7 +368,6 @@ def p_vector_content1(p):
 def p_vector_content2(p):
     """vector_content : number"""
     p[0] = p[1]
-
 
 
 parser = yacc.yacc()

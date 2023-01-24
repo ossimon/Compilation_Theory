@@ -1,7 +1,4 @@
-import numpy as np
-
 from compiler import AST
-from compiler import SymbolTable
 from compiler.Memory import *
 from compiler.Exceptions import  *
 from compiler.visit import *
@@ -43,12 +40,6 @@ matrix_2dfunc = {
     'ones': lambda x, y: np.ones((x, y))
 }
 
-# Do zrobienia:
-# Variable
-# sprawdzić Ref
-# Assign
-# pętle i if - w nich te zagłębienia
-# Calla sprawdzić
 
 class Interpreter(object):
 
@@ -70,10 +61,7 @@ class Interpreter(object):
 
     @when(AST.Variable)
     def visit(self, node):
-        # print("getting", node.name, "from", self.memory_stack.memories[-1].symbols)
-        # print('got', self.memory_stack.get(node.name))
         return self.memory_stack.get(node.name)
-        # pass
 
     @when(AST.Value)
     def visit(self, node):
@@ -135,13 +123,13 @@ class Interpreter(object):
         value = np.array(node.right.accept(self))
         if isinstance(node.left, AST.Variable):
             name = node.left.name
-
             op = node.op.op[0]
             if op != '=':
                 old_value = self.memory_stack.get(name)
                 value = binary_operators[op](old_value, value)
 
             self.memory_stack.set(name, value)
+
         elif isinstance(node.left, AST.Ref):
             name = node.left.name.name
             index1 = node.left.val1.accept(self)
@@ -175,11 +163,13 @@ class Interpreter(object):
     def visit(self, node):
         cond = node.condition.accept(self)
         self.memory_stack.push(Memory("If"))
-        if cond:
-            node.if_.accept(self)
-        elif node.else_ is not None:
-            node.else_.accept(self)
-        self.memory_stack.pop()
+        try:
+            if cond:
+                node.if_.accept(self)
+            elif node.else_ is not None:
+                node.else_.accept(self)
+        finally:
+            self.memory_stack.pop()
 
     @when(AST.For)
     def visit(self, node):
@@ -212,28 +202,24 @@ class Interpreter(object):
     @when(AST.While)
     def visit(self, node):
         self.memory_stack.push(Memory("While"))
-        while node.condition.accept(self):
-            node.instructions.accept(self)
-        self.memory_stack.pop()
+        try:
+            while node.condition.accept(self):
+                try:
+                    node.instructions.accept(self)
+                except ContinueException:
+                    pass
+        except BreakException:
+            pass
+        finally:
+            self.memory_stack.pop()
 
     @when(AST.Call)
     def visit(self, node):
-        # może to rozbić na kilka funkcji?
         if node.name == 'RETURN':
-            # nie wiem co zrobić ze zwracaną wartościa
-            # i guess kończymy program, printujemy zawarotość
-            # print(node.value.accept(self))
-            # czy nasz return może zwracać kilka rzeczy?
-            #chyba nie
-            #może można zmargeować z printem xd
             sys.exit()
-
-            # # moja wersja
-            # raise ReturnValueException(node.value.accept(self))
 
         elif node.name == 'PRINT':
             pass
-            # print(*node.value.accept(self))
         elif node.name == 'BREAK':
             raise BreakException
         elif node.name == 'CONTINUE':

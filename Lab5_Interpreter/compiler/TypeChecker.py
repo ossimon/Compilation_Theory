@@ -51,11 +51,6 @@ class NodeVisitor(object):
                 elif isinstance(child, AST.Node):
                     self.visit(child)
 
-    # simpler version of generic_visit, not so general
-    # def generic_visit(self, node):
-    #    for child in node.children:
-    #        self.visit(child)
-
 
 class TypeChecker(NodeVisitor):
     def __init__(self):
@@ -155,21 +150,17 @@ class TypeChecker(NodeVisitor):
         if isinstance(node.val1, AST.Value):
             val1 = node.val1.value
         else:
-            # macierz inicjalizowana zmiennymi
             return t_float
-        # val2 = node.val2
         if isinstance(node.val2, AST.Value):
             val2 = node.val2.value
         elif node.val2 is None:
             return t_float
         else:
-            # macierz inicjalizowana zmiennymi
             return t_float
 
 
         if matrix_dims[0] == 1:
             if node.val2 is not None:
-                # odwolywanie sie do 2 wymiaru macierzy 1 wymiarowej
                 print((matrix_type, matrix_dims), 'index out of range in line', node.lineno)
             elif val1 >= matrix_dims[0]:
                 print((matrix_type, matrix_dims), 'index out of range in line', node.lineno)
