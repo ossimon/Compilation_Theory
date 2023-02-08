@@ -1,4 +1,0 @@
-- Wysyłamy na teamsy, 1 osoba wysyła.
-- https://home.agh.edu.pl/~mkuta/tklab/lab1/lab1.html
-- Python: sly, ply
-- Ply lepszy.
