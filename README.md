@@ -1,7 +1,13 @@
-# Teoria Kompilacji - laboratorium
+# Theory of compilation - laboratory
 
-To repozytorium zawiera kolejne etapy tworzenia interpretera prostego języka do obliczeń macierzowych z wykorzystaniem biblioteki Ply w pythonie.
+This repository consists of 5 steps in making an interpreter for a basic matrix-computing language written using Ply library in Python.
+These steps include creating:
+- Scanner
+- Parser
+- Abstract Semantic Tree Printer
+- Semantic Analyser
+- Interpreter
 
-Autorzy:
+Autors:
 - Oskar Simon
 - Paulina Jędrychowska
