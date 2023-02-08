@@ -77,7 +77,7 @@ def t_newline(t):
 
 
 def t_FLOAT(t):
-    r'(\d+\.\d*(E\d+)?)|(\.\d+(E\d+)?)|\d+(E\d+)?'
+    r'(\d+\.\d*(E\d+)?)|(\.\d+(E\d+)?)|\d+E\d+'
     t.value = str(t.value)
     return t
 
